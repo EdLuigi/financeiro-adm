@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { recuperarSenha } from "../firebase/firebase";
+import { useAuth } from "../firebase/authContext";
 
 export default function RecuperarSenha() {
     const emailRef = useRef();
@@ -8,6 +8,7 @@ export default function RecuperarSenha() {
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState(false);
     const navigate = useNavigate();
+    const { recuperarSenha } = useAuth();
 
     const submit = async (e) => {
         e.preventDefault();

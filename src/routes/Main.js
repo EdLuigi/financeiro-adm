@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../firebase/firebase";
+import { useAuth } from "../firebase/authContext";
 
 export default function Main() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const handleLogout = async () => {
         try {
@@ -14,10 +15,13 @@ export default function Main() {
         }
     };
     return (
-        <div>
-            Main
-            <br />
-            <button onClick={handleLogout}>Logout</button>
-        </div>
+        <>
+            {}
+            <div>
+                Main
+                <br />
+                <button onClick={handleLogout}>Logout</button>
+            </div>
+        </>
     );
 }

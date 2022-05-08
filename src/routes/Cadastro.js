@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { cadastrar } from "../firebase/firebase";
+import { useAuth } from "../firebase/authContext";
 
 export default function Cadastro() {
     const emailRef = useRef();
@@ -8,6 +8,7 @@ export default function Cadastro() {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
+    const { cadastrar } = useAuth();
 
     const submit = async (e) => {
         e.preventDefault();
