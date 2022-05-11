@@ -6,6 +6,9 @@ import Login from "./routes/Login";
 import Cadastro from "./routes/Cadastro";
 import RecuperarSenha from "./routes/RecuperarSenha";
 import PrivateRoute from "./routes/PrivateRoute";
+import LoggedInRoute from "./routes/LoggedInRoute";
+import InserirLancamento from "./routes/InserirLancamento";
+import ListarLancamentos from "./routes/ListarLancamentos";
 
 export default function App() {
     return (
@@ -15,13 +18,23 @@ export default function App() {
                     <Routes>
                         <Route element={<PrivateRoute redirectPath="/login" />}>
                             <Route path="/" element={<Main />} />
+                            <Route
+                                path="//inserir-lancamento"
+                                element={<InserirLancamento />}
+                            />
+                            <Route
+                                path="//listar-lancamentos"
+                                element={<ListarLancamentos />}
+                            />
                         </Route>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/cadastro" element={<Cadastro />} />
-                        <Route
-                            path="/recuperar-senha"
-                            element={<RecuperarSenha />}
-                        />
+                        <Route element={<LoggedInRoute redirectPath="/" />}>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/cadastro" element={<Cadastro />} />
+                            <Route
+                                path="/recuperar-senha"
+                                element={<RecuperarSenha />}
+                            />
+                        </Route>
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>
