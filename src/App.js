@@ -19,11 +19,11 @@ export default function App() {
                         <Route element={<PrivateRoute redirectPath="/login" />}>
                             <Route path="/" element={<Main />} />
                             <Route
-                                path="//inserir-lancamento"
+                                path="/inserir-lancamento"
                                 element={<InserirLancamento />}
                             />
                             <Route
-                                path="//listar-lancamentos"
+                                path="/listar-lancamentos"
                                 element={<ListarLancamentos />}
                             />
                         </Route>
