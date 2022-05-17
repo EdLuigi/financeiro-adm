@@ -7,6 +7,7 @@ import {
 import { useAuth } from "../firebase/authContext";
 import { Link } from "react-router-dom";
 import { deletar } from "../firebase/firestore";
+import * as moment from "moment";
 
 export default function ListarLancamentos() {
     const { currentUser } = useAuth();
@@ -36,11 +37,17 @@ export default function ListarLancamentos() {
         setFiltro(e.target.value);
     };
 
+    const sortDatas = (arr) => {
+        return [...arr].sort(
+            (a, b) => a.criado_em.toDate() > b.criado_em.toDate()
+        );
+    };
+
     const fetchData = async () => {
         try {
-            // faz o "loading..." toda vez que atualiza
             setMensagem("Carregando...");
-            setLancamentos([]);
+            // faz o "loading..." toda vez que atualiza
+            // setLancamentos([]);
 
             let data;
             if (filtro == 0) data = await listarTodos(currentUser.uid);
@@ -48,7 +55,9 @@ export default function ListarLancamentos() {
             if (filtro == 2) data = await listarSaidas(currentUser.uid);
 
             setLancamentos(
-                data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                sortDatas(
+                    data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                )
             );
 
             setMensagem("Você não possui lançamentos");
@@ -82,8 +91,6 @@ export default function ListarLancamentos() {
             <div>
                 {lancamentos.length == 0 ? (
                     <div>
-                        {/* <h4>Você não possui lançamentos</h4> */}
-                        {/* <h4>Carregando...</h4> */}
                         <h4>{mensagem}</h4>
                     </div>
                 ) : (
@@ -94,8 +101,11 @@ export default function ListarLancamentos() {
                                 <br />
                                 valor: {i.valor},00
                                 <br />
-                                {/* criado em: {i.criado_em}
-                                <br /> */}
+                                data:{" "}
+                                {moment(i.criado_em.toDate()).format(
+                                    "DD/MM/YYYY"
+                                )}
+                                <br />
                                 <button
                                     onClick={() => {
                                         handleDelete(i);
