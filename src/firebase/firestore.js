@@ -19,9 +19,29 @@ export const adicionar = (id, tipo, valor) => {
     });
 };
 
-export const listar = (id) => {
+export const listarTodos = (id) => {
     return getDocs(
         query(collection(db, "lancamentos"), where("uid", "==", id))
+    );
+};
+
+export const listarEntradas = (id) => {
+    return getDocs(
+        query(
+            collection(db, "lancamentos"),
+            where("uid", "==", id),
+            where("tipo", "==", 0)
+        )
+    );
+};
+
+export const listarSaidas = (id) => {
+    return getDocs(
+        query(
+            collection(db, "lancamentos"),
+            where("uid", "==", id),
+            where("tipo", "==", 1)
+        )
     );
 };
 

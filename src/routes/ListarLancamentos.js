@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { listar } from "../firebase/firestore";
+import {
+    listarEntradas,
+    listarSaidas,
+    listarTodos,
+} from "../firebase/firestore";
 import { useAuth } from "../firebase/authContext";
 import { Link } from "react-router-dom";
 import { deletar } from "../firebase/firestore";
@@ -11,6 +15,7 @@ export default function ListarLancamentos() {
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState(false);
     const [mensagem, setMensagem] = useState("");
+    const [filtro, setFiltro] = useState(0);
 
     const handleDelete = async (i) => {
         try {
@@ -27,11 +32,21 @@ export default function ListarLancamentos() {
         setLoading(false);
     };
 
+    const handleFiltro = (e) => {
+        setFiltro(e.target.value);
+    };
+
     const fetchData = async () => {
         try {
+            // faz o "loading..." toda vez que atualiza
             setMensagem("Carregando...");
+            setLancamentos([]);
 
-            const data = await listar(currentUser.uid);
+            let data;
+            if (filtro == 0) data = await listarTodos(currentUser.uid);
+            if (filtro == 1) data = await listarEntradas(currentUser.uid);
+            if (filtro == 2) data = await listarSaidas(currentUser.uid);
+
             setLancamentos(
                 data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
             );
@@ -45,7 +60,7 @@ export default function ListarLancamentos() {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [filtro]);
 
     return (
         <>
@@ -53,7 +68,15 @@ export default function ListarLancamentos() {
                 <h2>Lista de Lançamentos</h2>
             </div>
             <Link to="/">Voltar</Link>.........
-            <Link to="/inserir-lancamento">Inserir Lançamento</Link>
+            <Link to="/inserir-lancamento">Inserir Lançamentos</Link>
+            <br />
+            <br />
+            <label>Filtro: </label>
+            <select value={filtro} onChange={(e) => handleFiltro(e)}>
+                <option value={0}>Todos</option>
+                <option value={1}>Entradas</option>
+                <option value={2}>Saídas</option>
+            </select>
             <br />
             <br />
             <div>
@@ -67,8 +90,6 @@ export default function ListarLancamentos() {
                     <div>
                         {lancamentos.map((i) => (
                             <div key={i.id}>
-                                {/* id: {i.id}
-                                <br /> */}
                                 tipo: {i.tipo == 0 ? "Entrada" : "Saída"}
                                 <br />
                                 valor: {i.valor},00

@@ -7,7 +7,6 @@ export default function RecuperarSenha() {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState(false);
-    const navigate = useNavigate();
     const { recuperarSenha } = useAuth();
 
     const submit = async (e) => {
@@ -20,7 +19,6 @@ export default function RecuperarSenha() {
             await recuperarSenha(emailRef.current.value);
 
             setSucesso(true);
-            // navigate("/");
         } catch (e) {
             console.log("erro: " + e);
             setErro("O email inserido não está registrado");
