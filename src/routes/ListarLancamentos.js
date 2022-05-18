@@ -39,7 +39,7 @@ export default function ListarLancamentos() {
 
     const sortDatas = (arr) => {
         return [...arr].sort(
-            (a, b) => a.criado_em.toDate() > b.criado_em.toDate()
+            (a, b) => a.criado_em.toDate() < b.criado_em.toDate()
         );
     };
 

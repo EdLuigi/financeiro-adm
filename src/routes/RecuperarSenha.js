@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Alert, Button, Card, Container, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
 
@@ -27,22 +28,40 @@ export default function RecuperarSenha() {
     };
 
     return (
-        <div>
-            <h2>Recuperar Senha</h2>
-            {erro && <h4 style={{ color: "red" }}>{erro}</h4>}
-            {sucesso && (
-                <h4 style={{ color: "green" }}>
-                    Você receberá um email para reiniciar sua senha
-                </h4>
-            )}
-            <form onSubmit={submit}>
-                Email: <input type="email" ref={emailRef} required />
-                <br />
-                <button type="submit" disabled={loading}>
-                    Recuperar senha
-                </button>
-            </form>
-            <Link to="/entrar">Entrar</Link>
-        </div>
+        <Container className="d-flex align-items-center justify-content-center">
+            <Card
+                style={{ width: "400px", padding: "20px", marginTop: "50px" }}
+            >
+                <Card.Body>
+                    <Form onSubmit={submit}>
+                        <h2 className="mb-4">Recuperar Senha</h2>
+                        {erro && <Alert variant="danger">{erro}</Alert>}
+                        {sucesso && (
+                            <Alert variant="success">
+                                Você receberá um email para reiniciar sua senha
+                            </Alert>
+                        )}
+                        <Form.Group className="mb-4">
+                            <Form.Label>Email:</Form.Label>
+                            <Form.Control
+                                type="email"
+                                ref={emailRef}
+                                required
+                            />
+                        </Form.Group>
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                            className="mb-3 w-100"
+                        >
+                            Enviar
+                        </Button>
+                        <div style={{ textAlign: "center" }}>
+                            <Link to="/entrar">Voltar</Link>
+                        </div>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 }
