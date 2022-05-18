@@ -35,6 +35,14 @@ export default function App() {
                                 element={<RecuperarSenha />}
                             />
                         </Route>
+                        <Route
+                            path="/*"
+                            element={
+                                <div>
+                                    <h1>Página não encontrada :/</h1>
+                                </div>
+                            }
+                        />
                     </Routes>
                 </AuthProvider>
             </BrowserRouter>
