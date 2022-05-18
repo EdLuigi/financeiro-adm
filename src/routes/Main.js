@@ -13,7 +13,8 @@ export default function Main() {
     const handleLogout = async () => {
         try {
             await logout();
-            navigate("/login");
+            // navigate("/login");
+            navigate("/entrar");
         } catch (e) {
             console.log("erro: " + e);
         }

@@ -5,6 +5,7 @@ import { useAuth } from "../firebase/authContext";
 export default function Cadastro() {
     const emailRef = useRef();
     const passwordRef = useRef();
+    const passwordConfirmRef = useRef();
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
@@ -12,6 +13,11 @@ export default function Cadastro() {
 
     const submit = async (e) => {
         e.preventDefault();
+        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+            setErro("");
+            setErro("As senhas são diferentes");
+            return;
+        }
 
         try {
             setLoading(true);
@@ -28,18 +34,21 @@ export default function Cadastro() {
 
     return (
         <div>
-            <h2>Cadastro</h2>
+            <h2>Criar uma conta</h2>
             {erro && <h4 style={{ color: "red" }}>{erro}</h4>}
             <form onSubmit={submit}>
                 Email: <input type="email" ref={emailRef} required />
                 <br />
                 Senha: <input type="password" ref={passwordRef} required />
                 <br />
+                Confirmar senha:{" "}
+                <input type="password" ref={passwordConfirmRef} required />
+                <br />
                 <button type="submit" disabled={loading}>
-                    Cadastrar
+                    Continuar
                 </button>
             </form>
-            <Link to="/login">Entrar</Link>
+            {/* <Link to="/login">Entrar</Link> */}
         </div>
     );
 }

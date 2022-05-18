@@ -42,9 +42,7 @@ export default function RecuperarSenha() {
                     Recuperar senha
                 </button>
             </form>
-            <Link to="/login">Entrar</Link>
-            <br />
-            Não possui conta? <Link to="/cadastro">Cadastre-se</Link>
+            <Link to="/entrar">Entrar</Link>
         </div>
     );
 }

@@ -28,7 +28,7 @@ export default function Login() {
 
     return (
         <div>
-            <h2>Login</h2>
+            <h2>Entrar</h2>
             {erro && <h4 style={{ color: "red" }}>{erro}</h4>}
             <form onSubmit={submit}>
                 Email: <input type="email" ref={emailRef} required />
@@ -36,12 +36,12 @@ export default function Login() {
                 Senha: <input type="password" ref={passwordRef} required />
                 <br />
                 <button type="submit" disabled={loading}>
-                    Login
+                    Continuar
                 </button>
             </form>
             <Link to="/recuperar-senha">Esqueci minha senha</Link>
-            <br />
-            Não possui conta? <Link to="/cadastro">Cadastre-se</Link>
+            {/* <br />
+            Não possui conta? <Link to="/cadastro">Cadastre-se</Link> */}
         </div>
     );
 }
