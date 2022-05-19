@@ -1,50 +1,15 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./firebase/authContext";
-import Main from "./routes/Main";
-import RecuperarSenha from "./routes/RecuperarSenha";
-import PrivateRoute from "./routes/PrivateRoute";
-import LoggedInRoute from "./routes/LoggedInRoute";
-import InserirLancamento from "./routes/InserirLancamento";
-import ListarLancamentos from "./routes/ListarLancamentos";
-import Entrar from "./routes/Entrar";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Rotas from "./routes/Rotas";
 
 export default function App() {
     return (
         <div>
             <BrowserRouter>
                 <AuthProvider>
-                    <Routes>
-                        <Route
-                            element={<PrivateRoute redirectPath="/entrar" />}
-                        >
-                            <Route path="/" element={<Main />} />
-                            <Route
-                                path="/inserir-lancamento"
-                                element={<InserirLancamento />}
-                            />
-                            <Route
-                                path="/listar-lancamentos"
-                                element={<ListarLancamentos />}
-                            />
-                        </Route>
-                        <Route element={<LoggedInRoute redirectPath="/" />}>
-                            <Route path="/entrar" element={<Entrar />} />
-                            <Route
-                                path="/recuperar-senha"
-                                element={<RecuperarSenha />}
-                            />
-                        </Route>
-                        <Route
-                            path="/*"
-                            element={
-                                <div>
-                                    <h1>Página não encontrada :/</h1>
-                                </div>
-                            }
-                        />
-                    </Routes>
+                    <Rotas />
                 </AuthProvider>
             </BrowserRouter>
         </div>
