@@ -1,20 +1,20 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import BarraNavegacao from "../components/BarraNavegacao";
 import { useAuth } from "../firebase/authContext";
 import PrivateRoute from "./PrivateRoute";
-import InserirLancamento from "./InserirLancamento";
-import ListarLancamentos from "./ListarLancamentos";
+import InserirLancamento from "../pages/InserirLancamento";
+import ListarLancamentos from "../pages/ListarLancamentos";
 import LoggedInRoute from "./LoggedInRoute";
-import Entrar from "./Entrar";
-import RecuperarSenha from "./RecuperarSenha";
-import Dashboard from "./Dashboard";
+import Entrar from "../pages/Entrar";
+import RecuperarSenha from "../pages/RecuperarSenha";
+import Dashboard from "../pages/Dashboard";
 
 export default function Rotas() {
     const { currentUser } = useAuth();
     return (
         <div>
-            <div>{currentUser && <Sidebar />}</div>
+            <div>{currentUser && <BarraNavegacao />}</div>
             <div>
                 <Routes>
                     <Route element={<PrivateRoute redirectPath="/entrar" />}>

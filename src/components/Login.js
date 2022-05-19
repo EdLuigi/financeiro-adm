@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
 import { Button, Alert, Form, Card } from "react-bootstrap";
-import RecuperarSenha from "../routes/RecuperarSenha";
 
 export default function Login() {
     const emailRef = useRef();
@@ -11,7 +10,6 @@ export default function Login() {
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
     const { login } = useAuth();
-    const [modalRecuperarSenha, setModalRecuperarSenha] = useState(false);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -65,19 +63,10 @@ export default function Login() {
                         </Button>
                     </Form>
                     <div style={{ textAlign: "center" }}>
-                        {/* <Button
-                            variant="link"
-                            onClick={() => {
-                                setModalRecuperarSenha(true);
-                            }}
-                        >
-                            Esqueceu sua senha?
-                        </Button> */}
                         <Link to="/recuperar-senha">Esqueceu sua senha?</Link>
                     </div>
                 </Card.Body>
             </Card>
-            {/* <RecuperarSenha show={modalRecuperarSenha} /> */}
         </div>
     );
 }

@@ -1,14 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
-import {
-    Button,
-    Alert,
-    Form,
-    FormGroup,
-    Container,
-    Card,
-} from "react-bootstrap";
+import { Button, Alert, Form, Card } from "react-bootstrap";
 
 export default function Cadastro() {
     const emailRef = useRef();

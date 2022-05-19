@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
 import { listarTodos } from "../firebase/firestore";
 
@@ -58,10 +58,6 @@ export default function Dashboard() {
                     {saidas == 1 ? "saída" : "saídas"}
                     <br />
                     <button onClick={handleLogout}>Logout</button>
-                    <br />
-                    <Link to="/inserir-lancamento">Inserir Lançamento</Link>
-                    <br />
-                    <Link to="/listar-lancamentos">Listar Lançamentos</Link>
                 </div>
             )}
         </>
