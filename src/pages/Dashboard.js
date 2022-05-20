@@ -5,10 +5,11 @@ import {
     listarTodos,
 } from "../firebase/firestore";
 import { useAuth } from "../firebase/authContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { deletar } from "../firebase/firestore";
-import * as moment from "moment";
-import { Button, Card, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
+import Ola from "../components/Ola";
+import ListarLancamentos from "../components/ListarLancamentos";
 
 export default function Dashboard() {
     const [lancamentos, setLancamentos] = useState([]);
@@ -102,103 +103,21 @@ export default function Dashboard() {
             ) : (
                 <div style={{ padding: "40px" }}>
                     <div>
-                        <Card className="mb-4 w-100 p-3">
-                            <Card.Body>
-                                <h2 className="mb-3">
-                                    Olá, {currentUser.email}
-                                </h2>
-                                <h5
-                                    style={{
-                                        color: "grey",
-                                        fontSize: "18px",
-                                    }}
-                                >
-                                    Você possui {entradas}
-                                    {entradas == 1
-                                        ? " entrada"
-                                        : " entradas"} e {saidas}{" "}
-                                    {saidas == 1 ? "saída" : "saídas"}
-                                </h5>
-                            </Card.Body>
-                        </Card>
+                        <Ola
+                            email={currentUser.email}
+                            entradas={entradas}
+                            saidas={saidas}
+                        />
                     </div>
 
                     <div>
-                        <Card className="w-100 p-4">
-                            <Card.Body>
-                                <div>
-                                    <h2>Lista de Lançamentos</h2>
-                                </div>
-
-                                <label style={{ marginRight: "10px" }}>
-                                    <h6>Filtro:</h6>
-                                </label>
-                                <select
-                                    value={filtro}
-                                    onChange={(e) => handleFiltro(e)}
-                                >
-                                    <option value={0}>Todos</option>
-                                    <option value={1}>Entradas</option>
-                                    <option value={2}>Saídas</option>
-                                </select>
-
-                                <div>
-                                    {lancamentos.length == 0 ? (
-                                        <div>
-                                            <h4>{mensagem}</h4>
-                                        </div>
-                                    ) : (
-                                        <div style={{ alignContent: "center" }}>
-                                            {lancamentos.map((i) => (
-                                                <Card
-                                                    border="primary"
-                                                    className="w-25 mt-3 text-center "
-                                                    key={i.id}
-                                                >
-                                                    <Card.Body>
-                                                        <h6>
-                                                            Tipo:
-                                                            {i.tipo == 0
-                                                                ? " Entrada"
-                                                                : " Saída"}
-                                                        </h6>
-                                                        <h6>
-                                                            Valor: {i.valor},00
-                                                        </h6>
-                                                        <h6>
-                                                            Data:
-                                                            {" " +
-                                                                moment(
-                                                                    i.criado_em.toDate()
-                                                                ).format(
-                                                                    "DD/MM/YYYY"
-                                                                )}
-                                                        </h6>
-                                                    </Card.Body>
-                                                    <Card.Body
-                                                        style={{
-                                                            backgroundColor:
-                                                                "#dedededd",
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        <Button
-                                                            variant="danger"
-                                                            onClick={() => {
-                                                                handleDelete(i);
-                                                            }}
-                                                            disabled={loading}
-                                                        >
-                                                            Deletar
-                                                        </Button>
-                                                    </Card.Body>
-                                                </Card>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </Card.Body>
-                        </Card>
+                        <ListarLancamentos
+                            filtro={filtro}
+                            lancamentos={lancamentos}
+                            mensagem={mensagem}
+                            handleDelete={handleDelete}
+                            loading={loading}
+                        />
                     </div>
                 </div>
             )}
