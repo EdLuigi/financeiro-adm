@@ -51,12 +51,14 @@ export default function InserirLancamento() {
                     <div className="mb-4">
                         <h2>Inserir Lançamento</h2>
                     </div>
+
                     {erro && <Alert variant="danger">{erro}</Alert>}
                     {sucesso && (
                         <Alert variant="success">
                             Lançamento adicionado com sucesso
                         </Alert>
                     )}
+
                     <div style={{ paddingInline: "40px" }}>
                         <div className="mb-3">
                             <label style={{ marginRight: "10px" }}>
@@ -96,6 +98,7 @@ export default function InserirLancamento() {
                                         type="number"
                                         step="0.01"
                                         min="0.01"
+                                        max="1000000000"
                                         ref={valorRef}
                                         placeholder="ex.: 50.00 | 25.50 | 10.25"
                                         required

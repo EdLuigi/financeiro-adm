@@ -16,7 +16,7 @@ export default function ListarLancamentos(props) {
             <Card className="w-100 p-4">
                 <Card.Body>
                     <div>
-                        <h2>Lista de Lançamentos</h2>
+                        <h2 className="mb-4">Lista de Lançamentos</h2>
                     </div>
 
                     <label style={{ marginRight: "10px" }}>

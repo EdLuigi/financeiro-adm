@@ -112,7 +112,7 @@ export default function Dashboard() {
 
                     <div>
                         <ListarLancamentos
-                            filtro={filtro}
+                            handleFiltro={handleFiltro}
                             lancamentos={lancamentos}
                             mensagem={mensagem}
                             handleDelete={handleDelete}

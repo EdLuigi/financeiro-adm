@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 import * as moment from "moment";
 
 export default function ListagemCard(props) {
@@ -8,37 +8,41 @@ export default function ListagemCard(props) {
     };
 
     return (
-        <>
-            <Card border="primary" className="w-25 mt-3 text-center ">
-                <Card.Body>
-                    <h6>
-                        Tipo:
+        <div className="d-flex align-items-center justify-content-center">
+            <Card className="w-75 mt-3 text-center">
+                <Container
+                    style={
+                        props.i.tipo == 0
+                            ? { backgroundColor: "#d5f2d5" }
+                            : { backgroundColor: "#f9cccc" }
+                    }
+                    className="d-flex align-items-center justify-content-center p-0"
+                >
+                    <Card.Body style={{ width: "100%" }}>
+                        <strong>Tipo:</strong>
                         {props.i.tipo == 0 ? " Entrada" : " Saída"}
-                    </h6>
-                    <h6>Valor: {props.i.valor},00</h6>
-                    <h6>
-                        Data:
+                    </Card.Body>
+                    <Card.Body style={{ width: "100%" }}>
+                        <strong>Valor:</strong> {props.i.valor.toFixed(2)}
+                    </Card.Body>
+                    <Card.Body style={{ width: "100%" }}>
+                        <strong>Data:</strong>
                         {" " +
                             moment(props.i.criado_em.toDate()).format(
                                 "DD/MM/YYYY"
                             )}
-                    </h6>
-                </Card.Body>
-                <Card.Body
-                    style={{
-                        backgroundColor: "#dedededd",
-                        textAlign: "center",
-                    }}
-                >
-                    <Button
-                        variant="danger"
-                        onClick={deletar}
-                        disabled={props.loading}
-                    >
-                        Deletar
-                    </Button>
-                </Card.Body>
+                    </Card.Body>
+                </Container>
             </Card>
-        </>
+            <Card style={{ marginInline: "20px" }} className="mt-3">
+                <Button
+                    variant="danger"
+                    onClick={deletar}
+                    disabled={props.loading}
+                >
+                    X
+                </Button>
+            </Card>
+        </div>
     );
 }
