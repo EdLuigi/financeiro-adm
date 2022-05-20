@@ -1,26 +1,41 @@
 import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useAuth } from "../firebase/authContext";
 
 export default function BarraNavegacao() {
+    const { logout } = useAuth();
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        try {
+            await logout();
+        } catch (e) {
+            console.log("erro: " + e);
+        }
+    };
     return (
-        <Navbar bg="dark" variant={"dark"} expand="lg">
-            <Navbar.Brand href="#">Dashboard Financeiro</Navbar.Brand>
+        <Navbar
+            bg="primary"
+            variant="dark"
+            expand="lg"
+            style={{ paddingInline: "20px" }}
+            fixed="top"
+        >
+            <Navbar.Brand>Dashboard Financeiro</Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
-            <Navbar.Collapse id="navbarScroll">
-                <Nav
-                    className="mr-auto my-2 my-lg-0"
-                    style={{ maxHeight: "100px" }}
-                    navbarScroll
-                >
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="me-auto">
                     <Nav.Link as={Link} to="/">
-                        Dashboard
+                        Início
                     </Nav.Link>
                     <Nav.Link as={Link} to="/inserir-lancamento">
                         Inserir Lançamento
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/listar-lancamentos">
-                        Listar Lançamentos
+                </Nav>
+                <Nav>
+                    <Nav.Link href="/" onClick={(e) => handleLogout(e)}>
+                        Sair
                     </Nav.Link>
                 </Nav>
             </Navbar.Collapse>
