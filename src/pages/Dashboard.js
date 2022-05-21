@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-    listarEntradas,
-    listarSaidas,
-    listarTodos,
-} from "../firebase/firestore";
+import { listar } from "../firebase/firestore";
 import { useAuth } from "../firebase/authContext";
-import { useNavigate } from "react-router-dom";
 import { deletar } from "../firebase/firestore";
 import { Container, Spinner } from "react-bootstrap";
 import Ola from "../components/Ola";
@@ -13,12 +8,12 @@ import ListarLancamentos from "../components/ListarLancamentos";
 
 export default function Dashboard() {
     const [lancamentos, setLancamentos] = useState([]);
+    const [lancamentosFiltrado, setLancamentosFiltrado] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [erro, setErro] = useState("");
-    const [sucesso, setSucesso] = useState(false);
+    // const [erro, setErro] = useState("");
+    // const [sucesso, setSucesso] = useState(false);
     const [mensagem, setMensagem] = useState("");
-    const [filtro, setFiltro] = useState(0);
-    const navigate = useNavigate();
+    // const [filtro, setFiltro] = useState(0);
     const { currentUser } = useAuth();
     const [entradas, setEntradas] = useState(-1);
     const [saidas, setSaidas] = useState(-1);
@@ -36,21 +31,30 @@ export default function Dashboard() {
 
     const handleDelete = async (i) => {
         try {
-            setSucesso(false);
             setLoading(true);
-            setErro("");
-
             await deletar(i.id);
-            fetchData();
-            setSucesso(true);
+
+            //Editar arrays
+            let arr = [...lancamentos];
+            let arrf = [...lancamentosFiltrado];
+            var index = arr.indexOf(i);
+            arr.splice(index, 1);
+            setLancamentos(arr);
+
+            var indexf = arrf.indexOf(i);
+            arrf.splice(indexf, 1);
+            setLancamentosFiltrado(arrf);
+
+            // Editar contador
+            if (i.tipo == 0) {
+                setEntradas(entradas - 1);
+            } else {
+                setSaidas(saidas - 1);
+            }
         } catch (error) {
             console.log("erro: " + error);
         }
         setLoading(false);
-    };
-
-    const handleFiltro = (e) => {
-        setFiltro(e.target.value);
     };
 
     const sortDatas = (arr) => {
@@ -59,21 +63,28 @@ export default function Dashboard() {
         );
     };
 
+    const handleLancamentosFiltrado = (arr) => {
+        setLancamentosFiltrado(arr);
+        return arr;
+    };
+
     const fetchData = async () => {
         try {
             setMensagem("Carregando...");
             // faz o "loading..." toda vez que atualiza
             // setLancamentos([]);
 
-            let data;
-            if (filtro == 0) data = await listarTodos(currentUser.uid);
-            if (filtro == 1) data = await listarEntradas(currentUser.uid);
-            if (filtro == 2) data = await listarSaidas(currentUser.uid);
+            const data = await listar(currentUser.uid);
 
             setLancamentos(
-                sortDatas(
-                    contarEntradasSaidas(
-                        data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                handleLancamentosFiltrado(
+                    sortDatas(
+                        contarEntradasSaidas(
+                            data.docs.map((doc) => ({
+                                ...doc.data(),
+                                id: doc.id,
+                            }))
+                        )
                     )
                 )
             );
@@ -87,7 +98,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchData();
-    }, [filtro]);
+    }, []);
 
     return (
         <>
@@ -101,27 +112,21 @@ export default function Dashboard() {
                     <h5 className="mt-3">Carregando dados</h5>
                 </div>
             ) : (
-                <Container
-                    // style={{ padding: "40px" }}
-                    className=" align-items-center justify-content-center p-4"
-                >
-                    {/* <div> */}
+                <Container className=" align-items-center justify-content-center p-4">
                     <Ola
                         email={currentUser.email}
                         entradas={entradas}
                         saidas={saidas}
                     />
-                    {/* </div> */}
 
-                    {/* <div> */}
                     <ListarLancamentos
-                        handleFiltro={handleFiltro}
                         lancamentos={lancamentos}
+                        lancamentosFiltrado={lancamentosFiltrado}
                         mensagem={mensagem}
                         handleDelete={handleDelete}
                         loading={loading}
+                        handleLancamentosFiltrado={handleLancamentosFiltrado}
                     />
-                    {/* </div> */}
                 </Container>
             )}
         </>

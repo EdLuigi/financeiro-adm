@@ -98,6 +98,7 @@ export default function InserirLancamento() {
                                         placeholder="ex.: 50.00 | 25.50 | 10.25"
                                         required
                                         className="w-50"
+                                        autoFocus
                                     />
                                 </Form.Group>
                                 <Button type="submit" disabled={loading}>
