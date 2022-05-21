@@ -40,14 +40,9 @@ export default function InserirLancamento() {
     };
 
     return (
-        <Container
-            style={{
-                padding: "40px",
-                width: "75%",
-            }}
-        >
-            <Card className="mb-4 w-100 p-3 ">
-                <Card.Body>
+        <Container className="d-flex align-items-center justify-content-center p-5 ">
+            <Card className="mb-4 w-75 p-3 ">
+                <Card.Body style={{ paddingInline: "50px" }}>
                     <div className="mb-4">
                         <h2>Inserir Lançamento</h2>
                     </div>
@@ -59,7 +54,7 @@ export default function InserirLancamento() {
                         </Alert>
                     )}
 
-                    <div style={{ paddingInline: "40px" }}>
+                    <div>
                         <div className="mb-3">
                             <label style={{ marginRight: "10px" }}>
                                 Tipo de lançamento:

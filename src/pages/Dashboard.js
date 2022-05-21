@@ -7,7 +7,7 @@ import {
 import { useAuth } from "../firebase/authContext";
 import { useNavigate } from "react-router-dom";
 import { deletar } from "../firebase/firestore";
-import { Spinner } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import Ola from "../components/Ola";
 import ListarLancamentos from "../components/ListarLancamentos";
 
@@ -101,25 +101,28 @@ export default function Dashboard() {
                     <h5 className="mt-3">Carregando dados</h5>
                 </div>
             ) : (
-                <div style={{ padding: "40px" }}>
-                    <div>
-                        <Ola
-                            email={currentUser.email}
-                            entradas={entradas}
-                            saidas={saidas}
-                        />
-                    </div>
+                <Container
+                    // style={{ padding: "40px" }}
+                    className=" align-items-center justify-content-center p-4"
+                >
+                    {/* <div> */}
+                    <Ola
+                        email={currentUser.email}
+                        entradas={entradas}
+                        saidas={saidas}
+                    />
+                    {/* </div> */}
 
-                    <div>
-                        <ListarLancamentos
-                            handleFiltro={handleFiltro}
-                            lancamentos={lancamentos}
-                            mensagem={mensagem}
-                            handleDelete={handleDelete}
-                            loading={loading}
-                        />
-                    </div>
-                </div>
+                    {/* <div> */}
+                    <ListarLancamentos
+                        handleFiltro={handleFiltro}
+                        lancamentos={lancamentos}
+                        mensagem={mensagem}
+                        handleDelete={handleDelete}
+                        loading={loading}
+                    />
+                    {/* </div> */}
+                </Container>
             )}
         </>
     );

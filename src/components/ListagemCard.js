@@ -9,7 +9,7 @@ export default function ListagemCard(props) {
 
     return (
         <div className="d-flex align-items-center justify-content-center">
-            <Card className="w-75 mt-3 text-center">
+            <Card className="w-100 mt-3 text-center">
                 <Container
                     style={
                         props.i.tipo == 0
