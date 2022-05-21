@@ -1,8 +1,10 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import ListagemCard from "./ListagemCard";
 
 export default function ListarLancamentos(props) {
+    const navigate = useNavigate();
     const handleFiltro = (e) => {
         const filtro = e.target.value;
         if (filtro == 0) filtroTodos();
@@ -60,14 +62,11 @@ export default function ListarLancamentos(props) {
                         <h2 className="mb-4">Lista de Lançamentos</h2>
                     </div>
 
-                    <div style={{}}>
+                    <div>
                         <label style={{ marginRight: "10px" }}>
                             <h6>Filtro:</h6>
                         </label>
-                        <select
-                            // value={props.filtro}
-                            onChange={(e) => handleFiltro(e)}
-                        >
+                        <select onChange={(e) => handleFiltro(e)}>
                             <option value={0}>Todos</option>
                             <option value={1}>Entradas</option>
                             <option value={2}>Saídas</option>
@@ -75,12 +74,20 @@ export default function ListarLancamentos(props) {
                             <option value={4}>Entradas (mais antigas)</option>
                             <option value={5}>Saídas (mais antigas)</option>
                         </select>
+                        <Button
+                            onClick={() => navigate("/inserir-lancamento")}
+                            style={{ marginLeft: "15px" }}
+                        >
+                            Adicionar
+                        </Button>
                     </div>
 
                     <div>
                         {props.lancamentosFiltrado.length == 0 ? (
-                            <div>
-                                <h4>{props.mensagem}</h4>
+                            <div className="d-flex justify-content-center align-content-center mt-5">
+                                <h5 style={{ color: "grey" }}>
+                                    {props.mensagem}
+                                </h5>
                             </div>
                         ) : (
                             <div>

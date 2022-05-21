@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Container } from "react-bootstrap";
+import { Button, Card, Container, Spinner } from "react-bootstrap";
 import * as moment from "moment";
 
 export default function ListagemCard(props) {
@@ -40,7 +40,17 @@ export default function ListagemCard(props) {
                     onClick={deletar}
                     disabled={props.loading}
                 >
-                    X
+                    {props.loading ? (
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    ) : (
+                        "X"
+                    )}
                 </Button>
             </Card>
         </div>

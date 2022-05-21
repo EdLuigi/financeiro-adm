@@ -58,6 +58,9 @@ export default function Cadastro() {
                                 ref={passwordRef}
                                 required
                             />
+                            <Form.Text className="text-muted p-2">
+                                Sua senha deve ter no mínimo 6 caracteres.
+                            </Form.Text>
                         </Form.Group>
                         <Form.Group
                             className="mb-4"
@@ -75,7 +78,7 @@ export default function Cadastro() {
                             disabled={loading}
                             className="mb-3 w-100"
                         >
-                            Continuar
+                            {loading ? "Carregando..." : "Continuar"}
                         </Button>
                     </Form>
                 </Card.Body>

@@ -8,6 +8,7 @@ import {
     Form,
     ToggleButton,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
 import { adicionar } from "../firebase/firestore";
 
@@ -18,6 +19,7 @@ export default function InserirLancamento() {
     const [tipo, setTipo] = useState(0);
     const { currentUser } = useAuth();
     const valorRef = useRef();
+    const navigate = useNavigate();
 
     const handleRadio = (e) => setTipo(e.currentTarget.value);
 
@@ -55,36 +57,36 @@ export default function InserirLancamento() {
                     )}
 
                     <div>
-                        <div className="mb-3">
-                            <label style={{ marginRight: "10px" }}>
-                                Tipo de lançamento:
-                            </label>
-                            <ButtonGroup>
-                                <ToggleButton
-                                    id={0}
-                                    type="radio"
-                                    variant={"outline-primary"}
-                                    value={0}
-                                    checked={tipo == 0}
-                                    onChange={(e) => handleRadio(e)}
-                                >
-                                    Entrada
-                                </ToggleButton>
-                                <ToggleButton
-                                    id={1}
-                                    type="radio"
-                                    variant={"outline-primary"}
-                                    value={1}
-                                    checked={tipo == 1}
-                                    onChange={(e) => handleRadio(e)}
-                                >
-                                    Saída
-                                </ToggleButton>
-                            </ButtonGroup>
-                        </div>
+                        <Form onSubmit={submit}>
+                            <div className="mb-3">
+                                <label style={{ marginRight: "10px" }}>
+                                    Tipo de lançamento:
+                                </label>
+                                <ButtonGroup>
+                                    <ToggleButton
+                                        id={0}
+                                        type="radio"
+                                        variant={"outline-primary"}
+                                        value={0}
+                                        checked={tipo == 0}
+                                        onChange={(e) => handleRadio(e)}
+                                    >
+                                        Entrada
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        id={1}
+                                        type="radio"
+                                        variant={"outline-primary"}
+                                        value={1}
+                                        checked={tipo == 1}
+                                        onChange={(e) => handleRadio(e)}
+                                    >
+                                        Saída
+                                    </ToggleButton>
+                                </ButtonGroup>
+                            </div>
 
-                        <div>
-                            <Form onSubmit={submit}>
+                            <div>
                                 <Form.Group className="mb-4">
                                     <Form.Label>
                                         Valor do lançamento:
@@ -102,10 +104,17 @@ export default function InserirLancamento() {
                                     />
                                 </Form.Group>
                                 <Button type="submit" disabled={loading}>
-                                    Adicionar
+                                    {loading ? "Carregando..." : "Adicionar"}
                                 </Button>
-                            </Form>
-                        </div>
+                                <Button
+                                    onClick={() => navigate("/")}
+                                    style={{ marginLeft: "15px" }}
+                                    variant="danger"
+                                >
+                                    Voltar
+                                </Button>
+                            </div>
+                        </Form>
                     </div>
                 </Card.Body>
             </Card>

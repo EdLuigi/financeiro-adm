@@ -10,10 +10,7 @@ export default function Dashboard() {
     const [lancamentos, setLancamentos] = useState([]);
     const [lancamentosFiltrado, setLancamentosFiltrado] = useState([]);
     const [loading, setLoading] = useState(false);
-    // const [erro, setErro] = useState("");
-    // const [sucesso, setSucesso] = useState(false);
-    const [mensagem, setMensagem] = useState("");
-    // const [filtro, setFiltro] = useState(0);
+    const [mensagem, setMensagem] = useState();
     const { currentUser } = useAuth();
     const [entradas, setEntradas] = useState(-1);
     const [saidas, setSaidas] = useState(-1);
@@ -71,8 +68,6 @@ export default function Dashboard() {
     const fetchData = async () => {
         try {
             setMensagem("Carregando...");
-            // faz o "loading..." toda vez que atualiza
-            // setLancamentos([]);
 
             const data = await listar(currentUser.uid);
 
@@ -89,7 +84,7 @@ export default function Dashboard() {
                 )
             );
 
-            setMensagem("Você não possui lançamentos");
+            setMensagem("- Você não possui lançamentos -");
         } catch (error) {
             console.log("erro: " + error);
             setMensagem("Algo deu errado :(");
@@ -109,7 +104,7 @@ export default function Dashboard() {
                         role="status"
                         variant="primary"
                     ></Spinner>
-                    <h5 className="mt-3">Carregando dados</h5>
+                    <h5 className="mt-3">Carregando dados...</h5>
                 </div>
             ) : (
                 <Container className=" align-items-center justify-content-center p-4">

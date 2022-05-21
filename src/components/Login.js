@@ -40,6 +40,7 @@ export default function Login() {
                                 type="email"
                                 ref={emailRef}
                                 required
+                                autoFocus
                             />
                         </Form.Group>
                         <Form.Group
@@ -59,7 +60,7 @@ export default function Login() {
                             disabled={loading}
                             className="mb-3 w-100"
                         >
-                            Continuar
+                            {loading ? "Carregando..." : "Continuar"}
                         </Button>
                     </Form>
                     <div style={{ textAlign: "center" }}>

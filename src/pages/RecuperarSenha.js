@@ -47,6 +47,7 @@ export default function RecuperarSenha() {
                                 type="email"
                                 ref={emailRef}
                                 required
+                                autoFocus
                             />
                         </Form.Group>
                         <Button
@@ -54,7 +55,7 @@ export default function RecuperarSenha() {
                             disabled={loading}
                             className="mb-3 w-100"
                         >
-                            Enviar
+                            {loading ? "Carregando..." : "Enviar"}
                         </Button>
                         <div style={{ textAlign: "center" }}>
                             <Link to="/entrar">Voltar</Link>
