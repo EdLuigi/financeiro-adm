@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
 import { adicionar } from "../firebase/firestore";
+import NumberFormat from "react-number-format";
 
 export default function InserirLancamento() {
     const [loading, setLoading] = useState(false);
@@ -18,21 +19,33 @@ export default function InserirLancamento() {
     const [sucesso, setSucesso] = useState(false);
     const [tipo, setTipo] = useState(0);
     const { currentUser } = useAuth();
-    const valorRef = useRef();
+    const [valor, setValor] = useState("");
     const navigate = useNavigate();
+    const MAX_VAL = ({ value }) => value <= 1000000000;
 
     const handleRadio = (e) => setTipo(e.currentTarget.value);
 
+    const handleInput = (values) => {
+        const { formattedValue, value } = values;
+        // formattedValue = $2,223
+        // value ie, 2223
+        setValor(value);
+    };
+
     const submit = async (e) => {
         e.preventDefault();
+
+        if (valor == 0) {
+            setErro("Insira um valor maior que R$0,00");
+            return;
+        }
 
         try {
             setSucesso(false);
             setLoading(true);
             setErro("");
 
-            await adicionar(currentUser.uid, tipo, valorRef.current.value);
-
+            await adicionar(currentUser.uid, Number(tipo), Number(valor));
             setSucesso(true);
         } catch (e) {
             console.log("erro: " + e);
@@ -87,21 +100,29 @@ export default function InserirLancamento() {
                             </div>
 
                             <div>
-                                <Form.Group className="mb-4">
+                                <Form.Group className="mb-4 ">
                                     <Form.Label>
                                         Valor do lançamento:
                                     </Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        step="0.01"
-                                        min="0.01"
-                                        max="1000000000"
-                                        ref={valorRef}
-                                        placeholder="ex.: 50.00 | 25.50 | 10.25"
-                                        required
+                                    <NumberFormat
+                                        thousandSeparator={"."}
+                                        decimalSeparator={","}
+                                        allowNegative={false}
+                                        prefix={"R$"}
+                                        decimalScale={2}
+                                        isAllowed={MAX_VAL}
+                                        customInput={Form.Control}
                                         className="w-50"
+                                        placeholder="ex.: R$50,00"
+                                        required
                                         autoFocus
+                                        onValueChange={(values) => {
+                                            handleInput(values);
+                                        }}
                                     />
+                                    <Form.Text className="text-muted p-2">
+                                        insira um valor até R$1.000.000.000,00
+                                    </Form.Text>
                                 </Form.Group>
                                 <Button type="submit" disabled={loading}>
                                     {loading ? "Carregando..." : "Adicionar"}

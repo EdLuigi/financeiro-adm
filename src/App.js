@@ -3,7 +3,6 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./firebase/authContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Rotas from "./routes/Rotas";
-import { Container } from "react-bootstrap";
 
 export default function App() {
     return (

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Card, Container, Spinner } from "react-bootstrap";
 import * as moment from "moment";
+import NumberFormat from "react-number-format";
 
 export default function ListagemCard(props) {
     const deletar = () => {
@@ -23,7 +24,16 @@ export default function ListagemCard(props) {
                         {props.i.tipo == 0 ? " Entrada" : " Saída"}
                     </Card.Body>
                     <Card.Body style={{ width: "100%" }}>
-                        <strong>Valor:</strong> {props.i.valor.toFixed(2)}
+                        <strong>Valor: </strong>
+                        <NumberFormat
+                            value={props.i.valor}
+                            thousandSeparator={"."}
+                            decimalSeparator={","}
+                            prefix={"R$"}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            displayType={"text"}
+                        />
                     </Card.Body>
                     <Card.Body style={{ width: "100%" }}>
                         <strong>Data:</strong>
