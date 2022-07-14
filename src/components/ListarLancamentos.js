@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import ListagemCard from "./ListagemCard";
+import Paginate from "./Paginate";
 
 export default function ListarLancamentos(props) {
     const navigate = useNavigate();
@@ -91,15 +92,23 @@ export default function ListarLancamentos(props) {
                             </div>
                         ) : (
                             <div>
-                                {props.lancamentosFiltrado.map((i) => (
-                                    <div key={i.id}>
-                                        <ListagemCard
-                                            i={i}
-                                            handleDelete={props.handleDelete}
-                                            loading={props.loading}
-                                        />
-                                    </div>
-                                ))}
+                                <Paginate
+                                    data={props.lancamentosFiltrado}
+                                    handleDelete={props.handleDelete}
+                                    loading={props.loading}
+                                >
+                                    {/* {props.lancamentosFiltrado.map((i) => (
+                                        <div key={i.id}>
+                                            <ListagemCard
+                                                i={i}
+                                                handleDelete={
+                                                    props.handleDelete
+                                                }
+                                                loading={props.loading}
+                                            />
+                                        </div>
+                                    ))} */}
+                                </Paginate>
                             </div>
                         )}
                     </div>
