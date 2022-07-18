@@ -4,8 +4,9 @@ import * as moment from "moment";
 import NumberFormat from "react-number-format";
 
 export default function ListagemCard(props) {
+    const { i, handleDelete, loading } = props;
     const deletar = () => {
-        props.handleDelete(props.i);
+        handleDelete(i);
     };
 
     return (
@@ -13,7 +14,7 @@ export default function ListagemCard(props) {
             <Card className="w-100 mt-3 text-center">
                 <Container
                     style={
-                        props.i.tipo == 0
+                        i.tipo == 0
                             ? { backgroundColor: "#d5f2d5" }
                             : { backgroundColor: "#f9cccc" }
                     }
@@ -21,12 +22,12 @@ export default function ListagemCard(props) {
                 >
                     <Card.Body style={{ width: "100%" }}>
                         <strong>Tipo:</strong>
-                        {props.i.tipo == 0 ? " Entrada" : " Saída"}
+                        {i.tipo == 0 ? " Entrada" : " Saída"}
                     </Card.Body>
                     <Card.Body style={{ width: "100%" }}>
                         <strong>Valor: </strong>
                         <NumberFormat
-                            value={props.i.valor}
+                            value={i.valor}
                             thousandSeparator={"."}
                             decimalSeparator={","}
                             prefix={"R$"}
@@ -38,19 +39,13 @@ export default function ListagemCard(props) {
                     <Card.Body style={{ width: "100%" }}>
                         <strong>Data:</strong>
                         {" " +
-                            moment(props.i.criado_em.toDate()).format(
-                                "DD/MM/YYYY"
-                            )}
+                            moment(i.criado_em.toDate()).format("DD/MM/YYYY")}
                     </Card.Body>
                 </Container>
             </Card>
             <Card style={{ marginInline: "20px" }} className="mt-3">
-                <Button
-                    variant="danger"
-                    onClick={deletar}
-                    disabled={props.loading}
-                >
-                    {props.loading ? (
+                <Button variant="danger" onClick={deletar} disabled={loading}>
+                    {loading ? (
                         <Spinner
                             as="span"
                             animation="border"

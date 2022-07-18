@@ -1,10 +1,18 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import ListagemCard from "./ListagemCard";
+import { useNavigate } from "react-router-dom";
 import Paginate from "./Paginate";
 
 export default function ListarLancamentos(props) {
+    const {
+        lancamentos,
+        lancamentosFiltrado,
+        mensagem,
+        loading,
+        handleLancamentosFiltrado,
+        handleDelete,
+    } = props;
+
     const navigate = useNavigate();
     const handleFiltro = (e) => {
         const filtro = e.target.value;
@@ -17,42 +25,38 @@ export default function ListarLancamentos(props) {
     };
 
     const filtroTodos = () => {
-        props.handleLancamentosFiltrado(props.lancamentos);
+        handleLancamentosFiltrado(lancamentos);
     };
 
     const filtroEntradas = () => {
-        const newArr = [...props.lancamentos].filter((i) => i.tipo == 0);
-        props.handleLancamentosFiltrado(newArr);
+        const newArr = [...lancamentos].filter((i) => i.tipo == 0);
+        handleLancamentosFiltrado(newArr);
     };
 
     const filtroSaidas = () => {
-        const newArr = [...props.lancamentos].filter((i) => i.tipo == 1);
-        props.handleLancamentosFiltrado(newArr);
+        const newArr = [...lancamentos].filter((i) => i.tipo == 1);
+        handleLancamentosFiltrado(newArr);
     };
 
     const filtroTodosAntigas = () => {
-        const newArr = [...props.lancamentos].sort(
+        const newArr = [...lancamentos].sort(
             (a, b) => a.criado_em.toDate() > b.criado_em.toDate()
         );
-        props.handleLancamentosFiltrado(newArr);
+        handleLancamentosFiltrado(newArr);
     };
 
     const filtroEntradasAntigas = () => {
-        const newArr = [...props.lancamentos]
+        const newArr = [...lancamentos]
             .sort((a, b) => a.criado_em.toDate() > b.criado_em.toDate())
             .filter((i) => i.tipo == 0);
-        props.handleLancamentosFiltrado(newArr);
+        handleLancamentosFiltrado(newArr);
     };
 
     const filtroSaidasAntigas = () => {
-        const newArr = [...props.lancamentos]
+        const newArr = [...lancamentos]
             .sort((a, b) => a.criado_em.toDate() > b.criado_em.toDate())
             .filter((i) => i.tipo == 1);
-        props.handleLancamentosFiltrado(newArr);
-    };
-
-    const handleDelete = () => {
-        props.handleDelete();
+        handleLancamentosFiltrado(newArr);
     };
 
     return (
@@ -84,31 +88,17 @@ export default function ListarLancamentos(props) {
                     </div>
 
                     <div>
-                        {props.lancamentosFiltrado.length == 0 ? (
+                        {lancamentosFiltrado.length == 0 ? (
                             <div className="d-flex justify-content-center align-content-center mt-5">
-                                <h5 style={{ color: "grey" }}>
-                                    {props.mensagem}
-                                </h5>
+                                <h5 style={{ color: "grey" }}>{mensagem}</h5>
                             </div>
                         ) : (
                             <div>
                                 <Paginate
-                                    data={props.lancamentosFiltrado}
-                                    handleDelete={props.handleDelete}
-                                    loading={props.loading}
-                                >
-                                    {/* {props.lancamentosFiltrado.map((i) => (
-                                        <div key={i.id}>
-                                            <ListagemCard
-                                                i={i}
-                                                handleDelete={
-                                                    props.handleDelete
-                                                }
-                                                loading={props.loading}
-                                            />
-                                        </div>
-                                    ))} */}
-                                </Paginate>
+                                    data={lancamentosFiltrado}
+                                    handleDelete={handleDelete}
+                                    loading={loading}
+                                ></Paginate>
                             </div>
                         )}
                     </div>
