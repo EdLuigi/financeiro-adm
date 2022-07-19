@@ -5,9 +5,6 @@ import NumberFormat from "react-number-format";
 
 export default function ListagemCard(props) {
     const { i, handleDelete, loading } = props;
-    const deletar = () => {
-        handleDelete(i);
-    };
 
     return (
         <div className="d-flex align-items-center justify-content-center">
@@ -44,7 +41,11 @@ export default function ListagemCard(props) {
                 </Container>
             </Card>
             <Card style={{ marginInline: "20px" }} className="mt-3">
-                <Button variant="danger" onClick={deletar} disabled={loading}>
+                <Button
+                    variant="danger"
+                    onClick={handleDelete}
+                    disabled={loading}
+                >
                     {loading ? (
                         <Spinner
                             as="span"

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 
 export default function PaginateNav(props) {
-    const { data, itemsPerPage, paginate } = props;
+    const { data, itemsPerPage, paginate, currentPage } = props;
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
@@ -12,28 +13,36 @@ export default function PaginateNav(props) {
         <nav>
             <ul className="pagination">
                 <li className="page-item p-1">
-                    <a onClick={() => paginate("<")} className="page-link">
+                    <Button
+                        onClick={() => paginate("<")}
+                        disabled={currentPage == 1 ? true : false}
+                    >
                         {"<"}
-                    </a>
+                    </Button>
                 </li>
                 {pageNumbers.map((n) => (
                     <li key={n} className="page-item p-1">
-                        <a
+                        <Button
                             onClick={(e) => {
-                                // e.preventDefault();
+                                e.preventDefault();
                                 paginate(n);
                             }}
                             href="#"
-                            className="page-link"
+                            className={currentPage == n ? "" : "page-link"}
                         >
                             {n}
-                        </a>
+                        </Button>
                     </li>
                 ))}
                 <li className="page-item p-1">
-                    <a onClick={() => paginate(">")} className="page-link">
+                    <Button
+                        onClick={() => paginate(">")}
+                        disabled={
+                            currentPage == pageNumbers.length ? true : false
+                        }
+                    >
                         {">"}
-                    </a>
+                    </Button>
                 </li>
             </ul>
         </nav>

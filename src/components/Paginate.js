@@ -4,21 +4,34 @@ import PaginateNav from "./PaginateNav";
 
 export default function Paginate(props) {
     const { data, handleDelete, loading } = props;
-    const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5);
+    const [currentItems, setCurrentItems] = useState([]);
+    const itemsPerPage = 5;
 
-    // Get current posts
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+    const paginate = (i) => {
+        if (i == "<") {
+            setCurrentPage(currentPage - 1);
+            return;
+        }
+        if (i == ">") {
+            setCurrentPage(currentPage + 1);
+            return;
+        }
+        setCurrentPage(i);
+    };
 
-    // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const deletar = async (i) => {
+        await handleDelete(i);
+        if (currentItems.length == 1 && currentPage != 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
     useEffect(() => {
-        setItems([...data]);
-    }, []);
+        let indexOfLastItem = currentPage * itemsPerPage;
+        let indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        setCurrentItems([...data.slice(indexOfFirstItem, indexOfLastItem)]);
+    }, [data, currentPage]);
 
     return (
         <div>
@@ -27,7 +40,7 @@ export default function Paginate(props) {
                     <div key={i.id}>
                         <ListagemCard
                             i={i}
-                            handleDelete={handleDelete}
+                            handleDelete={() => deletar(i)}
                             loading={loading}
                         />
                     </div>
@@ -38,6 +51,7 @@ export default function Paginate(props) {
                     data={data}
                     itemsPerPage={itemsPerPage}
                     paginate={paginate}
+                    currentPage={currentPage}
                 />
             </div>
         </div>
