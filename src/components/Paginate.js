@@ -1,29 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ListagemCard from "./ListagemCard";
 import PaginateNav from "./PaginateNav";
 
 export default function Paginate(props) {
     const { data, handleDelete, loading } = props;
-    const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
     const itemsPerPage = 5;
-
-    const paginate = (i) => {
-        if (i == "<") {
-            setCurrentPage(currentPage - 1);
-            return;
-        }
-        if (i == ">") {
-            setCurrentPage(currentPage + 1);
-            return;
-        }
-        setCurrentPage(i);
-    };
+    const { index } = useParams();
+    const currentPage = !isNaN(index) ? index : 1;
+    const navigate = useNavigate();
 
     const deletar = async (i) => {
         await handleDelete(i);
         if (currentItems.length == 1 && currentPage != 1) {
-            setCurrentPage(currentPage - 1);
+            navigate(`/${+currentPage - 1}`);
         }
     };
 
@@ -45,12 +36,12 @@ export default function Paginate(props) {
                         />
                     </div>
                 ))}
+                {currentItems.length == 0 ? "Nada pra ver aqui :^)" : <></>}
             </div>
             <div className="d-flex align-items-center justify-content-center p-4">
                 <PaginateNav
                     data={data}
                     itemsPerPage={itemsPerPage}
-                    paginate={paginate}
                     currentPage={currentPage}
                 />
             </div>

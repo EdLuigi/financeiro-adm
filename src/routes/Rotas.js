@@ -17,7 +17,9 @@ export default function Rotas() {
             <div>
                 <Routes>
                     <Route element={<PrivateRoute redirectPath="/entrar" />}>
-                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/" element={<Dashboard />}>
+                            <Route path="/:index" element={<Dashboard />} />
+                        </Route>
                         <Route
                             path="/inserir-lancamento"
                             element={<InserirLancamento />}
