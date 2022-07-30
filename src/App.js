@@ -10,12 +10,14 @@ export default function App() {
             <BrowserRouter>
                 <AuthProvider>
                     <div
-                        style={{
-                            // height: "100vh",
-                            minHeight: "100vh",
-                            paddingTop: "56px",
-                            backgroundColor: "#f7f7f7",
-                        }}
+                        style={
+                            {
+                                // height: "100vh",
+                                // minHeight: "100vh",
+                                // paddingTop: "56px",
+                                // backgroundColor: "#f7f7f7",
+                            }
+                        }
                     >
                         <Rotas />
                         <div className="h-25"></div>
