@@ -11,7 +11,7 @@ export default function Dashboard() {
     const [lancamentosFiltrado, setLancamentosFiltrado] = useState([]);
     const [loading, setLoading] = useState(false);
     const [mensagem, setMensagem] = useState();
-    const { currentUser } = useAuth();
+    const { currentUser, atualizar } = useAuth();
     const [entradas, setEntradas] = useState(-1);
     const [saidas, setSaidas] = useState(-1);
 
@@ -65,11 +65,25 @@ export default function Dashboard() {
         return arr;
     };
 
+    const updateUserName = async () => {
+        if (currentUser.displayName == null) {
+            if (sessionStorage.getItem("userNameSignUp") != null) {
+                const nomeCompleto = sessionStorage.getItem("userNameSignUp");
+                await atualizar(nomeCompleto);
+                sessionStorage.removeItem("userNameSignUp");
+            } else {
+                await atualizar(currentUser.email);
+            }
+        }
+    };
+
     const fetchData = async () => {
         try {
             setMensagem("Carregando...");
 
             const data = await listar(currentUser.uid);
+
+            await updateUserName();
 
             setLancamentos(
                 handleLancamentosFiltrado(
@@ -109,7 +123,7 @@ export default function Dashboard() {
             ) : (
                 <Container className=" align-items-center justify-content-center p-4">
                     <Ola
-                        email={currentUser.email}
+                        currentUser={currentUser}
                         entradas={entradas}
                         saidas={saidas}
                     />

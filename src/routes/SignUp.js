@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -10,13 +9,7 @@ import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import {
-    Alert,
-    Collapse,
-    FormHelperText,
-    IconButton,
-    InputAdornment,
-} from "@mui/material";
+import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -26,15 +19,17 @@ const theme = createTheme();
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [password, setPassword] = useState("qweqwe");
+    const [confirmPassword, setConfirmPassword] = useState("qweqwe");
+    const [name, setName] = useState("");
+    const [surName, setSurName] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
     const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const emailRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
@@ -92,7 +87,10 @@ export default function SignUp() {
         return 0;
     };
 
-    const registerName = async () => {};
+    const registerName = () => {
+        const nomeCompleto = name.trim() + " " + surName.trim();
+        sessionStorage.setItem("userNameSignUp", nomeCompleto);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -111,14 +109,14 @@ export default function SignUp() {
         try {
             setLoading(true);
 
-            await cadastrar(email, password);
+            registerName();
 
-            await registerName();
+            await cadastrar(email, password);
 
             navigate("/");
         } catch (e) {
             console.log("erro: " + e);
-            setErro("Não foi possível fazer o cadastro.");
+            setErro("Não foi possível concluir o cadastro.");
         }
         setLoading(false);
     };
@@ -158,19 +156,21 @@ export default function SignUp() {
                                 <TextField
                                     margin="normal"
                                     fullWidth
-                                    id="name"
                                     label="Nome"
-                                    name="name"
                                     autoFocus
+                                    onChange={(e) =>
+                                        setName(e.currentTarget.value)
+                                    }
                                 />
                             </Grid>
                             <Grid item xs>
                                 <TextField
                                     margin="normal"
                                     fullWidth
-                                    id="surname"
                                     label="Sobrenome"
-                                    name="sur-name"
+                                    onChange={(e) =>
+                                        setSurName(e.currentTarget.value)
+                                    }
                                 />
                             </Grid>
                         </Grid>

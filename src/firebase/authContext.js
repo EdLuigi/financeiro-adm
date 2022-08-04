@@ -15,6 +15,13 @@ export function AuthProvider({ children }) {
         return auth.createUserWithEmailAndPassword(email, password);
     }
 
+    function atualizar(name, photo) {
+        return currentUser.updateProfile({
+            displayName: name,
+            photoURL: photo,
+        });
+    }
+
     function login(email, password) {
         return auth.signInWithEmailAndPassword(email, password);
     }
@@ -39,6 +46,7 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         cadastrar,
+        atualizar,
         login,
         logout,
         recuperarSenha,

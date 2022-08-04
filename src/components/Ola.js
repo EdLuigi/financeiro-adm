@@ -7,7 +7,9 @@ export default function Ola(props) {
             <div>
                 <Card className="mb-4 p-3">
                     <Card.Body style={{ paddingInline: "50px" }}>
-                        <h2 className="mb-4">Olá, {props.email}</h2>
+                        <h2 className="mb-4">
+                            Olá, {props.currentUser.displayName}
+                        </h2>
                         <h5
                             style={{
                                 color: "grey",
