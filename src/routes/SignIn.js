@@ -36,11 +36,11 @@ import { useAuth } from "../firebase/authContext";
 const theme = createTheme();
 
 export default function SignIn() {
-    const [errorEmail, setErrorEmail] = useState("");
-    const [errorSenha, setErrorSenha] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorEmail, setErrorEmail] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const emailRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ export default function SignIn() {
 
     const verifyPassword = () => {
         if (password == "") {
-            setErrorSenha("Insira sua senha");
+            setErrorPassword("Insira sua senha");
             return 1;
         }
         return 0;
@@ -80,7 +80,7 @@ export default function SignIn() {
         e.preventDefault();
         setErro("");
         setErrorEmail("");
-        setErrorSenha("");
+        setErrorPassword("");
 
         if (+verifyEmail() + +verifyPassword() != 0) return;
 
@@ -142,8 +142,8 @@ export default function SignIn() {
                             margin="normal"
                             fullWidth
                             label="Senha"
-                            error={errorSenha == "" ? false : true}
-                            helperText={errorSenha}
+                            error={errorPassword == "" ? false : true}
+                            helperText={errorPassword}
                             type={showPassword ? "text" : "password"}
                             onChange={(e) => setPassword(e.currentTarget.value)}
                             InputProps={{

@@ -1,47 +1,126 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-function Copyright(props) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
+import {
+    Alert,
+    Collapse,
+    FormHelperText,
+    IconButton,
+    InputAdornment,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../firebase/authContext";
 
 const theme = createTheme();
 
-export default function SignIn() {
-    const handleSubmit = (event) => {
+export default function SignUp() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [errorEmail, setErrorEmail] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const emailRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const [loading, setLoading] = useState(false);
+    const [erro, setErro] = useState("");
+    const navigate = useNavigate();
+    const { cadastrar } = useAuth();
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleClickShowConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handleMouseDownPassword = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-        });
+    };
+
+    const handleMouseDownConfirmPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const verifyEmail = () => {
+        if (email == "") {
+            setErrorEmail("Insira um email válido");
+            return 1;
+        }
+        if (!emailRegex.test(email)) {
+            setErrorEmail("O email inserido não está formatado corretamente");
+            return 1;
+        }
+        return 0;
+    };
+
+    const verifyPassword = () => {
+        if (password == "") {
+            setErrorPassword("Insira sua senha");
+            return 1;
+        }
+        if (password.length < 6) {
+            setErrorPassword("Insira uma senha com no mínimo 6 caracteres.");
+            return 1;
+        }
+        return 0;
+    };
+
+    const verifyConfirmPassword = () => {
+        if (confirmPassword == "") {
+            setErrorConfirmPassword("Insira sua senha");
+            return 1;
+        }
+        if (confirmPassword != password) {
+            setErrorConfirmPassword("As duas senhas inseridas não são iguais.");
+            return 1;
+        }
+        return 0;
+    };
+
+    const registerName = async () => {};
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErro("");
+        setErrorEmail("");
+        setErrorPassword("");
+        setErrorConfirmPassword("");
+
+        if (
+            +verifyEmail() + +verifyPassword() + +verifyConfirmPassword() !=
+            0
+        ) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            await cadastrar(email, password);
+
+            await registerName();
+
+            navigate("/");
+        } catch (e) {
+            console.log("erro: " + e);
+            setErro("Não foi possível fazer o cadastro.");
+        }
+        setLoading(false);
     };
 
     return (
@@ -68,28 +147,30 @@ export default function SignIn() {
                         noValidate
                         sx={{ mt: 1 }}
                     >
+                        <Collapse in={erro !== ""}>
+                            <Alert severity="error" sx={{ mb: 1 }}>
+                                {erro}
+                            </Alert>
+                        </Collapse>
+
                         <Grid container style={{ fontSize: "15px" }}>
                             <Grid item xs sx={{ mr: 2 }}>
                                 <TextField
-                                    required
                                     margin="normal"
                                     fullWidth
                                     id="name"
                                     label="Nome"
                                     name="name"
-                                    // autoComplete="email"
                                     autoFocus
                                 />
                             </Grid>
                             <Grid item xs>
                                 <TextField
-                                    required
                                     margin="normal"
                                     fullWidth
                                     id="surname"
                                     label="Sobrenome"
                                     name="sur-name"
-                                    // autoComplete="email"
                                 />
                             </Grid>
                         </Grid>
@@ -98,35 +179,89 @@ export default function SignIn() {
                             required
                             margin="normal"
                             fullWidth
-                            id="email"
                             label="Email"
-                            name="email"
-                            // autoComplete="email"
+                            error={errorEmail == "" ? false : true}
+                            helperText={errorEmail}
+                            onChange={(e) => setEmail(e.currentTarget.value)}
                         />
                         <TextField
                             required
                             margin="normal"
                             fullWidth
-                            name="password"
                             label="Senha"
-                            type="password"
-                            id="password"
-                            // autoComplete="current-password"
-                        />
-                        {/* <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
+                            error={errorPassword == "" ? false : true}
+                            helperText={
+                                errorPassword == ""
+                                    ? "Sua senha deve ter no mínimo 6 caracteres."
+                                    : errorPassword
                             }
-                            label="Remember me"
-                        /> */}
-                        <Button
+                            type={showPassword ? "text" : "password"}
+                            onChange={(e) => setPassword(e.currentTarget.value)}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={
+                                                handleMouseDownPassword
+                                            }
+                                            edge="end"
+                                        >
+                                            {showPassword ? (
+                                                <VisibilityOff />
+                                            ) : (
+                                                <Visibility />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+
+                        <TextField
+                            required
+                            margin="normal"
+                            fullWidth
+                            label="Confirmar Senha"
+                            error={errorConfirmPassword == "" ? false : true}
+                            helperText={errorConfirmPassword}
+                            type={showConfirmPassword ? "text" : "password"}
+                            onChange={(e) =>
+                                setConfirmPassword(e.currentTarget.value)
+                            }
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={
+                                                handleClickShowConfirmPassword
+                                            }
+                                            onMouseDown={
+                                                handleMouseDownConfirmPassword
+                                            }
+                                            edge="end"
+                                        >
+                                            {showConfirmPassword ? (
+                                                <VisibilityOff />
+                                            ) : (
+                                                <Visibility />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        <LoadingButton
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            loading={loading}
                         >
                             Continuar
-                        </Button>
+                        </LoadingButton>
                         <Grid container style={{ fontSize: "15px" }}>
                             <Grid item>
                                 Já possui uma conta?
@@ -137,7 +272,6 @@ export default function SignIn() {
                         </Grid>
                     </Box>
                 </Box>
-                {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
             </Container>
         </ThemeProvider>
     );
