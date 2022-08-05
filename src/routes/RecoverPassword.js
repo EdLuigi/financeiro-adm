@@ -1,47 +1,63 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-function Copyright(props) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-}
+import { useAuth } from "../firebase/authContext";
+import { Alert, Collapse } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import SendIcon from "@mui/icons-material/Send";
 
 const theme = createTheme();
 
-export default function SignIn() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-        });
+export default function RecoverPassword() {
+    const [email, setEmail] = useState("");
+    const [errorEmail, setErrorEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [erro, setErro] = useState("");
+    const [sucesso, setSucesso] = useState("");
+    const { recuperarSenha } = useAuth();
+    const emailRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    const verifyEmail = () => {
+        if (email == "") {
+            setErrorEmail("Insira um email válido");
+            return 1;
+        }
+        if (!emailRegex.test(email)) {
+            setErrorEmail("O email inserido não está formatado corretamente");
+            return 1;
+        }
+        return 0;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (+verifyEmail() != 0) return;
+
+        try {
+            setSucesso("");
+            setLoading(true);
+            setErro("");
+            setErrorEmail("");
+
+            await recuperarSenha(email);
+
+            setSucesso("Você receberá um email para reiniciar sua senha.");
+        } catch (e) {
+            console.log("erro: " + e);
+            setErro("O email inserido não está registrado.");
+        }
+        setLoading(false);
     };
 
     return (
@@ -68,40 +84,38 @@ export default function SignIn() {
                         noValidate
                         sx={{ mt: 1 }}
                     >
+                        <Collapse in={erro !== ""}>
+                            <Alert severity="error" sx={{ mb: 1 }}>
+                                {erro}
+                            </Alert>
+                        </Collapse>
+                        <Collapse in={sucesso !== ""}>
+                            <Alert severity="success" sx={{ mb: 1 }}>
+                                {sucesso}
+                            </Alert>
+                        </Collapse>
+
                         <TextField
                             required
                             margin="normal"
                             fullWidth
-                            id="email"
                             label="Email"
-                            name="email"
-                            // autoComplete="email"
                             autoFocus
+                            error={errorEmail == "" ? false : true}
+                            helperText={errorEmail}
+                            onChange={(e) => setEmail(e.currentTarget.value)}
                         />
-                        {/* <TextField
-                            required
-                            margin="normal"
-                            fullWidth
-                            name="password"
-                            label="Senha"
-                            type="password"
-                            id="password"
-                            // autoComplete="current-password"
-                        /> */}
-                        {/* <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
-                            }
-                            label="Remember me"
-                        /> */}
-                        <Button
+
+                        <LoadingButton
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{ mt: 2, mb: 2 }}
+                            endIcon={<SendIcon />}
+                            loading={loading}
                         >
                             Enviar
-                        </Button>
+                        </LoadingButton>
                         <Grid container style={{ fontSize: "15px" }}>
                             <Grid item xs>
                                 <Link href="/entrar" variant="body2">

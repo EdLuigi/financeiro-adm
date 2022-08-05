@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Alert, Button, Card, Container, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
 
 export default function RecuperarSenha() {

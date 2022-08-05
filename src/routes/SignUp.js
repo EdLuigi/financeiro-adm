@@ -19,8 +19,8 @@ const theme = createTheme();
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("qweqwe");
-    const [confirmPassword, setConfirmPassword] = useState("qweqwe");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [name, setName] = useState("");
     const [surName, setSurName] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
