@@ -14,6 +14,12 @@ import { Alert, Collapse, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
+import {
+    verifyEmail,
+    verifyPassword,
+    handleClickShowPassword,
+    handleMouseDownPassword,
+} from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 // function Copyright(props) {
 //     return (
@@ -41,39 +47,27 @@ export default function SignIn() {
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const emailRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const verifyEmail = () => {
-        if (email == "") {
-            setErrorEmail("Insira um email válido");
-            return 1;
+    const handleErro = (e) => {
+        if (e.code == "auth/network-request-failed") {
+            setErro("Verifique sua conexão com a internet.");
+        } else {
+            if (e.code == "auth/too-many-requests") {
+                setErro("Muitas tentativas, tente novamente mais tarde.");
+            } else {
+                if (e.code == "auth/user-not-found") {
+                    setErro("O email inserido não está registrado.");
+                } else {
+                    setErro(
+                        "Não foi possível fazer login, email ou senha incorretos."
+                    );
+                }
+            }
         }
-        if (!emailRegex.test(email)) {
-            setErrorEmail("O email inserido não está formatado corretamente");
-            return 1;
-        }
-        return 0;
-    };
-
-    const verifyPassword = () => {
-        if (password == "") {
-            setErrorPassword("Insira sua senha");
-            return 1;
-        }
-        return 0;
     };
 
     const handleSubmit = async (e) => {
@@ -82,7 +76,12 @@ export default function SignIn() {
         setErrorEmail("");
         setErrorPassword("");
 
-        if (+verifyEmail() + +verifyPassword() != 0) return;
+        if (
+            +verifyEmail(email, setErrorEmail) +
+                +verifyPassword(password, setErrorPassword) !=
+            0
+        )
+            return;
 
         try {
             setLoading(true);
@@ -92,7 +91,7 @@ export default function SignIn() {
             navigate("/");
         } catch (e) {
             console.log("erro: " + e);
-            setErro("Não foi possível fazer login, email ou senha incorretos.");
+            handleErro(e);
         }
         setLoading(false);
     };
@@ -151,7 +150,12 @@ export default function SignIn() {
                                     <InputAdornment position="end">
                                         <IconButton
                                             aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
+                                            onClick={() =>
+                                                handleClickShowPassword(
+                                                    showPassword,
+                                                    setShowPassword
+                                                )
+                                            }
                                             onMouseDown={
                                                 handleMouseDownPassword
                                             }

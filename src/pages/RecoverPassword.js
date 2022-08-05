@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -14,6 +13,7 @@ import { useAuth } from "../firebase/authContext";
 import { Alert, Collapse } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SendIcon from "@mui/icons-material/Send";
+import { verifyEmail } from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 const theme = createTheme();
 
@@ -24,25 +24,19 @@ export default function RecoverPassword() {
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState("");
     const { recuperarSenha } = useAuth();
-    const emailRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-    const verifyEmail = () => {
-        if (email == "") {
-            setErrorEmail("Insira um email válido");
-            return 1;
+    const handleErro = (e) => {
+        if (e.code == "auth/network-request-failed") {
+            setErro("Verifique sua conexão com a internet.");
+        } else {
+            setErro("O email inserido não está registrado.");
         }
-        if (!emailRegex.test(email)) {
-            setErrorEmail("O email inserido não está formatado corretamente");
-            return 1;
-        }
-        return 0;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (+verifyEmail() != 0) return;
+        if (+verifyEmail(email, setErrorEmail) != 0) return;
 
         try {
             setSucesso("");
@@ -55,7 +49,7 @@ export default function RecoverPassword() {
             setSucesso("Você receberá um email para reiniciar sua senha.");
         } catch (e) {
             console.log("erro: " + e);
-            setErro("O email inserido não está registrado.");
+            handleErro(e);
         }
         setLoading(false);
     };

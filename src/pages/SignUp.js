@@ -14,6 +14,12 @@ import { LoadingButton } from "@mui/lab";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/authContext";
+import {
+    verifyEmail,
+    verifyPassword,
+    handleClickShowPassword,
+    handleMouseDownPassword,
+} from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 const theme = createTheme();
 
@@ -28,56 +34,22 @@ export default function SignUp() {
     const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const emailRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
     const { cadastrar } = useAuth();
 
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-
     const handleClickShowConfirmPassword = () => {
         setShowConfirmPassword(!showConfirmPassword);
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
     };
 
     const handleMouseDownConfirmPassword = (event) => {
         event.preventDefault();
     };
 
-    const verifyEmail = () => {
-        if (email == "") {
-            setErrorEmail("Insira um email válido");
-            return 1;
-        }
-        if (!emailRegex.test(email)) {
-            setErrorEmail("O email inserido não está formatado corretamente");
-            return 1;
-        }
-        return 0;
-    };
-
-    const verifyPassword = () => {
-        if (password == "") {
-            setErrorPassword("Insira sua senha");
-            return 1;
-        }
-        if (password.length < 6) {
-            setErrorPassword("Insira uma senha com no mínimo 6 caracteres.");
-            return 1;
-        }
-        return 0;
-    };
-
     const verifyConfirmPassword = () => {
         if (confirmPassword == "") {
-            setErrorConfirmPassword("Insira sua senha");
+            setErrorConfirmPassword("Insira sua senha.");
             return 1;
         }
         if (confirmPassword != password) {
@@ -92,6 +64,20 @@ export default function SignUp() {
         sessionStorage.setItem("userNameSignUp", nomeCompleto);
     };
 
+    const handleErro = (e) => {
+        if (e.code == "auth/network-request-failed") {
+            setErro("Verifique sua conexão com a internet.");
+        } else {
+            if (e.code == "auth/email-already-in-use") {
+                setErro("O email inserido já está registrado.");
+            } else {
+                setErro(
+                    "Algo deu errado, não foi possível concluir o cadastro."
+                );
+            }
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro("");
@@ -100,7 +86,9 @@ export default function SignUp() {
         setErrorConfirmPassword("");
 
         if (
-            +verifyEmail() + +verifyPassword() + +verifyConfirmPassword() !=
+            +verifyEmail(email, setErrorEmail) +
+                +verifyPassword(password, setErrorPassword) +
+                +verifyConfirmPassword() !=
             0
         ) {
             return;
@@ -116,7 +104,7 @@ export default function SignUp() {
             navigate("/");
         } catch (e) {
             console.log("erro: " + e);
-            setErro("Não foi possível concluir o cadastro.");
+            handleErro(e);
         }
         setLoading(false);
     };
@@ -202,7 +190,12 @@ export default function SignUp() {
                                     <InputAdornment position="end">
                                         <IconButton
                                             aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
+                                            onClick={() =>
+                                                handleClickShowPassword(
+                                                    showPassword,
+                                                    setShowPassword
+                                                )
+                                            }
                                             onMouseDown={
                                                 handleMouseDownPassword
                                             }

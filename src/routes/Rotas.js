@@ -5,12 +5,10 @@ import { useAuth } from "../firebase/authContext";
 import PrivateRoute from "./PrivateRoute";
 import InserirLancamento from "../pages/InserirLancamento";
 import LoggedInRoute from "./LoggedInRoute";
-import Entrar from "../pages/Entrar";
-import RecuperarSenha from "../pages/RecuperarSenha";
 import Dashboard from "../pages/Dashboard";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import RecoverPassword from "./RecoverPassword";
+import SignIn from "../pages/SignIn.js";
+import SignUp from "../pages/SignUp";
+import RecoverPassword from "../pages/RecoverPassword";
 
 export default function Rotas() {
     const { currentUser } = useAuth();
@@ -29,11 +27,6 @@ export default function Rotas() {
                         />
                     </Route>
                     <Route element={<LoggedInRoute redirectPath="/" />}>
-                        {/* <Route path="/entrar" element={<Entrar />} /> */}
-                        {/* <Route
-                            path="/recuperar-senha"
-                            element={<RecuperarSenha />}
-                        /> */}
                         <Route path="/entrar" element={<SignIn />} />
                         <Route path="/cadastrar" element={<SignUp />} />
                         <Route
