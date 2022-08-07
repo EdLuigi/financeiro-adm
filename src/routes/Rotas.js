@@ -20,13 +20,16 @@ export default function Rotas() {
                 <Routes>
                     <Route element={<PrivateRoute redirectPath="/entrar" />}>
                         <Route path="/" element={<DashboardTest />} />
-                        {/* <Route path="/" element={<Dashboard />}>
-                            <Route path="/:index" element={<Dashboard />} />
+                        <Route path="/listar" element={<Dashboard />}>
+                            <Route
+                                path="/listar/:index"
+                                element={<Dashboard />}
+                            />
                         </Route>
                         <Route
                             path="/inserir-lancamento"
                             element={<InserirLancamento />}
-                        /> */}
+                        />
                     </Route>
                     <Route element={<LoggedInRoute redirectPath="/" />}>
                         <Route path="/entrar" element={<SignIn />} />

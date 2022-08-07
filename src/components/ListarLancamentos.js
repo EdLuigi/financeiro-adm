@@ -22,7 +22,7 @@ export default function ListarLancamentos(props) {
         if (filtro == 3) filtroTodosAntigas();
         if (filtro == 4) filtroEntradasAntigas();
         if (filtro == 5) filtroSaidasAntigas();
-        navigate(`/`);
+        navigate(`/listar`);
     };
 
     const filtroTodos = () => {

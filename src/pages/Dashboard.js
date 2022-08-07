@@ -2,9 +2,16 @@ import React, { useEffect, useState } from "react";
 import { listar } from "../firebase/firestore";
 import { useAuth } from "../firebase/authContext";
 import { deletar } from "../firebase/firestore";
-import { Container, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import Ola from "../components/Ola";
 import ListarLancamentos from "../components/ListarLancamentos";
+import DrawerComponent from "../components/Drawer";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Box } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import Container from "@mui/material/Container";
+
+const mdTheme = createTheme();
 
 export default function Dashboard() {
     const [lancamentos, setLancamentos] = useState([]);
@@ -111,33 +118,54 @@ export default function Dashboard() {
 
     return (
         <>
-            {entradas === -1 ? (
-                <div className="w-100 text-center mt-5 pt-4">
-                    <Spinner
-                        animation="border"
-                        role="status"
-                        variant="primary"
-                    ></Spinner>
-                    <h5 className="mt-3">Carregando dados...</h5>
-                </div>
-            ) : (
-                <Container className=" align-items-center justify-content-center p-4">
-                    <Ola
-                        currentUser={currentUser}
-                        entradas={entradas}
-                        saidas={saidas}
-                    />
+            <Box sx={{ display: "flex" }}>
+                <CssBaseline />
+                <DrawerComponent />
+                <Box
+                    component="main"
+                    sx={{
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === "light"
+                                ? theme.palette.grey[100]
+                                : theme.palette.grey[900],
+                        flexGrow: 1,
+                        height: "100vh",
+                        overflow: "auto",
+                    }}
+                >
+                    <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
+                        {entradas === -1 ? (
+                            <div className="w-100 text-center mt-5 pt-4">
+                                <Spinner
+                                    animation="border"
+                                    role="status"
+                                    variant="primary"
+                                ></Spinner>
+                                <h5 className="mt-3">Carregando dados...</h5>
+                            </div>
+                        ) : (
+                            <Container className=" align-items-center justify-content-center p-4">
+                                {/* <Ola
+                                    currentUser={currentUser}
+                                    entradas={entradas}
+                                    saidas={saidas}
+                                /> */}
 
-                    <ListarLancamentos
-                        lancamentos={lancamentos}
-                        lancamentosFiltrado={lancamentosFiltrado}
-                        mensagem={mensagem}
-                        handleDelete={handleDelete}
-                        loading={loading}
-                        handleLancamentosFiltrado={handleLancamentosFiltrado}
-                    />
-                </Container>
-            )}
+                                <ListarLancamentos
+                                    lancamentos={lancamentos}
+                                    lancamentosFiltrado={lancamentosFiltrado}
+                                    mensagem={mensagem}
+                                    handleDelete={handleDelete}
+                                    loading={loading}
+                                    handleLancamentosFiltrado={
+                                        handleLancamentosFiltrado
+                                    }
+                                />
+                            </Container>
+                        )}
+                    </Container>
+                </Box>
+            </Box>
         </>
     );
 }

@@ -16,9 +16,9 @@ export default function PaginateNav(props) {
     const buttonNavigate = (/*e,*/ i) => {
         // e.preventDefault();
 
-        if (i == "<") navigate(`/${+currentPage - 1}`);
-        else if (i == ">") navigate(`/${+currentPage + 1}`);
-        else navigate(`/${i}`);
+        if (i == "<") navigate(`/listar/${+currentPage - 1}`);
+        else if (i == ">") navigate(`/listar/${+currentPage + 1}`);
+        else navigate(`/listar/${i}`);
     };
 
     return (
