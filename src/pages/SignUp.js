@@ -19,6 +19,7 @@ import {
     verifyPassword,
     handleClickShowPassword,
     handleMouseDownPassword,
+    handleErro,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 const theme = createTheme();
@@ -64,20 +65,6 @@ export default function SignUp() {
         sessionStorage.setItem("userNameSignUp", nomeCompleto);
     };
 
-    const handleErro = (e) => {
-        if (e.code == "auth/network-request-failed") {
-            setErro("Verifique sua conexão com a internet.");
-        } else {
-            if (e.code == "auth/email-already-in-use") {
-                setErro("O email inserido já está registrado.");
-            } else {
-                setErro(
-                    "Algo deu errado, não foi possível concluir o cadastro."
-                );
-            }
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro("");
@@ -104,7 +91,7 @@ export default function SignUp() {
             navigate("/");
         } catch (e) {
             console.log("erro: " + e);
-            handleErro(e);
+            handleErro(e, setErro);
         }
         setLoading(false);
     };
@@ -167,7 +154,7 @@ export default function SignUp() {
                             required
                             margin="normal"
                             fullWidth
-                            label="Email"
+                            label="E-mail"
                             error={errorEmail == "" ? false : true}
                             helperText={errorEmail}
                             onChange={(e) => setEmail(e.currentTarget.value)}
@@ -257,9 +244,9 @@ export default function SignUp() {
                         </LoadingButton>
                         <Grid container style={{ fontSize: "15px" }}>
                             <Grid item>
-                                Já possui uma conta?
+                                {"Já possui uma conta? "}
                                 <Link href="/entrar" variant="body2">
-                                    {" Faça login"}
+                                    {"Faça login"}
                                 </Link>
                             </Grid>
                         </Grid>

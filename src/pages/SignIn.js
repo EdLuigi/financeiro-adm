@@ -19,6 +19,7 @@ import {
     verifyPassword,
     handleClickShowPassword,
     handleMouseDownPassword,
+    handleErro,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 // function Copyright(props) {
@@ -52,24 +53,6 @@ export default function SignIn() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    const handleErro = (e) => {
-        if (e.code == "auth/network-request-failed") {
-            setErro("Verifique sua conexão com a internet.");
-        } else {
-            if (e.code == "auth/too-many-requests") {
-                setErro("Muitas tentativas, tente novamente mais tarde.");
-            } else {
-                if (e.code == "auth/user-not-found") {
-                    setErro("O email inserido não está registrado.");
-                } else {
-                    setErro(
-                        "Não foi possível fazer login, email ou senha incorretos."
-                    );
-                }
-            }
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro("");
@@ -91,7 +74,7 @@ export default function SignIn() {
             navigate("/");
         } catch (e) {
             console.log("erro: " + e);
-            handleErro(e);
+            handleErro(e, setErro);
         }
         setLoading(false);
     };
@@ -130,7 +113,7 @@ export default function SignIn() {
                             required
                             margin="normal"
                             fullWidth
-                            label="Email"
+                            label="E-mail"
                             autoFocus
                             error={errorEmail == "" ? false : true}
                             helperText={errorEmail}
@@ -189,9 +172,9 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                Não possui conta?
+                                {"Não possui conta? "}
                                 <Link href="/cadastrar" variant="body2">
-                                    {" Cadastre-se"}
+                                    {"Cadastre-se"}
                                 </Link>
                             </Grid>
                         </Grid>

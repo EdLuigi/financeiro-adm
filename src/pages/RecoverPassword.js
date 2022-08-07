@@ -13,7 +13,10 @@ import { useAuth } from "../firebase/authContext";
 import { Alert, Collapse } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SendIcon from "@mui/icons-material/Send";
-import { verifyEmail } from "../utils/CrendenciaisUtils/FuncoesGerais";
+import {
+    verifyEmail,
+    handleErro,
+} from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 const theme = createTheme();
 
@@ -24,14 +27,6 @@ export default function RecoverPassword() {
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState("");
     const { recuperarSenha } = useAuth();
-
-    const handleErro = (e) => {
-        if (e.code == "auth/network-request-failed") {
-            setErro("Verifique sua conexão com a internet.");
-        } else {
-            setErro("O email inserido não está registrado.");
-        }
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,7 +44,7 @@ export default function RecoverPassword() {
             setSucesso("Você receberá um email para reiniciar sua senha.");
         } catch (e) {
             console.log("erro: " + e);
-            handleErro(e);
+            handleErro(e, setErro);
         }
         setLoading(false);
     };
@@ -93,7 +88,7 @@ export default function RecoverPassword() {
                             required
                             margin="normal"
                             fullWidth
-                            label="Email"
+                            label="E-mail"
                             autoFocus
                             error={errorEmail == "" ? false : true}
                             helperText={errorEmail}
@@ -117,9 +112,9 @@ export default function RecoverPassword() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                Não possui conta?
+                                {"Não possui conta? "}
                                 <Link href="/cadastrar" variant="body2">
-                                    {" Cadastre-se"}
+                                    {"Cadastre-se"}
                                 </Link>
                             </Grid>
                         </Grid>

@@ -1,13 +1,12 @@
-export const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+export const emailRegex = /^[-\w\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 export const verifyEmail = (email, setErrorEmail) => {
     if (email == "") {
-        setErrorEmail("Insira um email válido.");
+        setErrorEmail("Insira um e-mail válido.");
         return 1;
     }
     if (!emailRegex.test(email)) {
-        setErrorEmail("O email inserido não está formatado corretamente.");
+        setErrorEmail("O e-mail inserido não está formatado corretamente.");
         return 1;
     }
     return 0;
@@ -31,4 +30,32 @@ export const handleClickShowPassword = (showPassword, setShowPassword) => {
 
 export const handleMouseDownPassword = (event) => {
     event.preventDefault();
+};
+
+export const handleErro = (e, setErro) => {
+    if (e.code == "auth/network-request-failed") {
+        setErro("Verifique sua conexão com a internet.");
+        return;
+    }
+    if (e.code == "auth/too-many-requests") {
+        setErro("Muitas tentativas, tente novamente mais tarde.");
+        return;
+    }
+    if (e.code == "auth/user-not-found") {
+        setErro("O e-mail inserido não está registrado.");
+        return;
+    }
+    if (e.code == "auth/email-already-in-use") {
+        setErro("O e-mail inserido já está registrado.");
+        return;
+    }
+    if (e.code == "auth/wrong-password") {
+        setErro("Não foi possível fazer login, e-mail ou senha incorretos.");
+        return;
+    }
+    if (e.code == "auth/invalid-email") {
+        setErro("O formatado de e-mail inserido não é suportado.");
+        return;
+    }
+    setErro("Algo deu errado, não foi possível concluir a operação.");
 };
