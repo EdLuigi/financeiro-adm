@@ -11,41 +11,25 @@ import {
 import Title from "./Title";
 import moment from "moment";
 
-// Generate Sales Data
-function createData(time, amount) {
-    return { time, amount };
-}
-
-const dataFix = [
-    createData("00:00", -100),
-    createData("03:00", 300),
-    createData("06:00", -600),
-    createData("09:00", 800),
-    createData("24:00", 0),
-];
-
 export default function Chart(props) {
     const theme = useTheme();
     const { data } = props;
+    const dataReverse = [...data].reverse();
 
-    // let aux = data.map((i) => i);
-    console.log("data: " + data);
     let dataMod = [];
-    // for (let i = 5; i >= 0; i--) {
-    //     dataMod.push(
-    //         createData(
-    //             moment(data[i].criado_em.toDate()).format("DD/MM/YYYY"),
-    //             +data[i].valor
-    //         )
-    //     );
-    // }
+    dataReverse.map((i) => {
+        dataMod.push({
+            time: moment(i.criado_em.toDate()).format("DD/MM/YYYY"),
+            value: +i.valor,
+        });
+    });
 
     return (
         <React.Fragment>
             <Title>Movimentação</Title>
             <ResponsiveContainer>
                 <LineChart
-                    data={null}
+                    data={dataMod}
                     margin={{
                         top: 16,
                         right: 16,
@@ -81,9 +65,9 @@ export default function Chart(props) {
                     <Line
                         isAnimationActive={false}
                         type="monotone"
-                        dataKey="amount"
+                        dataKey="value"
                         stroke={theme.palette.primary.main}
-                        dot={false}
+                        dot={true}
                     />
                 </LineChart>
             </ResponsiveContainer>

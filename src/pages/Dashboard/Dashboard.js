@@ -68,7 +68,11 @@ export default function Dashboard() {
 
     return (
         <div>
-            <DashboardTest data={lancamentos} loading={loading} />
+            <DashboardTest
+                data={lancamentos}
+                data5={lancamentos.slice(0, 5)}
+                loading={loading}
+            />
         </div>
     );
 }

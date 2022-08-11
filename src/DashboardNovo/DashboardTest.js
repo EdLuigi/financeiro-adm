@@ -14,7 +14,7 @@ import DrawerComponent from "../components/Drawer";
 const mdTheme = createTheme();
 
 export default function DashboardTest(props) {
-    const { data, loading } = props;
+    const { data, data5, loading } = props;
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -46,7 +46,7 @@ export default function DashboardTest(props) {
                                         height: 240,
                                     }}
                                 >
-                                    <Chart />
+                                    <Chart data={data5} />
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
@@ -71,7 +71,7 @@ export default function DashboardTest(props) {
                                         flexDirection: "column",
                                     }}
                                 >
-                                    <Orders data={data} loading={loading} />
+                                    <Orders data={data5} loading={loading} />
                                 </Paper>
                             </Grid>
                         </Grid>

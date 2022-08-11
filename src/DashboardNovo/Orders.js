@@ -9,10 +9,11 @@ import Title from "./Title";
 import NumberFormat from "react-number-format";
 import * as moment from "moment";
 import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function Orders(props) {
     const { data, loading } = props;
-    let dataMod = data.splice(0, 5);
+    const navigate = useNavigate();
     return (
         <React.Fragment>
             <Title>Últimos Lançamentos</Title>
@@ -42,7 +43,7 @@ export default function Orders(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {dataMod.map((item) => (
+                            {data.map((item) => (
                                 <TableRow key={item.id}>
                                     <TableCell>
                                         {moment(item.criado_em.toDate()).format(
@@ -75,7 +76,11 @@ export default function Orders(props) {
                     </Table>
                 </>
             )}
-            <Link color="primary" href="/listar" sx={{ mt: 3 }}>
+            <Link
+                color="primary"
+                onClick={() => navigate("/listar")}
+                sx={{ mt: 3 }}
+            >
                 Ver todos os lançamentos
             </Link>
         </React.Fragment>

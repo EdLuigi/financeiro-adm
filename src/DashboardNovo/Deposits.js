@@ -5,10 +5,6 @@ import Title from "./Title";
 import NumberFormat from "react-number-format";
 import { Spinner } from "react-bootstrap";
 
-function preventDefault(event) {
-    event.preventDefault();
-}
-
 export default function Deposits(props) {
     const { data } = props;
     let entradas = 0,
@@ -19,7 +15,6 @@ export default function Deposits(props) {
     let total = "";
 
     data.map((i) => {
-        // console.log("valor: " + i.valor + "\ntipo: " + i.tipo);
         if (i.tipo == 0) {
             entradas += i.valor;
             contagemEntradas++;
@@ -33,7 +28,7 @@ export default function Deposits(props) {
 
     return (
         <React.Fragment>
-            <Title>Balanço Atual</Title>
+            <Title>Valor Total</Title>
             {total == "" ? (
                 <div className="w-100 text-center align-content pt-3 mt-5">
                     <Spinner
