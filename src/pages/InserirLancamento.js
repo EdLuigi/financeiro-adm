@@ -63,7 +63,7 @@ export default function InserirLancamento() {
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <DrawerComponent />
+            <DrawerComponent title={"Adicionar Lançamentos"} />
             <Box
                 component="main"
                 sx={{
@@ -80,10 +80,6 @@ export default function InserirLancamento() {
                     <Container className="d-flex align-items-center justify-content-center p-5 ">
                         <Card className="mb-4 w-75 p-3 ">
                             <Card.Body style={{ paddingInline: "50px" }}>
-                                <div className="mb-4">
-                                    <h2>Inserir Lançamento</h2>
-                                </div>
-
                                 {erro && <Alert variant="danger">{erro}</Alert>}
                                 {sucesso && (
                                     <Alert variant="success">
@@ -160,13 +156,6 @@ export default function InserirLancamento() {
                                                 {loading
                                                     ? "Carregando..."
                                                     : "Adicionar"}
-                                            </Button>
-                                            <Button
-                                                onClick={() => navigate("/")}
-                                                style={{ marginLeft: "15px" }}
-                                                variant="danger"
-                                            >
-                                                Voltar
                                             </Button>
                                         </div>
                                     </Form>

@@ -11,32 +11,16 @@ import Deposits from "./Deposits";
 import Orders from "./Orders";
 import DrawerComponent from "../components/Drawer";
 
-// function Copyright(props) {
-//     return (
-//         <Typography
-//             variant="body2"
-//             color="text.secondary"
-//             align="center"
-//             {...props}
-//         >
-//             {"Copyright © "}
-//             <Link color="inherit" href="https://mui.com/">
-//                 Your Website
-//             </Link>{" "}
-//             {new Date().getFullYear()}
-//             {"."}
-//         </Typography>
-//     );
-// }
-
 const mdTheme = createTheme();
 
-function DashboardContent() {
+export default function DashboardTest(props) {
+    const { data, loading } = props;
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
-                <DrawerComponent />
+                <DrawerComponent title={"Dashboard"} />
                 <Box
                     component="main"
                     sx={{
@@ -75,7 +59,7 @@ function DashboardContent() {
                                         height: 240,
                                     }}
                                 >
-                                    <Deposits />
+                                    <Deposits data={data} />
                                 </Paper>
                             </Grid>
                             {/* Recent Orders */}
@@ -87,18 +71,13 @@ function DashboardContent() {
                                         flexDirection: "column",
                                     }}
                                 >
-                                    <Orders />
+                                    <Orders data={data} loading={loading} />
                                 </Paper>
                             </Grid>
                         </Grid>
-                        {/* <Copyright sx={{ pt: 4 }} /> */}
                     </Container>
                 </Box>
             </Box>
         </ThemeProvider>
     );
-}
-
-export default function DashboardTest() {
-    return <DashboardContent />;
 }

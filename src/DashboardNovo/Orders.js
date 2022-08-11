@@ -6,92 +6,77 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import NumberFormat from "react-number-format";
+import * as moment from "moment";
+import { Spinner } from "react-bootstrap";
 
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-    return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-    createData(
-        0,
-        "16 Mar, 2019",
-        "Elvis Presley",
-        "Tupelo, MS",
-        "VISA ⠀•••• 3719",
-        312.44
-    ),
-    createData(
-        1,
-        "16 Mar, 2019",
-        "Paul McCartney",
-        "London, UK",
-        "VISA ⠀•••• 2574",
-        866.99
-    ),
-    createData(
-        2,
-        "16 Mar, 2019",
-        "Tom Scholz",
-        "Boston, MA",
-        "MC ⠀•••• 1253",
-        100.81
-    ),
-    createData(
-        3,
-        "16 Mar, 2019",
-        "Michael Jackson",
-        "Gary, IN",
-        "AMEX ⠀•••• 2000",
-        654.39
-    ),
-    createData(
-        4,
-        "15 Mar, 2019",
-        "Bruce Springsteen",
-        "Long Branch, NJ",
-        "VISA ⠀•••• 5919",
-        212.79
-    ),
-];
-
-function preventDefault(event) {
-    event.preventDefault();
-}
-
-export default function Orders() {
+export default function Orders(props) {
+    const { data, loading } = props;
+    let dataMod = data.splice(0, 5);
     return (
         <React.Fragment>
-            <Title>Recent Orders</Title>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Ship To</TableCell>
-                        <TableCell>Payment Method</TableCell>
-                        <TableCell align="right">Sale Amount</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.id}>
-                            <TableCell>{row.date}</TableCell>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.shipTo}</TableCell>
-                            <TableCell>{row.paymentMethod}</TableCell>
-                            <TableCell align="right">{`$${row.amount}`}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <Link
-                color="primary"
-                href="#"
-                onClick={preventDefault}
-                sx={{ mt: 3 }}
-            >
-                See more orders
+            <Title>Últimos Lançamentos</Title>
+            {loading ? (
+                <div className="w-100 text-center pt-4">
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        variant="primary"
+                    ></Spinner>
+                </div>
+            ) : (
+                <>
+                    <Table size="small">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    <strong>Data</strong>
+                                </TableCell>
+                                <TableCell>
+                                    <strong>Tipo</strong>
+                                </TableCell>
+                                <TableCell>
+                                    <strong>Valor</strong>
+                                </TableCell>
+                                {/* <TableCell align="right">Sale Amount</TableCell> */}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {dataMod.map((item) => (
+                                <TableRow key={item.id}>
+                                    <TableCell>
+                                        {moment(item.criado_em.toDate()).format(
+                                            "DD/MM/YYYY"
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {item.tipo == "0" ? "Entrada" : "Saída"}
+                                    </TableCell>
+                                    <TableCell>
+                                        <NumberFormat
+                                            value={item.valor}
+                                            thousandSeparator={"."}
+                                            decimalSeparator={","}
+                                            prefix={"R$"}
+                                            decimalScale={2}
+                                            fixedDecimalScale={true}
+                                            displayType={"text"}
+                                            style={
+                                                item.tipo == 0
+                                                    ? { color: "green" }
+                                                    : { color: "red" }
+                                            }
+                                        />
+                                    </TableCell>
+                                    {/* <TableCell align="right">{`$${item.amount}`}</TableCell> */}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </>
+            )}
+            <Link color="primary" href="/listar" sx={{ mt: 3 }}>
+                Ver todos os lançamentos
             </Link>
         </React.Fragment>
     );

@@ -66,7 +66,8 @@ const Drawer = styled(MuiDrawer, {
     },
 }));
 
-export default function DrawerComponent() {
+export default function DrawerComponent(props) {
+    const { title } = props;
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -99,13 +100,13 @@ export default function DrawerComponent() {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Dashboard
+                        {title}
                     </Typography>
-                    <IconButton color="inherit">
+                    {/* <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
                             <NotificationsIcon />
                         </Badge>
-                    </IconButton>
+                    </IconButton> */}
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

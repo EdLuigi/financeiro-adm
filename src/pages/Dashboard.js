@@ -120,7 +120,7 @@ export default function Dashboard() {
         <>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
-                <DrawerComponent />
+                <DrawerComponent title={"Lista de Lançamentos"} />
                 <Box
                     component="main"
                     sx={{
@@ -145,12 +145,6 @@ export default function Dashboard() {
                             </div>
                         ) : (
                             <Container className=" align-items-center justify-content-center p-4">
-                                {/* <Ola
-                                    currentUser={currentUser}
-                                    entradas={entradas}
-                                    saidas={saidas}
-                                /> */}
-
                                 <ListarLancamentos
                                     lancamentos={lancamentos}
                                     lancamentosFiltrado={lancamentosFiltrado}

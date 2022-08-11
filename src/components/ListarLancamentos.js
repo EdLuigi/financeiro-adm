@@ -62,12 +62,8 @@ export default function ListarLancamentos(props) {
 
     return (
         <>
-            <Card className="p-4">
-                <Card.Body style={{ paddingInline: "50px" }}>
-                    <div>
-                        <h2 className="mb-4">Lista de Lançamentos</h2>
-                    </div>
-
+            <Card className="p-5 pb-0">
+                <Card.Body>
                     <div>
                         <label style={{ marginRight: "10px" }}>
                             <h6>Filtro:</h6>
@@ -80,12 +76,6 @@ export default function ListarLancamentos(props) {
                             <option value={4}>Entradas (mais antigas)</option>
                             <option value={5}>Saídas (mais antigas)</option>
                         </select>
-                        <Button
-                            onClick={() => navigate("/inserir-lancamento")}
-                            style={{ marginLeft: "15px" }}
-                        >
-                            Adicionar
-                        </Button>
                     </div>
 
                     <div>

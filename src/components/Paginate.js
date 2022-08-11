@@ -14,7 +14,7 @@ export default function Paginate(props) {
     const deletar = async (i) => {
         await handleDelete(i);
         if (currentItems.length == 1 && currentPage != 1) {
-            navigate(`/istar/${+currentPage - 1}`);
+            navigate(`/listar/${+currentPage - 1}`);
         }
     };
 
