@@ -62,7 +62,9 @@ export default function SignUp() {
 
     const registerName = () => {
         const nomeCompleto = name.trim() + " " + surName.trim();
-        sessionStorage.setItem("userNameSignUp", nomeCompleto);
+        if (nomeCompleto.trim() != "") {
+            sessionStorage.setItem("userNameSignUp", nomeCompleto.trim());
+        }
     };
 
     const handleSubmit = async (e) => {

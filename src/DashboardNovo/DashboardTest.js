@@ -10,11 +10,14 @@ import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
 import DrawerComponent from "../components/Drawer";
+import Title from "./Title";
+import { useAuth } from "../firebase/authContext";
 
 const mdTheme = createTheme();
 
 export default function DashboardTest(props) {
     const { data, data5, loading } = props;
+    const { currentUser } = useAuth();
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -34,9 +37,11 @@ export default function DashboardTest(props) {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    <Container maxWidth="lg" sx={{ mt: 3, mb: 4 }}>
+                        <div className="mb-3">
+                            <Title>Olá, {currentUser.displayName}.</Title>
+                        </div>
                         <Grid container spacing={3}>
-                            {/* Chart */}
                             <Grid item xs={12} md={8} lg={9}>
                                 <Paper
                                     sx={{

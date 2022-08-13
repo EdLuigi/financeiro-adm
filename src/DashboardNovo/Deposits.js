@@ -28,7 +28,7 @@ export default function Deposits(props) {
 
     return (
         <React.Fragment>
-            <Title>Valor Total</Title>
+            <Title>Resumo</Title>
             {total == "" ? (
                 <div className="w-100 text-center align-content pt-3 mt-5">
                     <Spinner

@@ -29,7 +29,9 @@ export default function Dashboard() {
                 await atualizar(nomeCompleto);
                 sessionStorage.removeItem("userNameSignUp");
             } else {
-                await atualizar(currentUser.email);
+                await atualizar(
+                    currentUser.email.slice(0, currentUser.email.indexOf("@"))
+                );
             }
         }
     };
@@ -54,7 +56,7 @@ export default function Dashboard() {
                 )
             );
 
-            setMensagem("- Você não possui lançamentos -");
+            setMensagem("Você não possui lançamentos.");
         } catch (error) {
             console.log("erro: " + error);
             setMensagem("Algo deu errado :(");
