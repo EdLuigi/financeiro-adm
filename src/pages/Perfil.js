@@ -51,6 +51,7 @@ function BoxInfo() {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const { currentUser } = useAuth();
+    const [editar, setEditar] = useState(false);
 
     const handleClickShowConfirmPassword = () => {
         setShowConfirmPassword(!showConfirmPassword);
@@ -60,41 +61,46 @@ function BoxInfo() {
         event.preventDefault();
     };
 
-    const handleSubmit = async (e) => {};
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("handleSubmit");
+        setEditar(!editar);
+    };
+
+    const handleEditar = (e) => {
+        e.preventDefault();
+        console.log("handleEditar");
+        setEditar(!editar);
+    };
 
     useEffect(() => {
         setEmail(currentUser.email);
         setName(currentUser.displayName);
     }, []);
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+            component="form"
+            onSubmit={editar ? (e) => handleSubmit(e) : (e) => handleEditar(e)}
+            noValidate
+            sx={{ mt: 0 }}
+        >
             {/* <Collapse in={erro !== ""}>
                 <Alert severity="error" sx={{ mb: 1 }}>
                     {erro}
                 </Alert>
             </Collapse> */}
 
-            <Grid container style={{ fontSize: "15px" }}>
-                <Grid item xs sx={{ mr: 2 }}>
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        label="Nome"
-                        value={name ?? ""}
-                        onChange={(e) => setName(e.currentTarget.value)}
-                    />
-                </Grid>
-                <Grid item xs>
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        label="Sobrenome"
-                        onChange={(e) => setSurName(e.currentTarget.value)}
-                    />
-                </Grid>
-            </Grid>
+            <TextField
+                disabled={!editar}
+                margin="normal"
+                fullWidth
+                label="Nome"
+                value={name ?? ""}
+                onChange={(e) => setName(e.currentTarget.value)}
+            />
 
             <TextField
+                disabled={!editar}
                 required
                 margin="normal"
                 fullWidth
@@ -104,80 +110,126 @@ function BoxInfo() {
                 value={email ?? ""}
                 onChange={(e) => setEmail(e.currentTarget.value)}
             />
-            <TextField
-                required
-                margin="normal"
-                fullWidth
-                label="Senha"
-                error={errorPassword == "" ? false : true}
-                helperText={
-                    errorPassword == ""
-                        ? "Sua senha deve ter no mínimo 6 caracteres."
-                        : errorPassword
-                }
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={() =>
-                                    handleClickShowPassword(
-                                        showPassword,
-                                        setShowPassword
-                                    )
-                                }
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {showPassword ? (
-                                    <VisibilityOff />
-                                ) : (
-                                    <Visibility />
-                                )}
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            {editar && (
+                <>
+                    <TextField
+                        required
+                        margin="normal"
+                        fullWidth
+                        label="Senha Atual"
+                        error={errorPassword == "" ? false : true}
+                        helperText={
+                            errorPassword == ""
+                                ? "Sua senha deve ter no mínimo 6 caracteres."
+                                : errorPassword
+                        }
+                        type={showPassword ? "text" : "password"}
+                        onChange={(e) => setPassword(e.currentTarget.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() =>
+                                            handleClickShowPassword(
+                                                showPassword,
+                                                setShowPassword
+                                            )
+                                        }
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? (
+                                            <VisibilityOff />
+                                        ) : (
+                                            <Visibility />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
 
-            <TextField
-                required
-                margin="normal"
-                fullWidth
-                label="Confirmar Senha"
-                error={errorConfirmPassword == "" ? false : true}
-                helperText={errorConfirmPassword}
-                type={showConfirmPassword ? "text" : "password"}
-                onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowConfirmPassword}
-                                onMouseDown={handleMouseDownConfirmPassword}
-                                edge="end"
-                            >
-                                {showConfirmPassword ? (
-                                    <VisibilityOff />
-                                ) : (
-                                    <Visibility />
-                                )}
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
-            <IconButton
+                    <TextField
+                        required
+                        margin="normal"
+                        fullWidth
+                        label="Nova Senha"
+                        error={errorPassword == "" ? false : true}
+                        helperText={
+                            errorPassword == ""
+                                ? "Sua senha deve ter no mínimo 6 caracteres."
+                                : errorPassword
+                        }
+                        type={showPassword ? "text" : "password"}
+                        onChange={(e) => setPassword(e.currentTarget.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() =>
+                                            handleClickShowPassword(
+                                                showPassword,
+                                                setShowPassword
+                                            )
+                                        }
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? (
+                                            <VisibilityOff />
+                                        ) : (
+                                            <Visibility />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <TextField
+                        required
+                        margin="normal"
+                        fullWidth
+                        label="Confirmar Senha"
+                        error={errorConfirmPassword == "" ? false : true}
+                        helperText={errorConfirmPassword}
+                        type={showConfirmPassword ? "text" : "password"}
+                        onChange={(e) =>
+                            setConfirmPassword(e.currentTarget.value)
+                        }
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowConfirmPassword}
+                                        onMouseDown={
+                                            handleMouseDownConfirmPassword
+                                        }
+                                        edge="end"
+                                    >
+                                        {showConfirmPassword ? (
+                                            <VisibilityOff />
+                                        ) : (
+                                            <Visibility />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </>
+            )}
+            {/* <IconButton
                 color="primary"
                 aria-label="upload picture"
                 component="label"
             >
                 <input hidden accept="image/*" type="file" />
                 <PhotoCamera />
-            </IconButton>
+            </IconButton> */}
             <LoadingButton
                 type="submit"
                 fullWidth
@@ -185,7 +237,7 @@ function BoxInfo() {
                 sx={{ mt: 3, mb: 2 }}
                 loading={loading}
             >
-                Atualizar
+                Editar
             </LoadingButton>
         </Box>
     );
@@ -209,19 +261,21 @@ export default function Perfil() {
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 3, mb: 4 }}>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: "flex",
-                                        flexDirection: "column",
-                                    }}
-                                >
-                                    <BoxInfo />
-                                </Paper>
-                            </Grid>
+                    <Container
+                        maxWidth="lg"
+                        sx={{ mt: 3, mb: 4 }}
+                        className="d-flex align-items-center justify-content-center "
+                    >
+                        <Grid item>
+                            <Paper
+                                sx={{
+                                    p: 5,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                }}
+                            >
+                                <BoxInfo />
+                            </Paper>
                         </Grid>
                     </Container>
                 </Box>
