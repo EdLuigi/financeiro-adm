@@ -3,9 +3,7 @@ import { Button, Card, Container, Spinner } from "react-bootstrap";
 import * as moment from "moment";
 import NumberFormat from "react-number-format";
 
-export default function ListagemCard(props) {
-    const { i, handleDelete, loading } = props;
-
+const Antigo = ({ i, handleDelete, loading }) => {
     return (
         <div className="d-flex align-items-center justify-content-center">
             <Card className="w-100 mt-3 text-center">
@@ -60,5 +58,15 @@ export default function ListagemCard(props) {
                 </Button>
             </Card>
         </div>
+    );
+};
+
+export default function ListagemCard(props) {
+    const { i, handleDelete, loading } = props;
+
+    return (
+        <>
+            <Antigo i={i} handleDelete={handleDelete} loading={loading} />
+        </>
     );
 }
