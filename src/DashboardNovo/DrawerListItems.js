@@ -40,6 +40,7 @@ export const MainListItems = () => {
 
 export const SecondaryListItems = () => {
     const { logout } = useAuth();
+    const navigate = useNavigate();
 
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -55,7 +56,7 @@ export const SecondaryListItems = () => {
             <ListSubheader component="div" inset>
                 {/* Usuário */}
             </ListSubheader>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/perfil")}>
                 <ListItemIcon>
                     <AccountCircleIcon />
                 </ListItemIcon>

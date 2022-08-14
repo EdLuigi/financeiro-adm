@@ -11,6 +11,7 @@ import SignIn from "../pages/SignIn.js";
 import SignUp from "../pages/SignUp";
 import RecoverPassword from "../pages/RecoverPassword";
 import DashboardTest from "../DashboardNovo/DashboardTest";
+import Perfil from "../pages/Perfil";
 
 export default function Rotas() {
     const { currentUser } = useAuth();
@@ -20,7 +21,6 @@ export default function Rotas() {
             <div>
                 <Routes>
                     <Route element={<PrivateRoute redirectPath="/entrar" />}>
-                        {/* <Route path="/" element={<DashboardTest />} /> */}
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/listar" element={<Listar />}>
                             <Route path="/listar/:index" element={<Listar />} />
@@ -29,6 +29,7 @@ export default function Rotas() {
                             path="/inserir-lancamento"
                             element={<InserirLancamento />}
                         />
+                        <Route path="/perfil" element={<Perfil />} />
                     </Route>
                     <Route element={<LoggedInRoute redirectPath="/" />}>
                         <Route path="/entrar" element={<SignIn />} />

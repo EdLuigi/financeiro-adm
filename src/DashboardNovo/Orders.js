@@ -32,7 +32,7 @@ function MensagemVazio() {
 }
 
 function MostrarLancamentos({ data }) {
-    const { navigate } = useNavigate();
+    const navigate = useNavigate();
     return (
         <>
             <Table size="small">
