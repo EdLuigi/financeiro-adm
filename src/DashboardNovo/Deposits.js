@@ -12,7 +12,7 @@ export default function Deposits(props) {
         saidas = 0,
         contagemSaidas = 0;
 
-    let total = "";
+    let total = "-a";
 
     data.map((i) => {
         if (i.tipo == 0) {
@@ -29,7 +29,7 @@ export default function Deposits(props) {
     return (
         <React.Fragment>
             <Title>Resumo</Title>
-            {total == "" ? (
+            {total == "-a" ? (
                 <div className="w-100 text-center align-content pt-3 mt-5">
                     <Spinner
                         animation="border"

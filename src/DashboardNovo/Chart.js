@@ -14,27 +14,54 @@ import moment from "moment";
 export default function Chart(props) {
     const theme = useTheme();
     const { data } = props;
-    const dataReverse = [...data].reverse();
+    const [values, setValues] = React.useState([{ time: "", value: 0 }]);
 
-    let dataMod = [];
-    dataReverse.map((i) => {
-        dataMod.push({
-            time: moment(i.criado_em.toDate()).format("DD/MM/YYYY"),
-            value: +i.valor,
+    const calcVariacaoTotal = (dataReverse) => {
+        let aux = 0,
+            auxObj = [];
+        dataReverse.map((index) => {
+            if (index.tipo == 0) {
+                aux += index.valor;
+            } else {
+                aux -= index.valor;
+            }
+            auxObj.push({
+                time: moment(index.criado_em.toDate()).format("DD/MM/YY"),
+                value: aux,
+            });
         });
-    });
+        return auxObj;
+    };
+
+    const limiteValores = (valores) => {
+        const limite = 7;
+        if (valores.length >= limite) {
+            return valores.slice(valores.length - limite, valores.length);
+        } else {
+            return valores;
+        }
+    };
+
+    const setValoresChart = () => {
+        const dataReverse = [...data].reverse();
+        setValues(limiteValores(calcVariacaoTotal(dataReverse)));
+    };
+
+    React.useEffect(() => {
+        setValoresChart();
+    }, [data]);
 
     return (
         <React.Fragment>
             <Title>Movimentação</Title>
             <ResponsiveContainer>
                 <LineChart
-                    data={dataMod}
+                    data={values}
                     margin={{
                         top: 16,
                         right: 16,
-                        bottom: 0,
-                        left: 24,
+                        bottom: 20,
+                        left: 20,
                     }}
                 >
                     <XAxis

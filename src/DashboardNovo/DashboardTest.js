@@ -51,7 +51,7 @@ export default function DashboardTest(props) {
                                         height: 240,
                                     }}
                                 >
-                                    <Chart data={data5} />
+                                    <Chart data={data} />
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
