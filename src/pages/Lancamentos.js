@@ -9,13 +9,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Box } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import Container from "@mui/material/Container";
+import {
+    handleLancamentosFiltrado,
+    sortDates,
+} from "../utils/DashboardUtils/DataUtils";
 
 export default function Lancamentos() {
     const [lancamentos, setLancamentos] = useState([]);
     const [lancamentosFiltrado, setLancamentosFiltrado] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [mensagem, setMensagem] = useState();
-    const { currentUser, atualizar } = useAuth();
+    const { currentUser } = useAuth();
     const [entradas, setEntradas] = useState(-1);
     const [saidas, setSaidas] = useState(-1);
 
@@ -58,47 +62,23 @@ export default function Lancamentos() {
         setLoading(false);
     };
 
-    const sortDatas = (arr) => {
-        return [...arr].sort(
-            (a, b) => a.criado_em.toDate() < b.criado_em.toDate()
-        );
-    };
-
-    const handleLancamentosFiltrado = (arr) => {
-        setLancamentosFiltrado(arr);
-        return arr;
-    };
-
-    const updateUserName = async () => {
-        if (currentUser.displayName == null) {
-            if (sessionStorage.getItem("userNameSignUp") != null) {
-                const nomeCompleto = sessionStorage.getItem("userNameSignUp");
-                await atualizar(nomeCompleto);
-                sessionStorage.removeItem("userNameSignUp");
-            } else {
-                await atualizar(currentUser.email);
-            }
-        }
-    };
-
     const fetchData = async () => {
         try {
-            setMensagem("Carregando...");
+            setLoading(true);
 
             const data = await listar(currentUser.uid);
 
-            await updateUserName();
-
             setLancamentos(
                 handleLancamentosFiltrado(
-                    sortDatas(
+                    sortDates(
                         contarEntradasSaidas(
                             data.docs.map((doc) => ({
                                 ...doc.data(),
                                 id: doc.id,
                             }))
                         )
-                    )
+                    ),
+                    setLancamentosFiltrado
                 )
             );
 
@@ -107,6 +87,7 @@ export default function Lancamentos() {
             console.log("erro: " + error);
             setMensagem("Algo deu errado :(");
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -114,49 +95,47 @@ export default function Lancamentos() {
     }, []);
 
     return (
-        <>
-            <Box sx={{ display: "flex" }}>
-                <CssBaseline />
-                <DrawerComponent title={"Lista de Lançamentos"} />
-                <Box
-                    component="main"
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === "light"
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: "100vh",
-                        overflow: "auto",
-                    }}
-                >
-                    <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
-                        {entradas === -1 ? (
-                            <div className="w-100 text-center mt-5 pt-4">
-                                <Spinner
-                                    animation="border"
-                                    role="status"
-                                    variant="primary"
-                                ></Spinner>
-                                <h5 className="mt-3">Carregando dados...</h5>
-                            </div>
-                        ) : (
-                            <Container className=" align-items-center justify-content-center p-4">
-                                <ListarLancamentos
-                                    lancamentos={lancamentos}
-                                    lancamentosFiltrado={lancamentosFiltrado}
-                                    mensagem={mensagem}
-                                    handleDelete={handleDelete}
-                                    loading={loading}
-                                    handleLancamentosFiltrado={
-                                        handleLancamentosFiltrado
-                                    }
-                                />
-                            </Container>
-                        )}
-                    </Container>
-                </Box>
+        <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <DrawerComponent title={"Lista de Lançamentos"} />
+            <Box
+                component="main"
+                sx={{
+                    backgroundColor: (theme) =>
+                        theme.palette.mode === "light"
+                            ? theme.palette.grey[100]
+                            : theme.palette.grey[900],
+                    flexGrow: 1,
+                    height: "100vh",
+                    overflow: "auto",
+                }}
+            >
+                <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
+                    {loading ? (
+                        <div className="w-100 text-center mt-5 pt-4">
+                            <Spinner
+                                animation="border"
+                                role="status"
+                                variant="primary"
+                            ></Spinner>
+                            {/* <h5 className="mt-3">Carregando dados...</h5> */}
+                        </div>
+                    ) : (
+                        <Container className=" align-items-center justify-content-center p-4">
+                            <ListarLancamentos
+                                lancamentos={lancamentos}
+                                lancamentosFiltrado={lancamentosFiltrado}
+                                mensagem={mensagem}
+                                handleDelete={handleDelete}
+                                loading={loading}
+                                handleLancamentosFiltrado={
+                                    handleLancamentosFiltrado
+                                }
+                            />
+                        </Container>
+                    )}
+                </Container>
             </Box>
-        </>
+        </Box>
     );
 }
