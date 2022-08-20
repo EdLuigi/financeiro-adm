@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { listar } from "../firebase/firestore";
 import { useAuth } from "../firebase/authContext";
 import { deletar } from "../firebase/firestore";
-import { Spinner } from "react-bootstrap";
-import Ola from "../components/Ola";
-import ListarLancamentos from "../components/ListarLancamentos";
-import DrawerComponent from "../components/Drawer";
+import { listar } from "../firebase/firestore";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Title from "../components/DashboardComponents/Title";
+import Chart from "../components/DashboardComponents/Chart";
+import Deposits from "../components/DashboardComponents/Deposits";
+import Orders from "../components/DashboardComponents/Orders";
+import DrawerComponent from "../components/Drawer";
 
 const mdTheme = createTheme();
 
@@ -19,47 +23,6 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [mensagem, setMensagem] = useState();
     const { currentUser, atualizar } = useAuth();
-    const [entradas, setEntradas] = useState(-1);
-    const [saidas, setSaidas] = useState(-1);
-
-    const contarEntradasSaidas = (arr) => {
-        let a = 0,
-            b = 0;
-        arr.map((i) => {
-            i.tipo == 0 ? a++ : b++;
-        });
-        setEntradas(a);
-        setSaidas(b);
-        return arr;
-    };
-
-    const handleDelete = async (i) => {
-        try {
-            setLoading(true);
-            await deletar(i.id);
-
-            //Editar arrays
-            let arr = [...lancamentos];
-            let arrf = [...lancamentosFiltrado];
-            var index = arr.indexOf(i);
-            arr.splice(index, 1);
-            setLancamentos(arr);
-
-            var indexf = arrf.indexOf(i);
-            arrf.splice(indexf, 1);
-            setLancamentosFiltrado(arrf);
-
-            // Editar contador
-            if (i.tipo == 0) {
-                setEntradas(entradas - 1);
-            } else {
-                setSaidas(saidas - 1);
-            }
-        } catch (error) {
-            console.log("erro: " + error);
-        }
-        setLoading(false);
-    };
 
     const sortDatas = (arr) => {
         return [...arr].sort(
@@ -79,7 +42,9 @@ export default function Dashboard() {
                 await atualizar(nomeCompleto);
                 sessionStorage.removeItem("userNameSignUp");
             } else {
-                await atualizar(currentUser.email);
+                await atualizar(
+                    currentUser.email.slice(0, currentUser.email.indexOf("@"))
+                );
             }
         }
     };
@@ -87,29 +52,29 @@ export default function Dashboard() {
     const fetchData = async () => {
         try {
             setMensagem("Carregando...");
+            setLoading(true);
 
             const data = await listar(currentUser.uid);
 
             await updateUserName();
 
-            setLancamentos(
+            await setLancamentos(
                 handleLancamentosFiltrado(
                     sortDatas(
-                        contarEntradasSaidas(
-                            data.docs.map((doc) => ({
-                                ...doc.data(),
-                                id: doc.id,
-                            }))
-                        )
+                        data.docs.map((doc) => ({
+                            ...doc.data(),
+                            id: doc.id,
+                        }))
                     )
                 )
             );
 
-            setMensagem("- Você não possui lançamentos -");
+            setMensagem("Você não possui lançamentos.");
         } catch (error) {
             console.log("erro: " + error);
             setMensagem("Algo deu errado :(");
         }
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -117,10 +82,17 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <>
+        // <div>
+        //     <DashboardTest
+        //         data={lancamentos}
+        //         data5={lancamentos.slice(0, 5)}
+        //         loading={loading}
+        //     />
+        // </div>
+        <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
-                <DrawerComponent title={"Lista de Lançamentos"} />
+                <DrawerComponent title={"Dashboard"} />
                 <Box
                     component="main"
                     sx={{
@@ -133,33 +105,56 @@ export default function Dashboard() {
                         overflow: "auto",
                     }}
                 >
-                    <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
-                        {entradas === -1 ? (
-                            <div className="w-100 text-center mt-5 pt-4">
-                                <Spinner
-                                    animation="border"
-                                    role="status"
-                                    variant="primary"
-                                ></Spinner>
-                                <h5 className="mt-3">Carregando dados...</h5>
-                            </div>
-                        ) : (
-                            <Container className=" align-items-center justify-content-center p-4">
-                                <ListarLancamentos
-                                    lancamentos={lancamentos}
-                                    lancamentosFiltrado={lancamentosFiltrado}
-                                    mensagem={mensagem}
-                                    handleDelete={handleDelete}
-                                    loading={loading}
-                                    handleLancamentosFiltrado={
-                                        handleLancamentosFiltrado
-                                    }
-                                />
-                            </Container>
-                        )}
+                    <Toolbar />
+                    <Container maxWidth="lg" sx={{ mt: 3, mb: 4 }}>
+                        <div className="mb-3">
+                            <Title>Olá, {currentUser.displayName}.</Title>
+                        </div>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={8} lg={9}>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        height: 240,
+                                    }}
+                                >
+                                    <Chart data={lancamentos} />
+                                </Paper>
+                            </Grid>
+                            {/* Recent Deposits */}
+                            <Grid item xs={12} md={4} lg={3}>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        height: 240,
+                                    }}
+                                >
+                                    <Deposits data={lancamentos} />
+                                </Paper>
+                            </Grid>
+                            {/* Recent Orders */}
+                            <Grid item xs={12}>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                    }}
+                                >
+                                    <Orders
+                                        data={lancamentos.slice(0, 5)}
+                                        loading={loading}
+                                    />
+                                </Paper>
+                            </Grid>
+                        </Grid>
                     </Container>
                 </Box>
             </Box>
-        </>
+        </ThemeProvider>
     );
 }

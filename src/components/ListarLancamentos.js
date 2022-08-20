@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Paginate from "./Paginate";
+import Paginate from "./Paginate/Paginate";
 
 export default function ListarLancamentos(props) {
     const {

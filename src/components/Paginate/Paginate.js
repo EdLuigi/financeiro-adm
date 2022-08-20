@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ListagemCard from "./ListagemCard";
+import ListagemCard from "../ListagemCard";
 import PaginateNav from "./PaginateNav";
 import {
     Button,

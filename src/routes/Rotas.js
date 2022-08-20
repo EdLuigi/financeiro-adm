@@ -1,33 +1,31 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import BarraNavegacao from "../components/BarraNavegacao";
-import { useAuth } from "../firebase/authContext";
 import PrivateRoute from "./PrivateRoute";
-import InserirLancamento from "../pages/InserirLancamento";
+import Adicionar from "../pages/Adicionar";
 import LoggedInRoute from "./LoggedInRoute";
-import { default as Listar } from "../pages/Dashboard";
-import Dashboard from "../pages/Dashboard/Dashboard";
+import Lancamentos from "../pages/Lancamentos";
+import Dashboard from "../pages/Dashboard";
 import SignIn from "../pages/SignIn.js";
 import SignUp from "../pages/SignUp";
 import RecoverPassword from "../pages/RecoverPassword";
-import DashboardTest from "../DashboardNovo/DashboardTest";
 import Perfil from "../pages/Perfil";
 
 export default function Rotas() {
-    const { currentUser } = useAuth();
     return (
         <div>
-            {/* <div>{currentUser && <BarraNavegacao />}</div> */}
             <div>
                 <Routes>
                     <Route element={<PrivateRoute redirectPath="/entrar" />}>
                         <Route path="/" element={<Dashboard />} />
-                        <Route path="/listar" element={<Listar />}>
-                            <Route path="/listar/:index" element={<Listar />} />
+                        <Route path="/listar" element={<Lancamentos />}>
+                            <Route
+                                path="/listar/:index"
+                                element={<Lancamentos />}
+                            />
                         </Route>
                         <Route
                             path="/inserir-lancamento"
-                            element={<InserirLancamento />}
+                            element={<Adicionar />}
                         />
                         <Route path="/perfil" element={<Perfil />} />
                     </Route>

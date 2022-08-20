@@ -19,7 +19,7 @@ import Container from "@mui/material/Container";
 
 const mdTheme = createTheme();
 
-export default function InserirLancamento() {
+export default function Adicionar() {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
     const [sucesso, setSucesso] = useState(false);

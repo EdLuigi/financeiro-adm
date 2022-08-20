@@ -8,8 +8,8 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useAuth } from "../firebase/authContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../firebase/authContext";
 
 export const MainListItems = () => {
     const navigate = useNavigate();

@@ -17,7 +17,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
     MainListItems,
     SecondaryListItems,
-} from "../DashboardNovo/DrawerListItems";
+} from "./DashboardComponents/DrawerListItems";
 import Toolbar from "@mui/material/Toolbar";
 
 const drawerWidth = 240;
