@@ -20,7 +20,7 @@ import {
 } from "./DashboardComponents/DrawerListItems";
 import Toolbar from "@mui/material/Toolbar";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
@@ -125,13 +125,8 @@ export default function DrawerComponent(props) {
                 <Divider />
                 <List component="nav">
                     <MainListItems />
-                    {/* {SecondaryListItems} */}
-                    {/* <SecondaryListItems /> */}
-
                     <Divider sx={{ my: 1 }} />
-                    {/* {SecondaryListItems} */}
                     <SecondaryListItems />
-                    {/* <MainListItems/> */}
                 </List>
             </Drawer>
         </div>

@@ -4,15 +4,12 @@ import { useAuth } from "../firebase/authContext";
 import { deletar } from "../firebase/firestore";
 import { Spinner } from "react-bootstrap";
 import ListarLancamentos from "../components/ListarLancamentos";
-import DrawerComponent from "../components/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Box } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import {
     handleLancamentosFiltrado,
     sortDates,
 } from "../utils/DashboardUtils/DataUtils";
+import { DrawerCompleto } from "../components/DrawerCompleto";
 
 export default function Lancamentos() {
     const [lancamentos, setLancamentos] = useState([]);
@@ -95,47 +92,32 @@ export default function Lancamentos() {
     }, []);
 
     return (
-        <Box sx={{ display: "flex" }}>
-            <CssBaseline />
-            <DrawerComponent title={"Lista de Lançamentos"} />
-            <Box
-                component="main"
-                sx={{
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === "light"
-                            ? theme.palette.grey[100]
-                            : theme.palette.grey[900],
-                    flexGrow: 1,
-                    height: "100vh",
-                    overflow: "auto",
-                }}
-            >
-                <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
-                    {loading ? (
-                        <div className="w-100 text-center mt-5 pt-4">
-                            <Spinner
-                                animation="border"
-                                role="status"
-                                variant="primary"
-                            ></Spinner>
-                            {/* <h5 className="mt-3">Carregando dados...</h5> */}
-                        </div>
-                    ) : (
-                        <Container className=" align-items-center justify-content-center p-4">
-                            <ListarLancamentos
-                                lancamentos={lancamentos}
-                                lancamentosFiltrado={lancamentosFiltrado}
-                                mensagem={mensagem}
-                                handleDelete={handleDelete}
-                                loading={loading}
-                                handleLancamentosFiltrado={
-                                    handleLancamentosFiltrado
-                                }
-                            />
-                        </Container>
-                    )}
-                </Container>
-            </Box>
-        </Box>
+        <DrawerCompleto title="Lista de Lançamentos">
+            <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
+                {loading ? (
+                    <div className="w-100 text-center mt-5 pt-4">
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            variant="primary"
+                        ></Spinner>
+                        {/* <h5 className="mt-3">Carregando dados...</h5> */}
+                    </div>
+                ) : (
+                    <Container className=" align-items-center justify-content-center p-4">
+                        <ListarLancamentos
+                            lancamentos={lancamentos}
+                            lancamentosFiltrado={lancamentosFiltrado}
+                            mensagem={mensagem}
+                            handleDelete={handleDelete}
+                            loading={loading}
+                            handleLancamentosFiltrado={
+                                handleLancamentosFiltrado
+                            }
+                        />
+                    </Container>
+                )}
+            </Container>
+        </DrawerCompleto>
     );
 }

@@ -11,7 +11,6 @@ export default function Deposits(props) {
     const [saidas, setSaidas] = useState(0);
     const [contagemSaidas, setContagemSaidas] = useState(0);
     const [total, setTotal] = useState(null);
-    // const [loading, setLoading] = useState(true);
 
     const setValores = async () => {
         let Entradas = 0,
