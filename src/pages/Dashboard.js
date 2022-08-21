@@ -22,7 +22,7 @@ const mdTheme = createTheme();
 
 export default function Dashboard() {
     const [lancamentos, setLancamentos] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { currentUser, atualizar } = useAuth();
 
     const updateUserName = async () => {
@@ -58,7 +58,7 @@ export default function Dashboard() {
         } catch (error) {
             console.log("erro: " + error);
         }
-        setLoading(false);
+        // setLoading(false);
     };
 
     useEffect(() => {
@@ -97,7 +97,10 @@ export default function Dashboard() {
                                         height: 240,
                                     }}
                                 >
-                                    <Chart data={lancamentos} />
+                                    <Chart
+                                        data={lancamentos}
+                                        loading={loading}
+                                    />
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
@@ -110,7 +113,11 @@ export default function Dashboard() {
                                         height: 240,
                                     }}
                                 >
-                                    <Deposits data={lancamentos} />
+                                    <Deposits
+                                        data={lancamentos}
+                                        loading={loading}
+                                        setLoading={setLoading}
+                                    />
                                 </Paper>
                             </Grid>
                             {/* Recent Orders */}

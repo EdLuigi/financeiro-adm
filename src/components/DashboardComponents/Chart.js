@@ -10,10 +10,11 @@ import {
 } from "recharts";
 import Title from "./Title";
 import moment from "moment";
+import { Spinner } from "react-bootstrap";
 
 export default function Chart(props) {
     const theme = useTheme();
-    const { data } = props;
+    const { data, loading } = props;
     const [values, setValues] = React.useState([{ time: "", value: 0 }]);
 
     const calcVariacaoTotal = (dataReverse) => {
@@ -54,50 +55,60 @@ export default function Chart(props) {
     return (
         <React.Fragment>
             <Title>Movimentação</Title>
-            <ResponsiveContainer>
-                <LineChart
-                    data={values}
-                    margin={{
-                        top: 16,
-                        right: 16,
-                        bottom: 20,
-                        left: 20,
-                    }}
-                >
-                    <XAxis
-                        dataKey="time"
-                        stroke={theme.palette.text.secondary}
-                        style={theme.typography.body2}
+            {loading ? (
+                <div className="w-100 text-center align-content pt-3 mt-5">
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        variant="primary"
+                    ></Spinner>
+                </div>
+            ) : (
+                <ResponsiveContainer>
+                    <LineChart
+                        data={values}
+                        margin={{
+                            top: 16,
+                            right: 16,
+                            bottom: 20,
+                            left: 20,
+                        }}
                     >
-                        <Label angle={0} position="bottom">
-                            Datas
-                        </Label>
-                    </XAxis>
-                    <YAxis
-                        stroke={theme.palette.text.secondary}
-                        style={theme.typography.body2}
-                    >
-                        <Label
-                            angle={270}
-                            position="left"
-                            style={{
-                                textAnchor: "middle",
-                                fill: theme.palette.text.primary,
-                                ...theme.typography.body1,
-                            }}
+                        <XAxis
+                            dataKey="time"
+                            stroke={theme.palette.text.secondary}
+                            style={theme.typography.body2}
                         >
-                            Valores (R$)
-                        </Label>
-                    </YAxis>
-                    <Line
-                        isAnimationActive={false}
-                        type="monotone"
-                        dataKey="value"
-                        stroke={theme.palette.primary.main}
-                        dot={true}
-                    />
-                </LineChart>
-            </ResponsiveContainer>
+                            <Label angle={0} position="bottom">
+                                Datas
+                            </Label>
+                        </XAxis>
+                        <YAxis
+                            stroke={theme.palette.text.secondary}
+                            style={theme.typography.body2}
+                        >
+                            <Label
+                                angle={270}
+                                position="left"
+                                style={{
+                                    textAnchor: "middle",
+                                    fill: theme.palette.text.primary,
+                                    ...theme.typography.body1,
+                                }}
+                            >
+                                Valores (R$)
+                            </Label>
+                        </YAxis>
+                        <Line
+                            isAnimationActive={false}
+                            type="monotone"
+                            dataKey="value"
+                            stroke={theme.palette.primary.main}
+                            dot={true}
+                        />
+                    </LineChart>
+                </ResponsiveContainer>
+            )}
         </React.Fragment>
     );
 }

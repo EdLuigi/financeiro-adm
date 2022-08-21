@@ -1,35 +1,48 @@
-import * as React from "react";
-import Link from "@mui/material/Link";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import NumberFormat from "react-number-format";
 import { Spinner } from "react-bootstrap";
 
 export default function Deposits(props) {
-    const { data } = props;
-    let entradas = 0,
-        contagemEntradas = 0,
-        saidas = 0,
-        contagemSaidas = 0;
+    const { data, loading, setLoading } = props;
+    const [entradas, setEntradas] = useState(0);
+    const [contagemEntradas, setContagemEntradas] = useState(0);
+    const [saidas, setSaidas] = useState(0);
+    const [contagemSaidas, setContagemSaidas] = useState(0);
+    const [total, setTotal] = useState(null);
+    // const [loading, setLoading] = useState(true);
 
-    let total = "-a";
+    const setValores = async () => {
+        let Entradas = 0,
+            ContagemEntradas = 0,
+            Saidas = 0,
+            ContagemSaidas = 0;
+        data.map((i) => {
+            if (i.tipo == 0) {
+                Entradas += i.valor;
+                ContagemEntradas++;
+            } else {
+                Saidas += i.valor;
+                ContagemSaidas++;
+            }
+        });
+        setEntradas(Entradas);
+        setSaidas(Saidas);
+        setContagemEntradas(ContagemEntradas);
+        setContagemSaidas(ContagemSaidas);
+        setTotal(Entradas - Saidas);
+    };
 
-    data.map((i) => {
-        if (i.tipo == 0) {
-            entradas += i.valor;
-            contagemEntradas++;
-        } else {
-            saidas += i.valor;
-            contagemSaidas++;
-        }
-    });
-
-    total = entradas - saidas;
+    useEffect(() => {
+        setValores();
+        setLoading(false);
+    }, [data]);
 
     return (
         <React.Fragment>
             <Title>Resumo</Title>
-            {total == "-a" ? (
+            {loading ? (
                 <div className="w-100 text-center align-content pt-3 mt-5">
                     <Spinner
                         animation="border"
@@ -81,15 +94,6 @@ export default function Deposits(props) {
                     </Typography>
                 </>
             )}
-
-            {/* <Link
-                color="primary"
-                href="#"
-                onClick={preventDefault}
-                sx={{ pt: 7 }}
-            >
-                Ver balanço total
-            </Link> */}
         </React.Fragment>
     );
 }
