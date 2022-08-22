@@ -18,16 +18,16 @@ const mdTheme = createTheme();
 export default function Dashboard() {
     const [lancamentos, setLancamentos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { currentUser, atualizar } = useAuth();
+    const { currentUser, atualizarPerfil } = useAuth();
 
     const updateUserName = async () => {
         if (currentUser.displayName == null) {
             if (sessionStorage.getItem("userNameSignUp") != null) {
                 const nomeCompleto = sessionStorage.getItem("userNameSignUp");
-                await atualizar(nomeCompleto);
+                await atualizarPerfil(nomeCompleto);
                 sessionStorage.removeItem("userNameSignUp");
             } else {
-                await atualizar(
+                await atualizarPerfil(
                     currentUser.email.slice(0, currentUser.email.indexOf("@"))
                 );
             }

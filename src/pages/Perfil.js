@@ -17,6 +17,7 @@ import {
     handleClickShowPassword,
     handleMouseDownPassword,
     handleErro,
+    verifyConfirmPassword,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
 import { useAuth } from "../firebase/authContext";
 import { DrawerCompleto } from "../components/DrawerCompleto";
@@ -25,22 +26,22 @@ import { PasswordComponent } from "../utils/CrendenciaisUtils/PasswordComponent"
 const mdTheme = createTheme();
 
 const BoxRender = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [name, setName] = useState("");
-    const [surName, setSurName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password1, setPassword1] = useState("");
+    const [password2, setPassword2] = useState("");
+    const [password3, setPassword3] = useState("");
+    const [errorName, setErrorName] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPassword1, setErrorPassword1] = useState("");
     const [errorPassword2, setErrorPassword2] = useState("");
     const [errorPassword3, setErrorPassword3] = useState("");
-    const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
-    const { currentUser } = useAuth();
     const [editar, setEditar] = useState(false);
+    const [botaoFrase, setBotaoFrase] = useState("Editar");
+    const { currentUser, atualizarPerfil, atualizarEmail, atualizarSenha } =
+        useAuth();
 
     useEffect(() => {
         setEmail(currentUser.email);
@@ -49,12 +50,80 @@ const BoxRender = () => {
 
     const handleEditar = (e) => {
         e.preventDefault();
-        setEditar(!editar);
+        setEditar(true);
+        setBotaoFrase("Confirmar");
+    };
+
+    const limparErros = () => {
+        setErrorEmail("");
+        setErrorName("");
+        setErrorPassword1("");
+        setErrorPassword2("");
+        setErrorPassword3("");
+    };
+
+    const handleVoltar = () => {
+        limparErros();
+        setPassword1("");
+        setPassword2("");
+        setPassword3("");
+
+        setBotaoFrase("Editar");
+        setEditar(false);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setEditar(!editar);
+        limparErros();
+
+        // if (
+        //     +verifyName() +
+        //         +verifyEmail(email, setErrorEmail) +
+        //         +verificarSenha1(password1, setErrorPassword1) +
+        //         +verifyPassword(password2, setErrorPassword2) +
+        //         +verifyConfirmPassword(
+        //             password2,
+        //             password3,
+        //             setErrorPassword3
+        //         ) !=
+        //     0
+        // ) {
+        //     return;
+        // }
+
+        try {
+            setLoading(true);
+
+            await atualizarPerfil(name);
+            await atualizarEmail(email);
+            await atualizarSenha(password2);
+
+            //update displayName
+            //update email
+            //update password
+
+            //mensagem de sucesso removível(?)
+        } catch (e) {
+            console.log(e);
+            handleErro(e, setErro);
+        }
+        setLoading(false);
+    };
+
+    const verifyName = () => {
+        if (name == "") {
+            setErrorName("O nome de usuário não pode ser vazio.");
+            return 1;
+        }
+        return 0;
+    };
+
+    const verificarSenha1 = () => {
+        if (verifyPassword(password1, setErrorPassword1) != 0) {
+            return 1;
+        }
+
+        return 0;
     };
 
     return (
@@ -69,9 +138,7 @@ const BoxRender = () => {
             >
                 <Box
                     component="form"
-                    onSubmit={
-                        editar ? (e) => handleSubmit(e) : (e) => handleEditar(e)
-                    }
+                    onSubmit={editar ? handleSubmit : handleEditar}
                     noValidate
                     sx={{ mt: 0 }}
                 >
@@ -85,12 +152,13 @@ const BoxRender = () => {
                         margin="normal"
                         fullWidth
                         label="Nome Completo"
+                        error={errorName == "" ? false : true}
+                        helperText={errorName}
                         value={name ?? ""}
                         onChange={(e) => setName(e.currentTarget.value)}
                     />
                     <TextField
                         disabled={!editar}
-                        required
                         margin="normal"
                         fullWidth
                         label="E-mail"
@@ -100,32 +168,24 @@ const BoxRender = () => {
                         onChange={(e) => setEmail(e.currentTarget.value)}
                     />
 
-                    {!editar ? (
-                        <></>
-                    ) : (
+                    {editar && (
                         <>
                             <PasswordComponent
-                                errorPassword={errorPassword1}
-                                showPassword={showPassword}
-                                setShowPassword={setShowPassword}
-                                setPassword={setPassword}
                                 label={"Senha Atual"}
+                                errorPassword={errorPassword1}
+                                setPassword={setPassword1}
                                 tipo={1}
                             />
                             <PasswordComponent
-                                errorPassword={errorPassword2}
-                                showPassword={showPassword}
-                                setShowPassword={setShowPassword}
-                                setPassword={setPassword}
                                 label={"Nova Senha"}
+                                errorPassword={errorPassword2}
+                                setPassword={setPassword2}
                                 tipo={0}
                             />
                             <PasswordComponent
-                                errorPassword={errorPassword3}
-                                showPassword={showPassword}
-                                setShowPassword={setShowPassword}
-                                setPassword={setPassword}
                                 label={"Confirmar Nova Senha"}
+                                errorPassword={errorPassword3}
+                                setPassword={setPassword3}
                                 tipo={1}
                             />
                         </>
@@ -147,8 +207,21 @@ const BoxRender = () => {
                         sx={{ mt: 3, mb: 2 }}
                         loading={loading}
                     >
-                        Editar
+                        {botaoFrase}
                     </LoadingButton>
+
+                    {editar && (
+                        <LoadingButton
+                            fullWidth
+                            variant="contained"
+                            color="error"
+                            sx={{ mt: 3, mb: 2 }}
+                            disabled={loading}
+                            onClick={handleVoltar}
+                        >
+                            {"Voltar"}
+                        </LoadingButton>
+                    )}
                 </Box>
             </Box>
         </Container>

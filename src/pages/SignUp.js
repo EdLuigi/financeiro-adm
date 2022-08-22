@@ -20,6 +20,7 @@ import {
     handleClickShowPassword,
     handleMouseDownPassword,
     handleErro,
+    verifyConfirmPassword,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
 
 const theme = createTheme();
@@ -48,18 +49,6 @@ export default function SignUp() {
         event.preventDefault();
     };
 
-    const verifyConfirmPassword = () => {
-        if (confirmPassword == "") {
-            setErrorConfirmPassword("Insira sua senha.");
-            return 1;
-        }
-        if (confirmPassword != password) {
-            setErrorConfirmPassword("As duas senhas inseridas não são iguais.");
-            return 1;
-        }
-        return 0;
-    };
-
     const registerName = () => {
         const nomeCompleto = name.trim() + " " + surName.trim();
         if (nomeCompleto.trim() != "") {
@@ -77,7 +66,11 @@ export default function SignUp() {
         if (
             +verifyEmail(email, setErrorEmail) +
                 +verifyPassword(password, setErrorPassword) +
-                +verifyConfirmPassword() !=
+                +verifyConfirmPassword(
+                    password,
+                    confirmPassword,
+                    setErrorConfirmPassword
+                ) !=
             0
         ) {
             return;
@@ -92,7 +85,7 @@ export default function SignUp() {
 
             navigate("/");
         } catch (e) {
-            console.log("erro: " + e);
+            console.log(e);
             handleErro(e, setErro);
         }
         setLoading(false);

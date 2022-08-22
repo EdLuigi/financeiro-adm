@@ -7,6 +7,7 @@ export const PasswordComponent = ({
     errorPassword,
     setPassword,
     tipo,
+    required,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = (showPassword, setShowPassword) => {
@@ -19,7 +20,7 @@ export const PasswordComponent = ({
 
     return (
         <TextField
-            required
+            required={required ?? false}
             margin="normal"
             fullWidth
             label={label}

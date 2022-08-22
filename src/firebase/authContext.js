@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
         return auth.createUserWithEmailAndPassword(email, password);
     }
 
-    function atualizar(name, photo) {
+    function atualizarPerfil(name, photo) {
         return currentUser.updateProfile({
             displayName: name,
             photoURL: photo,
@@ -34,6 +34,14 @@ export function AuthProvider({ children }) {
         return auth.sendPasswordResetEmail(email);
     }
 
+    function atualizarEmail(newEmail) {
+        return currentUser.updateEmail(newEmail);
+    }
+
+    function atualizarSenha(newPassword) {
+        return currentUser.updatePassword(newPassword);
+    }
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             setCurrentUser(user);
@@ -46,10 +54,12 @@ export function AuthProvider({ children }) {
     const value = {
         currentUser,
         cadastrar,
-        atualizar,
+        atualizarPerfil,
         login,
         logout,
         recuperarSenha,
+        atualizarEmail,
+        atualizarSenha,
     };
 
     return (

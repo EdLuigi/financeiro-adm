@@ -24,6 +24,22 @@ export const verifyPassword = (password, setErrorPassword) => {
     return 0;
 };
 
+export const verifyConfirmPassword = (
+    password,
+    confirmPassword,
+    setErrorConfirmPassword
+) => {
+    if (confirmPassword == "") {
+        setErrorConfirmPassword("Insira sua senha.");
+        return 1;
+    }
+    if (confirmPassword != password) {
+        setErrorConfirmPassword("As senhas inseridas não são iguais.");
+        return 1;
+    }
+    return 0;
+};
+
 export const handleClickShowPassword = (showPassword, setShowPassword) => {
     setShowPassword(!showPassword);
 };
@@ -55,6 +71,12 @@ export const handleErro = (e, setErro) => {
     }
     if (e.code == "auth/invalid-email") {
         setErro("O formatado de e-mail inserido não é suportado.");
+        return;
+    }
+    if (e.code == "auth/requires-recent-login") {
+        setErro(
+            "Essa operação necessita de uma autenticação recente. Por favor saia da sua conta e entre novamente."
+        );
         return;
     }
     setErro("Algo deu errado, não foi possível concluir a operação.");
