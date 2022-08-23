@@ -80,7 +80,7 @@ export default function Chart(props) {
                             style={theme.typography.body2}
                         >
                             <Label angle={0} position="bottom">
-                                Datas
+                                Data
                             </Label>
                         </XAxis>
                         <YAxis
@@ -96,7 +96,7 @@ export default function Chart(props) {
                                     ...theme.typography.body1,
                                 }}
                             >
-                                Valores (R$)
+                                Total (R$)
                             </Label>
                         </YAxis>
                         <Line

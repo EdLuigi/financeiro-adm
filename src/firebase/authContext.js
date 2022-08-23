@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { auth } from "./config";
+import { auth, emailAuthProvider } from "./config";
 
 const AuthContext = React.createContext();
 
@@ -42,6 +42,15 @@ export function AuthProvider({ children }) {
         return currentUser.updatePassword(newPassword);
     }
 
+    function reAutenticar(password) {
+        const credential = emailAuthProvider.credential(
+            currentUser.email,
+            password
+        );
+
+        return currentUser.reauthenticateWithCredential(credential);
+    }
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             setCurrentUser(user);
@@ -60,6 +69,7 @@ export function AuthProvider({ children }) {
         recuperarSenha,
         atualizarEmail,
         atualizarSenha,
+        reAutenticar,
     };
 
     return (

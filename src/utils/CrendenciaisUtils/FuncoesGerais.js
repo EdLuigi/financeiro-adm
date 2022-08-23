@@ -30,7 +30,7 @@ export const verifyConfirmPassword = (
     setErrorConfirmPassword
 ) => {
     if (confirmPassword == "") {
-        setErrorConfirmPassword("Insira sua senha.");
+        setErrorConfirmPassword("Confirme a senha.");
         return 1;
     }
     if (confirmPassword != password) {
@@ -66,7 +66,9 @@ export const handleErro = (e, setErro) => {
         return;
     }
     if (e.code == "auth/wrong-password") {
-        setErro("Não foi possível fazer login, e-mail ou senha incorretos.");
+        setErro(
+            "Não foi possível completar a operação, sua senha está incorreta."
+        );
         return;
     }
     if (e.code == "auth/invalid-email") {

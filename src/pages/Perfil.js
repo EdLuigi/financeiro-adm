@@ -40,8 +40,18 @@ const BoxRender = () => {
     const [erro, setErro] = useState("");
     const [editar, setEditar] = useState(false);
     const [botaoFrase, setBotaoFrase] = useState("Editar");
-    const { currentUser, atualizarPerfil, atualizarEmail, atualizarSenha } =
-        useAuth();
+    const {
+        currentUser,
+        atualizarPerfil,
+        atualizarEmail,
+        atualizarSenha,
+        reAutenticar,
+    } = useAuth();
+    let aux1 = true,
+        aux2 = true,
+        aux3 = true,
+        aux4 = true,
+        aux5 = true;
 
     useEffect(() => {
         setEmail(currentUser.email);
@@ -55,11 +65,17 @@ const BoxRender = () => {
     };
 
     const limparErros = () => {
+        setErro("");
         setErrorEmail("");
         setErrorName("");
         setErrorPassword1("");
         setErrorPassword2("");
         setErrorPassword3("");
+        aux1 = true;
+        aux2 = true;
+        aux3 = true;
+        aux4 = true;
+        aux5 = true;
     };
 
     const handleVoltar = () => {
@@ -76,33 +92,34 @@ const BoxRender = () => {
         e.preventDefault();
         limparErros();
 
-        // if (
-        //     +verifyName() +
-        //         +verifyEmail(email, setErrorEmail) +
-        //         +verificarSenha1(password1, setErrorPassword1) +
-        //         +verifyPassword(password2, setErrorPassword2) +
-        //         +verifyConfirmPassword(
-        //             password2,
-        //             password3,
-        //             setErrorPassword3
-        //         ) !=
-        //     0
-        // ) {
-        //     return;
-        // }
+        if (
+            +verificarNome() +
+                +verificarEmail() +
+                +verificarSenha1() +
+                +verificarSenha2() +
+                +verificarSenha3() !=
+            0
+        ) {
+            return;
+        }
 
         try {
             setLoading(true);
+            if (aux1) {
+                await atualizarPerfil(name);
+                // console.log("atualizarPerfil");
+            }
+            if (aux2) {
+                await atualizarEmail(email);
+                // console.log("atualizarEmail");
+            }
+            if (aux3 && aux4 && aux5) {
+                await reAutenticar(password1);
+                await atualizarSenha(password2);
+                // console.log("atualizarSenha: ");
+            }
 
-            await atualizarPerfil(name);
-            await atualizarEmail(email);
-            await atualizarSenha(password2);
-
-            //update displayName
-            //update email
-            //update password
-
-            //mensagem de sucesso removível(?)
+            handleVoltar();
         } catch (e) {
             console.log(e);
             handleErro(e, setErro);
@@ -110,20 +127,61 @@ const BoxRender = () => {
         setLoading(false);
     };
 
-    const verifyName = () => {
+    const verificarNome = () => {
         if (name == "") {
             setErrorName("O nome de usuário não pode ser vazio.");
             return 1;
         }
+        if (name == currentUser.displayName) aux1 = false;
         return 0;
     };
 
-    const verificarSenha1 = () => {
-        if (verifyPassword(password1, setErrorPassword1) != 0) {
-            return 1;
-        }
+    const verificarEmail = () => {
+        if (email == currentUser.email) aux2 = false;
+        return verifyEmail(email, setErrorEmail);
+    };
 
-        return 0;
+    const verificarSenha1 = () => {
+        if (password1 == "") {
+            aux3 = false;
+            return 0;
+        }
+        return verifyPassword(password1, setErrorPassword1);
+    };
+
+    const verificarSenha2 = () => {
+        if (password2 == "") {
+            aux4 = false;
+            return 0;
+        } else {
+            if (password1 == "") {
+                setErrorPassword1("Insira sua senha atual para prosseguir.");
+                aux3 = false;
+                return 1;
+            }
+            if (password3 == "") {
+                aux5 = false;
+                return verifyConfirmPassword(
+                    password2,
+                    password3,
+                    setErrorPassword3
+                );
+            }
+        }
+        return verifyPassword(password2, setErrorPassword2);
+    };
+
+    const verificarSenha3 = () => {
+        if (password3 == "") {
+            aux5 = false;
+            return 0;
+        } else {
+            if (password2 == "") {
+                setErrorPassword2("Insira uma nova senha para atualizar.");
+                aux4 = false;
+            }
+        }
+        return verifyConfirmPassword(password2, password3, setErrorPassword3);
     };
 
     return (
@@ -147,6 +205,7 @@ const BoxRender = () => {
                             {erro}
                         </Alert>
                     </Collapse>
+
                     <TextField
                         disabled={!editar}
                         margin="normal"
