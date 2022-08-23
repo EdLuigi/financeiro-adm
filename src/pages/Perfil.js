@@ -120,21 +120,21 @@ const BoxRender = () => {
         try {
             setLoading(true);
 
-            if (aux1) {
-                await atualizarPerfil(name);
-                setSucessoName(true);
-                console.log("atualizarPerfil");
-            }
-            if (aux2) {
-                await atualizarEmail(email);
-                setSucessoEmail(true);
-                console.log("atualizarEmail");
-            }
+            // Update senha
             if (aux3 && aux4 && aux5) {
                 await reAutenticar(password1);
                 await atualizarSenha(password2);
                 setSucessoPassword(true);
-                console.log("atualizarSenha");
+            }
+            // Update email
+            if (aux2) {
+                await atualizarEmail(email);
+                setSucessoEmail(true);
+            }
+            // Update email
+            if (aux1) {
+                await atualizarPerfil(name);
+                setSucessoName(true);
             }
 
             setSucesso(true);
@@ -144,6 +144,10 @@ const BoxRender = () => {
             handleErro(e, setErro);
         }
         setLoading(false);
+        const timer = setTimeout(() => {
+            setSucesso(false);
+        }, 5000);
+        return () => clearTimeout(timer);
     };
 
     const verificarNome = () => {
@@ -222,7 +226,6 @@ const BoxRender = () => {
                     component="form"
                     onSubmit={editar ? handleSubmit : handleEditar}
                     noValidate
-                    sx={{ mt: 0 }}
                 >
                     <Collapse in={erro !== ""}>
                         <Alert severity="error" sx={{ mb: 1 }}>
@@ -285,28 +288,29 @@ const BoxRender = () => {
                         onChange={(e) => setEmail(e.currentTarget.value)}
                     />
 
-                    {editar && (
-                        <>
-                            <PasswordComponent
-                                label={"Senha Atual"}
-                                errorPassword={errorPassword1}
-                                setPassword={setPassword1}
-                                tipo={1}
-                            />
-                            <PasswordComponent
-                                label={"Nova Senha"}
-                                errorPassword={errorPassword2}
-                                setPassword={setPassword2}
-                                tipo={0}
-                            />
-                            <PasswordComponent
-                                label={"Confirmar Nova Senha"}
-                                errorPassword={errorPassword3}
-                                setPassword={setPassword3}
-                                tipo={1}
-                            />
-                        </>
-                    )}
+                    <Collapse in={editar}>
+                        <PasswordComponent
+                            label={"Senha Atual"}
+                            errorPassword={errorPassword1}
+                            setPassword={setPassword1}
+                            tipo={1}
+                            value={password1}
+                        />
+                        <PasswordComponent
+                            label={"Nova Senha"}
+                            errorPassword={errorPassword2}
+                            setPassword={setPassword2}
+                            tipo={0}
+                            value={password2}
+                        />
+                        <PasswordComponent
+                            label={"Confirmar Nova Senha"}
+                            errorPassword={errorPassword3}
+                            setPassword={setPassword3}
+                            tipo={1}
+                            value={password3}
+                        />
+                    </Collapse>
 
                     {/* Futuro(?):  mudar imagem de exibição do user*/}
                     {/* <IconButton
@@ -318,27 +322,42 @@ const BoxRender = () => {
                         <PhotoCamera />
                     </IconButton> */}
 
-                    <LoadingButton
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        loading={loading}
-                    >
-                        {botaoFrase}
-                    </LoadingButton>
-
-                    {editar && (
+                    {!editar ? (
                         <LoadingButton
+                            type="submit"
                             fullWidth
                             variant="contained"
-                            color="error"
                             sx={{ mt: 3, mb: 2 }}
-                            disabled={loading}
-                            onClick={handleVoltar}
+                            loading={loading}
                         >
-                            {"Voltar"}
+                            {botaoFrase}
                         </LoadingButton>
+                    ) : (
+                        <Grid container style={{ fontSize: "15px" }}>
+                            <Grid item xs sx={{ mr: 2 }}>
+                                <LoadingButton
+                                    fullWidth
+                                    variant="contained"
+                                    color="error"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    disabled={loading}
+                                    onClick={handleVoltar}
+                                >
+                                    {"Voltar"}
+                                </LoadingButton>
+                            </Grid>
+                            <Grid item xs>
+                                <LoadingButton
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    loading={loading}
+                                >
+                                    {botaoFrase}
+                                </LoadingButton>
+                            </Grid>
+                        </Grid>
                     )}
                 </Box>
             </Box>
