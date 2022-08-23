@@ -95,6 +95,8 @@ const BoxRender = () => {
         setPassword3("");
         setEmail(currentUser.email);
         setName(currentUser.displayName);
+        setErro("");
+
         setBotaoFrase("Editar");
         setEditar(false);
     };
@@ -163,29 +165,34 @@ const BoxRender = () => {
             aux3 = false;
             return 0;
         }
+        if (password1 != "" && password2 == "" && password3 == "") {
+            aux3 = false;
+        }
         return verifyPassword(password1, setErrorPassword1);
     };
 
     const verificarSenha2 = () => {
+        let valReturn = 0;
         if (password2 == "") {
             aux4 = false;
             return 0;
         } else {
             if (password1 == "") {
-                setErrorPassword1("Insira sua senha atual para prosseguir.");
                 aux3 = false;
-                return 1;
+                valReturn += setErrorPassword1(
+                    "Insira sua senha atual para prosseguir."
+                );
             }
             if (password3 == "") {
                 aux5 = false;
-                return verifyConfirmPassword(
+                valReturn += verifyConfirmPassword(
                     password2,
                     password3,
                     setErrorPassword3
                 );
             }
         }
-        return verifyPassword(password2, setErrorPassword2);
+        return valReturn + verifyPassword(password2, setErrorPassword2);
     };
 
     const verificarSenha3 = () => {
