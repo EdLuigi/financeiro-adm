@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
     Alert,
+    AlertTitle,
     Box,
     Collapse,
     Container,
     Grid,
+    IconButton,
     Paper,
     TextField,
     Toolbar,
@@ -14,14 +16,13 @@ import { LoadingButton } from "@mui/lab";
 import {
     verifyEmail,
     verifyPassword,
-    handleClickShowPassword,
-    handleMouseDownPassword,
     handleErro,
     verifyConfirmPassword,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
 import { useAuth } from "../firebase/authContext";
 import { DrawerCompleto } from "../components/DrawerCompleto";
 import { PasswordComponent } from "../utils/CrendenciaisUtils/PasswordComponent";
+import CloseIcon from "@mui/icons-material/Close";
 
 const mdTheme = createTheme();
 
@@ -38,8 +39,12 @@ const BoxRender = () => {
     const [errorPassword3, setErrorPassword3] = useState("");
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
+    const [sucesso, setSucesso] = useState(false);
     const [editar, setEditar] = useState(false);
     const [botaoFrase, setBotaoFrase] = useState("Editar");
+    const [sucessoName, setSucessoName] = useState(false);
+    const [sucessoEmail, setSucessoEmail] = useState(false);
+    const [sucessoPassword, setSucessoPassword] = useState(false);
     const {
         currentUser,
         atualizarPerfil,
@@ -62,9 +67,15 @@ const BoxRender = () => {
         e.preventDefault();
         setEditar(true);
         setBotaoFrase("Confirmar");
+        setSucesso(false);
+        limparTudo();
     };
 
-    const limparErros = () => {
+    const limparTudo = () => {
+        setSucesso(false);
+        setSucessoName(false);
+        setSucessoEmail(false);
+        setSucessoPassword(false);
         setErro("");
         setErrorEmail("");
         setErrorName("");
@@ -79,18 +90,18 @@ const BoxRender = () => {
     };
 
     const handleVoltar = () => {
-        limparErros();
         setPassword1("");
         setPassword2("");
         setPassword3("");
-
+        setEmail(currentUser.email);
+        setName(currentUser.displayName);
         setBotaoFrase("Editar");
         setEditar(false);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        limparErros();
+        limparTudo();
 
         if (
             +verificarNome() +
@@ -103,22 +114,28 @@ const BoxRender = () => {
             return;
         }
 
+        if (!aux1 && !aux2 && !aux3 && !aux4 && !aux5) return;
         try {
             setLoading(true);
+
             if (aux1) {
                 await atualizarPerfil(name);
-                // console.log("atualizarPerfil");
+                setSucessoName(true);
+                console.log("atualizarPerfil");
             }
             if (aux2) {
                 await atualizarEmail(email);
-                // console.log("atualizarEmail");
+                setSucessoEmail(true);
+                console.log("atualizarEmail");
             }
             if (aux3 && aux4 && aux5) {
                 await reAutenticar(password1);
                 await atualizarSenha(password2);
-                // console.log("atualizarSenha: ");
+                setSucessoPassword(true);
+                console.log("atualizarSenha");
             }
 
+            setSucesso(true);
             handleVoltar();
         } catch (e) {
             console.log(e);
@@ -205,8 +222,41 @@ const BoxRender = () => {
                             {erro}
                         </Alert>
                     </Collapse>
-
+                    <Collapse in={sucesso}>
+                        <Alert
+                            severity="success"
+                            sx={{ mb: 1 }}
+                            action={
+                                <IconButton
+                                    aria-label="close"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        setSucesso(false);
+                                    }}
+                                >
+                                    <CloseIcon fontSize="inherit" />
+                                </IconButton>
+                            }
+                        >
+                            <AlertTitle>Sucesso!</AlertTitle>
+                            {sucessoName && (
+                                <>
+                                    - Nome de usuário atualizado.
+                                    <br />
+                                </>
+                            )}
+                            {sucessoEmail && (
+                                <>
+                                    - E-mail atualizado.
+                                    <br />
+                                </>
+                            )}
+                            {sucessoPassword && "- Senha atualizada."}
+                        </Alert>
+                    </Collapse>
                     <TextField
+                        required
                         disabled={!editar}
                         margin="normal"
                         fullWidth
@@ -217,6 +267,7 @@ const BoxRender = () => {
                         onChange={(e) => setName(e.currentTarget.value)}
                     />
                     <TextField
+                        required
                         disabled={!editar}
                         margin="normal"
                         fullWidth
@@ -250,6 +301,7 @@ const BoxRender = () => {
                         </>
                     )}
 
+                    {/* Futuro(?):  mudar imagem de exibição do user*/}
                     {/* <IconButton
                         color="primary"
                         aria-label="upload picture"
