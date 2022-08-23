@@ -8,6 +8,7 @@ export const PasswordComponent = ({
     setPassword,
     tipo,
     required,
+    value,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = (showPassword, setShowPassword) => {
@@ -33,6 +34,7 @@ export const PasswordComponent = ({
                     : ""
             }
             type={showPassword ? "text" : "password"}
+            value={value ?? ""}
             onChange={(e) => setPassword(e.currentTarget.value)}
             InputProps={{
                 endAdornment: (
