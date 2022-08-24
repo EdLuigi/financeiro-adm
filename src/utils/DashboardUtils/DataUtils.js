@@ -3,5 +3,5 @@ export const handleLancamentosFiltrado = (arr, setLancamentosFiltrado) => {
     return arr;
 };
 export const sortDates = (arr) => {
-    return [...arr].sort((a, b) => a.criado_em.toDate() < b.criado_em.toDate());
+    return arr.sort((a, b) => b.criado_em - a.criado_em);
 };
