@@ -11,11 +11,30 @@ import {
 import Title from "./Title";
 import moment from "moment";
 import { Spinner } from "react-bootstrap";
+import { MenuItem, Select } from "@mui/material";
+
+const SelectFiltro = ({ periodo, setPeriodo }) => {
+    return (
+        <Select
+            value={periodo}
+            label="Período"
+            onChange={(e) => {
+                setPeriodo(e.target.value);
+            }}
+        >
+            <MenuItem value={0}>Mais recentes</MenuItem>
+            <MenuItem value={1}>Semanal</MenuItem>
+            <MenuItem value={2}>Mensal</MenuItem>
+            <MenuItem value={3}>Anual</MenuItem>
+        </Select>
+    );
+};
 
 export default function Chart(props) {
     const theme = useTheme();
     const { data, loading } = props;
     const [values, setValues] = React.useState([{ time: "", value: 0 }]);
+    const [periodo, setPeriodo] = React.useState("");
 
     const calcVariacaoTotal = (dataReverse) => {
         let aux = 0,
@@ -54,7 +73,10 @@ export default function Chart(props) {
 
     return (
         <React.Fragment>
-            <Title>Movimentação</Title>
+            <Title>
+                Movimentação
+                <SelectFiltro periodo={periodo} setPeriodo={setPeriodo} />
+            </Title>
             {loading ? (
                 <div className="w-100 text-center align-content pt-3 mt-5">
                     <Spinner
