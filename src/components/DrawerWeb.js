@@ -19,8 +19,6 @@ import {
     SecondaryListItems,
 } from "./DashboardComponents/DrawerListItems";
 import Toolbar from "@mui/material/Toolbar";
-import DrawerWeb from "./DrawerWeb";
-import DrawerMobile from "./DrawerMobile";
 
 const drawerWidth = 200;
 
@@ -68,34 +66,64 @@ const Drawer = styled(MuiDrawer, {
     },
 }));
 
-export default function DrawerComponent(props) {
+export default function DrawerWeb(props) {
     const { title } = props;
-    const [open, setOpen] = useState(false);
-    const [width, setWidth] = useState(window.innerWidth);
-    const isMobile = width <= 768;
-
+    const [open, setOpen] = useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
-    const handleWindowSizeChange = () => {
-        setWidth(window.innerWidth);
-    };
-
-    useEffect(() => {
-        window.addEventListener("resize", handleWindowSizeChange);
-        return () => {
-            window.removeEventListener("resize", handleWindowSizeChange);
-        };
-    }, []);
-
     return (
         <div>
-            {isMobile ? (
-                <DrawerMobile title={title} />
-            ) : (
-                <DrawerWeb title={title} />
-            )}
+            <AppBar position="absolute" open={open}>
+                <Toolbar
+                    sx={{
+                        pr: "24px", // keep right padding when drawer closed
+                    }}
+                >
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={toggleDrawer}
+                        sx={{
+                            marginRight: "36px",
+                            ...(open && { display: "none" }),
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        component="h1"
+                        variant="h6"
+                        color="inherit"
+                        noWrap
+                        sx={{ flexGrow: 1 }}
+                    >
+                        {title}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Drawer variant="permanent" open={open}>
+                <Toolbar
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        px: [1],
+                    }}
+                >
+                    <IconButton onClick={toggleDrawer}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </Toolbar>
+                <Divider />
+                <List component="nav">
+                    <MainListItems />
+                    <Divider sx={{ my: 1 }} />
+                    <SecondaryListItems />
+                </List>
+            </Drawer>
         </div>
     );
 }
