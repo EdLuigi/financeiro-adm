@@ -12,6 +12,7 @@ import Deposits from "../components/DashboardComponents/Deposits";
 import Orders from "../components/DashboardComponents/Orders";
 import { DrawerCompleto } from "../components/DrawerCompleto";
 import { sortDates } from "../utils/DashboardUtils/DataUtils";
+import { Fade, Slide } from "@mui/material";
 
 const mdTheme = createTheme();
 
@@ -65,53 +66,77 @@ export default function Dashboard() {
             <DrawerCompleto title="Dashboard">
                 <Toolbar />
                 <Container maxWidth="lg" sx={{ mt: 3, mb: 4 }}>
-                    <div className="mb-3">
-                        <Title>Olá, {currentUser.displayName}.</Title>
-                    </div>
+                    <Fade in={currentUser.displayName != null} className="mb-3">
+                        <div>
+                            <Title>Olá, {currentUser.displayName}.</Title>
+                        </div>
+                    </Fade>
+
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={8} lg={9}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    height: 240,
-                                }}
-                            >
-                                <Chart data={lancamentos} loading={loading} />
-                            </Paper>
+                            <Slide in={true} direction="right">
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        height: 240,
+                                    }}
+                                >
+                                    <Chart
+                                        data={lancamentos}
+                                        loading={loading}
+                                    />
+                                </Paper>
+                            </Slide>
                         </Grid>
-                        {/* Recent Deposits */}
+
                         <Grid item xs={12} md={4} lg={3}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    height: 240,
+                            <Slide
+                                in={true}
+                                style={{
+                                    transitionDelay: "200ms",
                                 }}
+                                direction="left"
                             >
-                                <Deposits
-                                    data={lancamentos}
-                                    loading={loading}
-                                    setLoading={setLoading}
-                                />
-                            </Paper>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        height: 240,
+                                    }}
+                                >
+                                    <Deposits
+                                        data={lancamentos}
+                                        loading={loading}
+                                        setLoading={setLoading}
+                                    />
+                                </Paper>
+                            </Slide>
                         </Grid>
                         {/* Recent Orders */}
                         <Grid item xs={12}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: "flex",
-                                    flexDirection: "column",
+                            <Slide
+                                in={true}
+                                style={{
+                                    transitionDelay: "400ms",
                                 }}
+                                direction="up"
                             >
-                                <Orders
-                                    data={lancamentos.slice(0, 5)}
-                                    loading={loading}
-                                />
-                            </Paper>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                    }}
+                                >
+                                    <Orders
+                                        data={lancamentos.slice(0, 5)}
+                                        loading={loading}
+                                    />
+                                </Paper>
+                            </Slide>
                         </Grid>
                     </Grid>
                 </Container>
