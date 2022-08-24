@@ -9,7 +9,7 @@ export default function ListarLancamentos(props) {
         lancamentosFiltrado,
         mensagem,
         loading,
-        handleLancamentosFiltrado,
+        aplicarFiltro,
         handleDelete,
     } = props;
 
@@ -26,38 +26,38 @@ export default function ListarLancamentos(props) {
     };
 
     const filtroTodos = () => {
-        handleLancamentosFiltrado(lancamentos);
+        aplicarFiltro(lancamentos);
     };
 
     const filtroEntradas = () => {
         const newArr = [...lancamentos].filter((i) => i.tipo == 0);
-        handleLancamentosFiltrado(newArr);
+        aplicarFiltro(newArr);
     };
 
     const filtroSaidas = () => {
         const newArr = [...lancamentos].filter((i) => i.tipo == 1);
-        handleLancamentosFiltrado(newArr);
+        aplicarFiltro(newArr);
     };
 
     const filtroTodosAntigas = () => {
         const newArr = [...lancamentos].sort(
             (a, b) => a.criado_em.toDate() > b.criado_em.toDate()
         );
-        handleLancamentosFiltrado(newArr);
+        aplicarFiltro(newArr);
     };
 
     const filtroEntradasAntigas = () => {
         const newArr = [...lancamentos]
             .sort((a, b) => a.criado_em.toDate() > b.criado_em.toDate())
             .filter((i) => i.tipo == 0);
-        handleLancamentosFiltrado(newArr);
+        aplicarFiltro(newArr);
     };
 
     const filtroSaidasAntigas = () => {
         const newArr = [...lancamentos]
             .sort((a, b) => a.criado_em.toDate() > b.criado_em.toDate())
             .filter((i) => i.tipo == 1);
-        handleLancamentosFiltrado(newArr);
+        aplicarFiltro(newArr);
     };
 
     return (

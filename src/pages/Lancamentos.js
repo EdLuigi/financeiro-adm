@@ -59,6 +59,10 @@ export default function Lancamentos() {
         setLoading(false);
     };
 
+    const aplicarFiltro = (filtro) => {
+        handleLancamentosFiltrado(filtro, setLancamentosFiltrado);
+    };
+
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -111,9 +115,7 @@ export default function Lancamentos() {
                             mensagem={mensagem}
                             handleDelete={handleDelete}
                             loading={loading}
-                            handleLancamentosFiltrado={
-                                handleLancamentosFiltrado
-                            }
+                            aplicarFiltro={aplicarFiltro}
                         />
                     </Container>
                 )}
