@@ -45,6 +45,7 @@ const BoxRender = () => {
     const [sucessoName, setSucessoName] = useState(false);
     const [sucessoEmail, setSucessoEmail] = useState(false);
     const [sucessoPassword, setSucessoPassword] = useState(false);
+    const [info, setInfo] = useState(false);
     const {
         currentUser,
         atualizarPerfil,
@@ -87,9 +88,12 @@ const BoxRender = () => {
         aux3 = true;
         aux4 = true;
         aux5 = true;
+        setInfo(false);
     };
 
     const handleVoltar = () => {
+        setInfo(false);
+
         setPassword1("");
         setPassword2("");
         setPassword3("");
@@ -116,7 +120,13 @@ const BoxRender = () => {
             return;
         }
 
-        if (!aux1 && !aux2 && !aux3 && !aux4 && !aux5) return;
+        if (!aux1 && !aux2 && !aux3 && !aux4 && !aux5) {
+            setInfo(true);
+            const timer = setTimeout(() => {
+                setInfo(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
         try {
             setLoading(true);
 
@@ -227,6 +237,11 @@ const BoxRender = () => {
                     onSubmit={editar ? handleSubmit : handleEditar}
                     noValidate
                 >
+                    <Collapse in={info}>
+                        <Alert severity="info" sx={{ mb: 1 }}>
+                            {"Faça alguma alteração para prosseguir."}
+                        </Alert>
+                    </Collapse>
                     <Collapse in={erro !== ""}>
                         <Alert severity="error" sx={{ mb: 1 }}>
                             {erro}
