@@ -8,9 +8,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useTheme } from "@emotion/react";
-import { css } from "@emotion/css";
-import { useMemo } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import {
     MainListItems,
@@ -39,32 +36,8 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-const useClasses = (stylesElement) => {
-    const theme = useTheme();
-    return useMemo(() => {
-        const rawClasses =
-            typeof stylesElement === "function"
-                ? stylesElement(theme)
-                : stylesElement;
-        const prepared = {};
-
-        Object.entries(rawClasses).forEach(([key, value = {}]) => {
-            prepared[key] = css(value);
-        });
-
-        return prepared;
-    }, [stylesElement, theme]);
-};
-
-const useStyles = {
-    list: {
-        width: 350,
-    },
-};
-
 export default function DrawerMobile(props) {
     const { title } = props;
-    const classes = useClasses(useStyles);
     const [open, setOpen] = useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -72,7 +45,23 @@ export default function DrawerMobile(props) {
 
     return (
         <div>
-            <AppBar position="absolute" open={open}>
+            {open && (
+                <AppBar position="absolute" open={open}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={toggleDrawer}
+                        sx={{
+                            marginRight: "36px",
+                            ...(open && { display: "none" }),
+                        }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </AppBar>
+            )}
+            <AppBar>
                 <Toolbar
                     sx={{
                         pr: "24px", // keep right padding when drawer closed
@@ -85,7 +74,6 @@ export default function DrawerMobile(props) {
                         onClick={toggleDrawer}
                         sx={{
                             marginRight: "36px",
-                            ...(open && { display: "none" }),
                         }}
                     >
                         <MenuIcon />

@@ -20,7 +20,7 @@ import {
 } from "./DashboardComponents/DrawerListItems";
 import Toolbar from "@mui/material/Toolbar";
 
-const drawerWidth = 200;
+const drawerWidth = 220;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
