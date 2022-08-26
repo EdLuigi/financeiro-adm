@@ -52,23 +52,16 @@ export default function ListarLancamentos(props) {
     };
 
     const filtroTodosAntigas = () => {
-        const newArr = [...lancamentos].sort(
-            (a, b) => a.criado_em.toDate() > b.criado_em.toDate()
-        );
-        aplicarFiltro(newArr);
+        aplicarFiltro([...lancamentos].reverse());
     };
 
     const filtroEntradasAntigas = () => {
-        const newArr = [...lancamentos]
-            .sort((a, b) => a.criado_em.toDate() > b.criado_em.toDate())
-            .filter((i) => i.tipo == 0);
+        const newArr = [...lancamentos].reverse().filter((i) => i.tipo == 0);
         aplicarFiltro(newArr);
     };
 
     const filtroSaidasAntigas = () => {
-        const newArr = [...lancamentos]
-            .sort((a, b) => a.criado_em.toDate() > b.criado_em.toDate())
-            .filter((i) => i.tipo == 1);
+        const newArr = [...lancamentos].reverse().filter((i) => i.tipo == 1);
         aplicarFiltro(newArr);
     };
 
