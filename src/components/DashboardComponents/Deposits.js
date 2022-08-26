@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import NumberFormat from "react-number-format";
 import { Spinner } from "react-bootstrap";
+import { TableContainer } from "@mui/material";
 
 export default function Deposits(props) {
     const { data, loading, setLoading } = props;
@@ -50,7 +51,7 @@ export default function Deposits(props) {
                     ></Spinner>
                 </div>
             ) : (
-                <>
+                <TableContainer>
                     <Typography component="p" variant="h4">
                         <NumberFormat
                             value={total}
@@ -91,7 +92,7 @@ export default function Deposits(props) {
                         em {contagemSaidas}{" "}
                         {contagemSaidas == 1 ? "retirada" : "retiradas"}.
                     </Typography>
-                </>
+                </TableContainer>
             )}
         </React.Fragment>
     );

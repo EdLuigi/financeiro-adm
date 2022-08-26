@@ -110,7 +110,7 @@ export default function DrawerMobile(props) {
                 <Divider />
                 <List component="nav">
                     <MainListItems />
-                    <Divider sx={{ my: 1 }} />
+                    <Divider sx={{ my: 1, mx: 2 }} />
                     <SecondaryListItems />
                 </List>
             </SwipeableDrawer>
