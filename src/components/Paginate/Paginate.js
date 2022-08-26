@@ -1,3 +1,4 @@
+import { TableContainer } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ListagemCard from "../ListagemCard";
@@ -25,7 +26,7 @@ export default function Paginate(props) {
     }, [data, currentPage]);
 
     return (
-        <div>
+        <TableContainer>
             <div>
                 <ListagemCard
                     data={currentItems}
@@ -34,13 +35,13 @@ export default function Paginate(props) {
                 />
                 {currentItems.length == 0 ? "Nada pra ver aqui :^)" : <></>}
             </div>
-            <div className="d-flex align-items-center justify-content-center p-4">
+            <div className="d-flex align-items-center justify-content-center pt-4">
                 <PaginateNav
                     data={data}
                     itemsPerPage={itemsPerPage}
                     currentPage={currentPage}
                 />
             </div>
-        </div>
+        </TableContainer>
     );
 }

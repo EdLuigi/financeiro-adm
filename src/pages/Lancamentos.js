@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { listar } from "../firebase/firestore";
 import { useAuth } from "../firebase/authContext";
 import { deletar } from "../firebase/firestore";
-import { Spinner } from "react-bootstrap";
 import ListarLancamentos from "../components/ListarLancamentos";
 import Container from "@mui/material/Container";
 import {
@@ -10,6 +9,9 @@ import {
     sortDates,
 } from "../utils/DashboardUtils/DataUtils";
 import { DrawerCompleto } from "../components/DrawerCompleto";
+import { createTheme, ThemeProvider, Toolbar } from "@mui/material";
+
+const mdTheme = createTheme();
 
 export default function Lancamentos() {
     const [lancamentos, setLancamentos] = useState([]);
@@ -83,7 +85,7 @@ export default function Lancamentos() {
                 )
             );
 
-            setMensagem("- Você não possui lançamentos -");
+            setMensagem("Você não possui lançamentos");
         } catch (error) {
             console.log("erro: " + error);
             setMensagem("Algo deu errado :(");
@@ -96,30 +98,24 @@ export default function Lancamentos() {
     }, []);
 
     return (
-        <DrawerCompleto title="Lista de Lançamentos">
-            <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
-                {loading ? (
-                    <div className="w-100 text-center mt-5 pt-4">
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            variant="primary"
-                        ></Spinner>
-                        {/* <h5 className="mt-3">Carregando dados...</h5> */}
-                    </div>
-                ) : (
-                    <Container className=" align-items-center justify-content-center p-4">
-                        <ListarLancamentos
-                            lancamentos={lancamentos}
-                            lancamentosFiltrado={lancamentosFiltrado}
-                            mensagem={mensagem}
-                            handleDelete={handleDelete}
-                            loading={loading}
-                            aplicarFiltro={aplicarFiltro}
-                        />
-                    </Container>
-                )}
-            </Container>
-        </DrawerCompleto>
+        <ThemeProvider theme={mdTheme}>
+            <DrawerCompleto title="Lista de Lançamentos">
+                <Toolbar />
+                <Container
+                    maxWidth="lg"
+                    sx={{ mt: 4, mb: 4 }}
+                    className=" align-items-center justify-content-center"
+                >
+                    <ListarLancamentos
+                        lancamentos={lancamentos}
+                        lancamentosFiltrado={lancamentosFiltrado}
+                        mensagem={mensagem}
+                        handleDelete={handleDelete}
+                        loading={loading}
+                        aplicarFiltro={aplicarFiltro}
+                    />
+                </Container>
+            </DrawerCompleto>
+        </ThemeProvider>
     );
 }

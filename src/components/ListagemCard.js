@@ -4,6 +4,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableContainer,
     TableHead,
     TableRow,
 } from "@mui/material";
@@ -15,8 +16,8 @@ export default function ListagemCard(props) {
     const { data, handleDelete, loading } = props;
 
     return (
-        <div style={{ paddingLeft: "5%", paddingRight: "5%" }}>
-            <Table size="medium">
+        <div>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>

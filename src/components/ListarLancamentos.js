@@ -1,5 +1,14 @@
-import React from "react";
-import { Button, Card } from "react-bootstrap";
+import {
+    Collapse,
+    FormControl,
+    Grow,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Paginate from "./Paginate/Paginate";
 
@@ -12,16 +21,19 @@ export default function ListarLancamentos(props) {
         aplicarFiltro,
         handleDelete,
     } = props;
-
+    const [filtro, setFiltro] = useState(0);
     const navigate = useNavigate();
+    const [itensProntos, setItensProntos] = useState(false);
+
     const handleFiltro = (e) => {
-        const filtro = e.target.value;
-        if (filtro == 0) filtroTodos();
-        if (filtro == 1) filtroEntradas();
-        if (filtro == 2) filtroSaidas();
-        if (filtro == 3) filtroTodosAntigas();
-        if (filtro == 4) filtroEntradasAntigas();
-        if (filtro == 5) filtroSaidasAntigas();
+        let item = e.target.value;
+        setFiltro(item);
+        if (item == 0) filtroTodos();
+        if (item == 1) filtroEntradas();
+        if (item == 2) filtroSaidas();
+        if (item == 3) filtroTodosAntigas();
+        if (item == 4) filtroEntradasAntigas();
+        if (item == 5) filtroSaidasAntigas();
         navigate(`/listar`);
     };
 
@@ -60,41 +72,71 @@ export default function ListarLancamentos(props) {
         aplicarFiltro(newArr);
     };
 
-    return (
-        <>
-            <Card className="p-5 pb-0">
-                <Card.Body>
-                    <div>
-                        <label style={{ marginRight: "10px" }}>
-                            <h6>Filtro:</h6>
-                        </label>
-                        <select onChange={(e) => handleFiltro(e)}>
-                            <option value={0}>Todos</option>
-                            <option value={1}>Entradas</option>
-                            <option value={2}>Saídas</option>
-                            <option value={3}>Todos (mais antigas)</option>
-                            <option value={4}>Entradas (mais antigas)</option>
-                            <option value={5}>Saídas (mais antigas)</option>
-                        </select>
-                    </div>
+    useEffect(() => {
+        if (loading == false) {
+            const timer = setTimeout(() => {
+                setItensProntos(true);
+            }, 200);
+            return () => clearTimeout(timer);
+        }
+        if (loading == true) {
+            setItensProntos(false);
+        }
+    }, [loading]);
 
-                    <div>
-                        {lancamentosFiltrado.length == 0 ? (
-                            <div className="d-flex justify-content-center align-content-center mt-5">
-                                <h5 style={{ color: "grey" }}>{mensagem}</h5>
-                            </div>
-                        ) : (
-                            <div>
-                                <Paginate
-                                    data={lancamentosFiltrado}
-                                    handleDelete={handleDelete}
-                                    loading={loading}
-                                ></Paginate>
-                            </div>
-                        )}
+    return (
+        <Grow in={true}>
+            <Paper sx={{ pt: 6, pb: 5, pl: "7%", pr: "7%" }}>
+                <FormControl sx={{ minWidth: 200, mb: 3 }} size="small">
+                    <InputLabel>Filtro</InputLabel>
+                    <Select value={filtro} onChange={(e) => handleFiltro(e)}>
+                        <MenuItem value={0}>Todos</MenuItem>
+                        <MenuItem value={1}>Entradas</MenuItem>
+                        <MenuItem value={2}>Saídas</MenuItem>
+                        <MenuItem value={3}>Todos (mais antigas)</MenuItem>
+                        <MenuItem value={4}>Entradas (mais antigas)</MenuItem>
+                        <MenuItem value={5}>Saídas (mais antigas)</MenuItem>
+                    </Select>
+                </FormControl>
+
+                <Collapse in={loading}>
+                    <div className="w-100 text-center mt-3 mb-3">
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            variant="primary"
+                        ></Spinner>
+                        <h6 className="mt-3">Carregando dados...</h6>
                     </div>
-                </Card.Body>
-            </Card>
-        </>
+                </Collapse>
+
+                <Collapse
+                    in={
+                        !loading &&
+                        lancamentosFiltrado.length == 0 &&
+                        itensProntos
+                    }
+                >
+                    <div className="d-flex justify-content-center align-content-center mt-5 mb-5">
+                        <h6 style={{ color: "grey" }}>{mensagem}</h6>
+                    </div>
+                </Collapse>
+
+                <Collapse
+                    in={
+                        !loading &&
+                        lancamentosFiltrado.length != 0 &&
+                        itensProntos
+                    }
+                >
+                    <Paginate
+                        data={lancamentosFiltrado}
+                        handleDelete={handleDelete}
+                        loading={loading}
+                        mensagem={mensagem}
+                    />
+                </Collapse>
+            </Paper>
+        </Grow>
     );
 }
