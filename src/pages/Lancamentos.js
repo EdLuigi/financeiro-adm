@@ -57,6 +57,8 @@ export default function Lancamentos() {
             }
         } catch (error) {
             console.log("erro: " + error);
+            setMensagem("Algo deu errado :(");
+            setLancamentosFiltrado([]);
         }
         setLoading(false);
     };

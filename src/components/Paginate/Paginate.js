@@ -7,7 +7,7 @@ import PaginateNav from "./PaginateNav";
 export default function Paginate(props) {
     const { data, handleDelete, loading } = props;
     const [currentItems, setCurrentItems] = useState([]);
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
     const { index } = useParams();
     const currentPage = !isNaN(index) ? index : 1;
     const navigate = useNavigate();

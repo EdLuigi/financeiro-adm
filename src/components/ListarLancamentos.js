@@ -89,7 +89,11 @@ export default function ListarLancamentos(props) {
             <Paper sx={{ pt: 6, pb: 5, pl: "7%", pr: "7%" }}>
                 <FormControl sx={{ minWidth: 200, mb: 3 }} size="small">
                     <InputLabel>Filtro</InputLabel>
-                    <Select value={filtro} onChange={(e) => handleFiltro(e)}>
+                    <Select
+                        label="Filtro"
+                        value={filtro}
+                        onChange={(e) => handleFiltro(e)}
+                    >
                         <MenuItem value={0}>Todos</MenuItem>
                         <MenuItem value={1}>Entradas</MenuItem>
                         <MenuItem value={2}>Saídas</MenuItem>
