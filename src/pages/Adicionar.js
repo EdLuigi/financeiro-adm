@@ -155,14 +155,15 @@ export default function Adicionar() {
                     <Grow in={true}>
                         <Paper sx={{ p: 6, paddingInline: "15%" }}>
                             <Collapse in={erro != ""}>
-                                <Alert severity="error">{erro}</Alert>
+                                <Alert severity="error" sx={{ mb: 1 }}>
+                                    {erro}
+                                </Alert>
                             </Collapse>
-                            <Collapse in={sucesso} sx={{ mb: 2 }}>
-                                <Alert severity="success">
+                            <Collapse in={sucesso}>
+                                <Alert severity="success" sx={{ mb: 1 }}>
                                     {"Lançamento adicionado com sucesso."}
                                 </Alert>
                             </Collapse>
-
                             <Box
                                 component="form"
                                 onSubmit={handleSubmit}
