@@ -51,6 +51,7 @@ const BoxRender = () => {
     const [sucessoEmail, setSucessoEmail] = useState(false);
     const [sucessoPassword, setSucessoPassword] = useState(false);
     const [info, setInfo] = useState(false);
+    const [confirmButtonDisabled, setConfirmButtonDisabled] = useState(false);
     const {
         currentUser,
         atualizarPerfil,
@@ -127,8 +128,10 @@ const BoxRender = () => {
 
         if (!aux1 && !aux2 && !aux3 && !aux4 && !aux5) {
             setInfo(true);
+            setConfirmButtonDisabled(true);
             const timer = setTimeout(() => {
                 setInfo(false);
+                setConfirmButtonDisabled(false);
             }, 3000);
             return () => clearTimeout(timer);
         }
@@ -359,6 +362,7 @@ const BoxRender = () => {
                     </Grid>
                     <Grid item xs>
                         <LoadingButton
+                            disabled={confirmButtonDisabled}
                             type="submit"
                             fullWidth
                             variant="contained"
