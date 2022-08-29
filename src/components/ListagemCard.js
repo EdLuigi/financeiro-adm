@@ -44,16 +44,16 @@ export default function ListagemCard(props) {
                 <Table size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>
+                            <StyledTableCell>
                                 <strong>Data</strong>
-                            </TableCell>
-                            <TableCell>
+                            </StyledTableCell>
+                            <StyledTableCell>
                                 <strong>Tipo</strong>
-                            </TableCell>
-                            <TableCell>
+                            </StyledTableCell>
+                            <StyledTableCell>
                                 <strong>Valor</strong>
-                            </TableCell>
-                            <TableCell>{""}</TableCell>
+                            </StyledTableCell>
+                            <StyledTableCell>{""}</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
