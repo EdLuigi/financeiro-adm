@@ -35,7 +35,7 @@ export default function Chart(props) {
     };
 
     const limiteValores = (valores) => {
-        const limite = 7;
+        const limite = 5;
         if (valores.length >= limite) {
             return valores.slice(valores.length - limite, valores.length);
         } else {
