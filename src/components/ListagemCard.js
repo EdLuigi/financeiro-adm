@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
+import { Spinner } from "react-bootstrap";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -22,6 +23,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
+        padding: "0px 16px",
     },
 }));
 
@@ -35,13 +37,76 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+const ItemRender = ({ item, handleDelete, loading }) => {
+    const [spinnerState, setSpinnerState] = React.useState(false);
+
+    const deletar = async (item) => {
+        try {
+            setSpinnerState(true);
+            await handleDelete(item);
+        } catch (e) {
+            console.log(e);
+        }
+        setSpinnerState(false);
+    };
+
+    return (
+        <>
+            <StyledTableCell>
+                {moment(item.criado_em.toDate()).format("DD/MM/YYYY")}
+            </StyledTableCell>
+            <StyledTableCell>
+                {item.tipo == "0" ? "Entrada" : "Saída"}
+            </StyledTableCell>
+            <StyledTableCell>
+                <NumberFormat
+                    value={item.valor}
+                    thousandSeparator={"."}
+                    decimalSeparator={","}
+                    prefix={"R$"}
+                    decimalScale={2}
+                    fixedDecimalScale={true}
+                    displayType={"text"}
+                    style={
+                        item.tipo == 0 ? { color: "green" } : { color: "red" }
+                    }
+                />
+            </StyledTableCell>
+            <StyledTableCell>
+                <div style={{ paddingInline: 0 }}>
+                    {!spinnerState ? (
+                        <IconButton
+                            sx={{ p: 0 }}
+                            aria-label="deletar"
+                            component="label"
+                            disabled={loading}
+                            onClick={() => {
+                                deletar(item);
+                            }}
+                        >
+                            <DeleteIcon color="error" />
+                        </IconButton>
+                    ) : (
+                        <Spinner
+                            animation="border"
+                            variant="secondary"
+                            size="sm"
+                            className="p-2"
+                        />
+                    )}
+                </div>
+            </StyledTableCell>
+        </>
+    );
+};
+
 export default function ListagemCard(props) {
     const { data, handleDelete, loading } = props;
 
     return (
         <div>
             <TableContainer component={Paper}>
-                <Table size="small">
+                <Table>
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>
@@ -58,44 +123,15 @@ export default function ListagemCard(props) {
                     </TableHead>
                     <TableBody>
                         {data.map((item) => (
-                            <StyledTableRow key={item.id}>
-                                <StyledTableCell>
-                                    {moment(item.criado_em.toDate()).format(
-                                        "DD/MM/YYYY"
-                                    )}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {item.tipo == "0" ? "Entrada" : "Saída"}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <NumberFormat
-                                        value={item.valor}
-                                        thousandSeparator={"."}
-                                        decimalSeparator={","}
-                                        prefix={"R$"}
-                                        decimalScale={2}
-                                        fixedDecimalScale={true}
-                                        displayType={"text"}
-                                        style={
-                                            item.tipo == 0
-                                                ? { color: "green" }
-                                                : { color: "red" }
-                                        }
-                                    />
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <IconButton
-                                        color="error"
-                                        aria-label="deletar"
-                                        component="label"
-                                        disabled={loading}
-                                        onClick={() => {
-                                            handleDelete(item);
-                                        }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </StyledTableCell>
+                            <StyledTableRow
+                                key={item.id}
+                                style={{ height: 50 }}
+                            >
+                                <ItemRender
+                                    item={item}
+                                    loading={loading}
+                                    handleDelete={handleDelete}
+                                />
                             </StyledTableRow>
                         ))}
                     </TableBody>

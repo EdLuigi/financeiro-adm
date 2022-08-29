@@ -78,62 +78,52 @@ export default function ListarLancamentos(props) {
     }, [loading]);
 
     return (
-        <Grow in={true}>
-            <Paper sx={{ pt: 6, pb: 5, pl: "7%", pr: "7%" }}>
-                <FormControl sx={{ minWidth: 200, mb: 3 }} size="small">
-                    <InputLabel>Filtro</InputLabel>
-                    <Select
-                        label="Filtro"
-                        value={filtro}
-                        onChange={(e) => handleFiltro(e)}
-                    >
-                        <MenuItem value={0}>Todos</MenuItem>
-                        <MenuItem value={1}>Entradas</MenuItem>
-                        <MenuItem value={2}>Saídas</MenuItem>
-                        <MenuItem value={3}>Todos (mais antigas)</MenuItem>
-                        <MenuItem value={4}>Entradas (mais antigas)</MenuItem>
-                        <MenuItem value={5}>Saídas (mais antigas)</MenuItem>
-                    </Select>
-                </FormControl>
-
-                <Collapse in={loading}>
-                    <div className="w-100 text-center mt-3 mb-3">
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            variant="primary"
-                        ></Spinner>
-                        <h6 className="mt-3">Carregando dados...</h6>
-                    </div>
-                </Collapse>
-
-                <Collapse
-                    in={
-                        !loading &&
-                        lancamentosFiltrado.length == 0 &&
-                        itensProntos
-                    }
+        <>
+            <FormControl sx={{ minWidth: 200, mb: 3 }} size="small">
+                <InputLabel>Filtro</InputLabel>
+                <Select
+                    label="Filtro"
+                    value={filtro}
+                    onChange={(e) => handleFiltro(e)}
                 >
-                    <div className="d-flex justify-content-center align-content-center mt-5 mb-5">
-                        <h6 style={{ color: "grey" }}>{mensagem}</h6>
-                    </div>
-                </Collapse>
+                    <MenuItem value={0}>Todos</MenuItem>
+                    <MenuItem value={1}>Entradas</MenuItem>
+                    <MenuItem value={2}>Saídas</MenuItem>
+                    <MenuItem value={3}>Todos (mais antigas)</MenuItem>
+                    <MenuItem value={4}>Entradas (mais antigas)</MenuItem>
+                    <MenuItem value={5}>Saídas (mais antigas)</MenuItem>
+                </Select>
+            </FormControl>
 
-                <Collapse
-                    in={
-                        !loading &&
-                        lancamentosFiltrado.length != 0 &&
-                        itensProntos
-                    }
-                >
-                    <Paginate
-                        data={lancamentosFiltrado}
-                        handleDelete={handleDelete}
-                        loading={loading}
-                        mensagem={mensagem}
-                    />
-                </Collapse>
-            </Paper>
-        </Grow>
+            <Collapse in={loading}>
+                <div className="w-100 text-center mt-3 mb-3">
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        variant="primary"
+                    ></Spinner>
+                    <h6 className="mt-3">Carregando dados...</h6>
+                </div>
+            </Collapse>
+
+            <Collapse
+                in={!loading && lancamentosFiltrado.length == 0 && itensProntos}
+            >
+                <div className="d-flex justify-content-center align-content-center mt-5 mb-5">
+                    <h6 style={{ color: "grey" }}>{mensagem}</h6>
+                </div>
+            </Collapse>
+
+            <Collapse
+                in={!loading && lancamentosFiltrado.length != 0 && itensProntos}
+            >
+                <Paginate
+                    data={lancamentosFiltrado}
+                    handleDelete={handleDelete}
+                    loading={loading}
+                    mensagem={mensagem}
+                />
+            </Collapse>
+        </>
     );
 }

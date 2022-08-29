@@ -9,7 +9,7 @@ import {
     sortDates,
 } from "../utils/DashboardUtils/DataUtils";
 import { DrawerCompleto } from "../components/DrawerCompleto";
-import { createTheme, ThemeProvider, Toolbar } from "@mui/material";
+import { createTheme, Grow, Paper, ThemeProvider } from "@mui/material";
 import {
     CONTAINER_MARGIN_BOTTOM,
     CONTAINER_MARGIN_TOP,
@@ -39,7 +39,7 @@ export default function Lancamentos() {
 
     const handleDelete = async (i) => {
         try {
-            setLoading(true);
+            // setLoading(true);
             await deletar(i.id);
 
             //Editar arrays
@@ -64,7 +64,7 @@ export default function Lancamentos() {
             setMensagem("Algo deu errado :(");
             setLancamentosFiltrado([]);
         }
-        setLoading(false);
+        // setLoading(false);
     };
 
     const aplicarFiltro = (filtro) => {
@@ -114,14 +114,18 @@ export default function Lancamentos() {
                     }}
                     className=" align-items-center justify-content-center"
                 >
-                    <ListarLancamentos
-                        lancamentos={lancamentos}
-                        lancamentosFiltrado={lancamentosFiltrado}
-                        mensagem={mensagem}
-                        handleDelete={handleDelete}
-                        loading={loading}
-                        aplicarFiltro={aplicarFiltro}
-                    />
+                    <Grow in={true}>
+                        <Paper sx={{ pt: 6, pb: 5, pl: "7%", pr: "7%" }}>
+                            <ListarLancamentos
+                                lancamentos={lancamentos}
+                                lancamentosFiltrado={lancamentosFiltrado}
+                                mensagem={mensagem}
+                                handleDelete={handleDelete}
+                                loading={loading}
+                                aplicarFiltro={aplicarFiltro}
+                            />
+                        </Paper>
+                    </Grow>
                 </Container>
             </DrawerCompleto>
         </ThemeProvider>
