@@ -65,7 +65,7 @@ export default function Dashboard() {
         <ThemeProvider theme={mdTheme}>
             <DrawerCompleto title="Dashboard">
                 <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 3, mb: 4 }}>
+                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                     <Fade in={currentUser.displayName != null} className="mb-3">
                         <div>
                             <Title>Olá, {currentUser.displayName}.</Title>

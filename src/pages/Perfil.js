@@ -6,6 +6,7 @@ import {
     Collapse,
     Container,
     Grid,
+    Grow,
     IconButton,
     Paper,
     TextField,
@@ -223,112 +224,103 @@ const BoxRender = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
-                <Box
-                    component="form"
-                    onSubmit={editar ? handleSubmit : handleEditar}
-                    noValidate
-                >
-                    <Collapse in={info}>
-                        <Alert severity="info" sx={{ mb: 1 }}>
-                            {"Faça alguma alteração para prosseguir."}
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={erro !== ""}>
-                        <Alert severity="error" sx={{ mb: 1 }}>
-                            {erro}
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={sucesso}>
-                        <Alert
-                            severity="success"
-                            sx={{ mb: 1 }}
-                            action={
-                                <IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={() => {
-                                        setSucesso(false);
-                                    }}
-                                >
-                                    <CloseIcon fontSize="inherit" />
-                                </IconButton>
-                            }
+        <Box
+            component="form"
+            onSubmit={editar ? handleSubmit : handleEditar}
+            noValidate
+        >
+            <Collapse in={info}>
+                <Alert severity="info" sx={{ mb: 1 }}>
+                    {"Faça alguma alteração para prosseguir."}
+                </Alert>
+            </Collapse>
+            <Collapse in={erro !== ""}>
+                <Alert severity="error" sx={{ mb: 1 }}>
+                    {erro}
+                </Alert>
+            </Collapse>
+            <Collapse in={sucesso}>
+                <Alert
+                    severity="success"
+                    sx={{ mb: 1 }}
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setSucesso(false);
+                            }}
                         >
-                            <AlertTitle>Sucesso!</AlertTitle>
-                            {sucessoName && (
-                                <>
-                                    - Nome de usuário atualizado.
-                                    <br />
-                                </>
-                            )}
-                            {sucessoEmail && (
-                                <>
-                                    - E-mail atualizado.
-                                    <br />
-                                </>
-                            )}
-                            {sucessoPassword && "- Senha atualizada."}
-                        </Alert>
-                    </Collapse>
-                    <TextField
-                        required
-                        disabled={!editar}
-                        margin="normal"
-                        fullWidth
-                        label="Nome Completo"
-                        error={errorName == "" ? false : true}
-                        helperText={errorName}
-                        value={name ?? ""}
-                        onChange={(e) => setName(e.currentTarget.value)}
-                    />
-                    <TextField
-                        required
-                        disabled={!editar}
-                        margin="normal"
-                        fullWidth
-                        label="E-mail"
-                        error={errorEmail == "" ? false : true}
-                        helperText={errorEmail}
-                        value={email ?? ""}
-                        onChange={(e) => setEmail(e.currentTarget.value)}
-                    />
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                >
+                    <AlertTitle>Sucesso!</AlertTitle>
+                    {sucessoName && (
+                        <>
+                            - Nome de usuário atualizado.
+                            <br />
+                        </>
+                    )}
+                    {sucessoEmail && (
+                        <>
+                            - E-mail atualizado.
+                            <br />
+                        </>
+                    )}
+                    {sucessoPassword && "- Senha atualizada."}
+                </Alert>
+            </Collapse>
+            <TextField
+                required
+                disabled={!editar}
+                margin="normal"
+                fullWidth
+                label="Nome Completo"
+                error={errorName == "" ? false : true}
+                helperText={errorName}
+                value={name ?? ""}
+                onChange={(e) => setName(e.currentTarget.value)}
+            />
+            <TextField
+                required
+                disabled={!editar}
+                margin="normal"
+                fullWidth
+                label="E-mail"
+                error={errorEmail == "" ? false : true}
+                helperText={errorEmail}
+                value={email ?? ""}
+                onChange={(e) => setEmail(e.currentTarget.value)}
+            />
 
-                    <Collapse in={editar}>
-                        <PasswordComponent
-                            label={"Senha Atual"}
-                            errorPassword={errorPassword1}
-                            setPassword={setPassword1}
-                            tipo={1}
-                            value={password1}
-                        />
-                        <PasswordComponent
-                            label={"Nova Senha"}
-                            errorPassword={errorPassword2}
-                            setPassword={setPassword2}
-                            tipo={0}
-                            value={password2}
-                        />
-                        <PasswordComponent
-                            label={"Confirmar Nova Senha"}
-                            errorPassword={errorPassword3}
-                            setPassword={setPassword3}
-                            tipo={1}
-                            value={password3}
-                        />
-                    </Collapse>
+            <Collapse in={editar}>
+                <PasswordComponent
+                    label={"Senha Atual"}
+                    errorPassword={errorPassword1}
+                    setPassword={setPassword1}
+                    tipo={1}
+                    value={password1}
+                />
+                <PasswordComponent
+                    label={"Nova Senha"}
+                    errorPassword={errorPassword2}
+                    setPassword={setPassword2}
+                    tipo={0}
+                    value={password2}
+                />
+                <PasswordComponent
+                    label={"Confirmar Nova Senha"}
+                    errorPassword={errorPassword3}
+                    setPassword={setPassword3}
+                    tipo={1}
+                    value={password3}
+                />
+            </Collapse>
 
-                    {/* Futuro(?):  mudar imagem de exibição do user*/}
-                    {/* <IconButton
+            {/* Futuro(?):  mudar imagem de exibição do user*/}
+            {/* <IconButton
                         color="primary"
                         aria-label="upload picture"
                         component="label"
@@ -337,7 +329,31 @@ const BoxRender = () => {
                         <PhotoCamera />
                     </IconButton> */}
 
-                    {!editar ? (
+            {!editar ? (
+                <LoadingButton
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    loading={loading}
+                >
+                    {botaoFrase}
+                </LoadingButton>
+            ) : (
+                <Grid container style={{ fontSize: "15px" }}>
+                    <Grid item xs sx={{ mr: 2 }}>
+                        <LoadingButton
+                            fullWidth
+                            variant="contained"
+                            color="error"
+                            sx={{ mt: 3, mb: 2 }}
+                            disabled={loading}
+                            onClick={handleVoltar}
+                        >
+                            {"Voltar"}
+                        </LoadingButton>
+                    </Grid>
+                    <Grid item xs>
                         <LoadingButton
                             type="submit"
                             fullWidth
@@ -347,36 +363,10 @@ const BoxRender = () => {
                         >
                             {botaoFrase}
                         </LoadingButton>
-                    ) : (
-                        <Grid container style={{ fontSize: "15px" }}>
-                            <Grid item xs sx={{ mr: 2 }}>
-                                <LoadingButton
-                                    fullWidth
-                                    variant="contained"
-                                    color="error"
-                                    sx={{ mt: 3, mb: 2 }}
-                                    disabled={loading}
-                                    onClick={handleVoltar}
-                                >
-                                    {"Voltar"}
-                                </LoadingButton>
-                            </Grid>
-                            <Grid item xs>
-                                <LoadingButton
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    sx={{ mt: 3, mb: 2 }}
-                                    loading={loading}
-                                >
-                                    {botaoFrase}
-                                </LoadingButton>
-                            </Grid>
-                        </Grid>
-                    )}
-                </Box>
-            </Box>
-        </Container>
+                    </Grid>
+                </Grid>
+            )}
+        </Box>
     );
 };
 export default function Perfil() {
@@ -385,21 +375,31 @@ export default function Perfil() {
             <DrawerCompleto title="Perfil">
                 <Toolbar />
                 <Container
-                    maxWidth="lg"
-                    sx={{ mt: 3, mb: 4 }}
-                    className="d-flex align-items-center justify-content-center "
+                    maxWidth="sm"
+                    sx={{ mt: 4, mb: 4 }}
+                    className="align-items-center justify-content-center "
                 >
-                    <Grid item>
+                    <Grow in={true}>
                         <Paper
                             sx={{
                                 p: 5,
+                                paddingInline: "10%",
                                 display: "flex",
                                 flexDirection: "column",
                             }}
                         >
-                            <BoxRender />
+                            <Box
+                                sx={{
+                                    marginTop: 0,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <BoxRender />
+                            </Box>
                         </Paper>
-                    </Grid>
+                    </Grow>
                 </Container>
             </DrawerCompleto>
         </ThemeProvider>
