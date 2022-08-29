@@ -13,6 +13,10 @@ import Orders from "../components/DashboardComponents/Orders";
 import { DrawerCompleto } from "../components/DrawerCompleto";
 import { sortDates } from "../utils/DashboardUtils/DataUtils";
 import { Fade, Slide } from "@mui/material";
+import {
+    CONTAINER_MARGIN_BOTTOM,
+    CONTAINER_MARGIN_TOP,
+} from "../utils/GlobalVariables";
 
 const mdTheme = createTheme();
 
@@ -64,8 +68,13 @@ export default function Dashboard() {
     return (
         <ThemeProvider theme={mdTheme}>
             <DrawerCompleto title="Dashboard">
-                <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Container
+                    maxWidth="lg"
+                    sx={{
+                        mt: CONTAINER_MARGIN_TOP,
+                        mb: CONTAINER_MARGIN_BOTTOM,
+                    }}
+                >
                     <Fade in={currentUser.displayName != null} className="mb-3">
                         <div>
                             <Title>Olá, {currentUser.displayName}.</Title>

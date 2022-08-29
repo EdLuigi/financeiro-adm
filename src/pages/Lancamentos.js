@@ -10,6 +10,10 @@ import {
 } from "../utils/DashboardUtils/DataUtils";
 import { DrawerCompleto } from "../components/DrawerCompleto";
 import { createTheme, ThemeProvider, Toolbar } from "@mui/material";
+import {
+    CONTAINER_MARGIN_BOTTOM,
+    CONTAINER_MARGIN_TOP,
+} from "../utils/GlobalVariables";
 
 const mdTheme = createTheme();
 
@@ -102,10 +106,12 @@ export default function Lancamentos() {
     return (
         <ThemeProvider theme={mdTheme}>
             <DrawerCompleto title="Lista de Lançamentos">
-                <Toolbar />
                 <Container
                     maxWidth="lg"
-                    sx={{ mt: 4, mb: 4 }}
+                    sx={{
+                        mt: CONTAINER_MARGIN_TOP,
+                        mb: CONTAINER_MARGIN_BOTTOM,
+                    }}
                     className=" align-items-center justify-content-center"
                 >
                     <ListarLancamentos

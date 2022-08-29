@@ -1,0 +1,2 @@
+export const CONTAINER_MARGIN_TOP = 12;
+export const CONTAINER_MARGIN_BOTTOM = 4;

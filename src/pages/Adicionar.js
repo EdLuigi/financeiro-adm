@@ -25,6 +25,10 @@ import { LoadingButton } from "@mui/lab";
 import { red } from "@mui/material/colors";
 import { green } from "@mui/material/colors";
 import { Box } from "@mui/system";
+import {
+    CONTAINER_MARGIN_BOTTOM,
+    CONTAINER_MARGIN_TOP,
+} from "../utils/GlobalVariables";
 
 const mdTheme = createTheme();
 
@@ -146,10 +150,12 @@ export default function Adicionar() {
     return (
         <ThemeProvider theme={mdTheme}>
             <DrawerCompleto title="Adicionar Lançamentos">
-                <Toolbar />
                 <Container
                     maxWidth="sm"
-                    sx={{ mt: 4, mb: 4 }}
+                    sx={{
+                        mt: CONTAINER_MARGIN_TOP,
+                        mb: CONTAINER_MARGIN_BOTTOM,
+                    }}
                     className=" align-items-center justify-content-center"
                 >
                     <Grow in={true}>

@@ -24,6 +24,10 @@ import { useAuth } from "../firebase/authContext";
 import { DrawerCompleto } from "../components/DrawerCompleto";
 import { PasswordComponent } from "../utils/CrendenciaisUtils/PasswordComponent";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+    CONTAINER_MARGIN_BOTTOM,
+    CONTAINER_MARGIN_TOP,
+} from "../utils/GlobalVariables";
 
 const mdTheme = createTheme();
 
@@ -373,10 +377,12 @@ export default function Perfil() {
     return (
         <ThemeProvider theme={mdTheme}>
             <DrawerCompleto title="Perfil">
-                <Toolbar />
                 <Container
                     maxWidth="sm"
-                    sx={{ mt: 4, mb: 4 }}
+                    sx={{
+                        mt: CONTAINER_MARGIN_TOP,
+                        mb: CONTAINER_MARGIN_BOTTOM,
+                    }}
                     className="align-items-center justify-content-center "
                 >
                     <Grow in={true}>
