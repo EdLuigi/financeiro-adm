@@ -17,6 +17,7 @@ import {
     CONTAINER_MARGIN_BOTTOM,
     CONTAINER_MARGIN_TOP,
 } from "../utils/GlobalVariables";
+import Footer from "../components/Footer";
 
 const mdTheme = createTheme();
 
@@ -148,6 +149,16 @@ export default function Dashboard() {
                             </Slide>
                         </Grid>
                     </Grid>
+                    <Fade
+                        in={true}
+                        style={{
+                            transitionDelay: "500ms",
+                        }}
+                    >
+                        <div>
+                            <Footer />
+                        </div>
+                    </Fade>
                 </Container>
             </DrawerCompleto>
         </ThemeProvider>

@@ -17,6 +17,7 @@ import {
     verifyEmail,
     handleErro,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
+import Footer from "../components/Footer";
 
 const theme = createTheme();
 
@@ -120,7 +121,7 @@ export default function RecoverPassword() {
                         </Grid>
                     </Box>
                 </Box>
-                {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
+                <Footer />
             </Container>
         </ThemeProvider>
     );

@@ -22,6 +22,7 @@ import {
     handleErro,
     verifyConfirmPassword,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
+import Footer from "../components/Footer";
 
 const theme = createTheme();
 
@@ -247,6 +248,7 @@ export default function SignUp() {
                         </Grid>
                     </Box>
                 </Box>
+                <Footer />
             </Container>
         </ThemeProvider>
     );

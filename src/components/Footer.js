@@ -7,7 +7,7 @@ const LinkGitHub = () => {
     const marginLeftStyle = 5;
     return (
         <Typography
-            sx={{ m: "38%", mt: 8 }}
+            sx={{ m: "38%", mt: 8, mb: 0 }}
             component={"div"}
             variant="body2"
             color="text.secondary"
@@ -25,7 +25,7 @@ const LinkGitHub = () => {
                 </div>
                 <div className="pt-1">{"@EdLuigi"}</div>
             </Link>
-            <div style={{ marginLeft: marginLeftStyle }}>
+            <div style={{ marginLeft: marginLeftStyle + 2 }}>
                 {new Date().getFullYear()}
             </div>
         </Typography>

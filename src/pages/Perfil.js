@@ -5,6 +5,7 @@ import {
     Box,
     Collapse,
     Container,
+    Fade,
     Grid,
     Grow,
     IconButton,
@@ -28,6 +29,7 @@ import {
     CONTAINER_MARGIN_BOTTOM,
     CONTAINER_MARGIN_TOP,
 } from "../utils/GlobalVariables";
+import Footer from "../components/Footer";
 
 const mdTheme = createTheme();
 
@@ -410,6 +412,11 @@ export default function Perfil() {
                             </Box>
                         </Paper>
                     </Grow>
+                    <Fade in={true}>
+                        <div>
+                            <Footer />
+                        </div>
+                    </Fade>
                 </Container>
             </DrawerCompleto>
         </ThemeProvider>

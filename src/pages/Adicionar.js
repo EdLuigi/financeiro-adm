@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
     Alert,
     Collapse,
+    Fade,
     FormControl,
     FormControlLabel,
     FormLabel,
@@ -29,6 +30,7 @@ import {
     CONTAINER_MARGIN_BOTTOM,
     CONTAINER_MARGIN_TOP,
 } from "../utils/GlobalVariables";
+import Footer from "../components/Footer";
 
 const mdTheme = createTheme();
 
@@ -222,6 +224,11 @@ export default function Adicionar() {
                             </Box>
                         </Paper>
                     </Grow>
+                    <Fade in={true}>
+                        <div>
+                            <Footer />
+                        </div>
+                    </Fade>
                 </Container>
             </DrawerCompleto>
         </ThemeProvider>

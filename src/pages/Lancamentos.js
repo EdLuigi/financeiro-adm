@@ -14,6 +14,7 @@ import {
     CONTAINER_MARGIN_BOTTOM,
     CONTAINER_MARGIN_TOP,
 } from "../utils/GlobalVariables";
+import Footer from "../components/Footer";
 
 const mdTheme = createTheme();
 
@@ -126,6 +127,7 @@ export default function Lancamentos() {
                             />
                         </Paper>
                     </Grow>
+                    <Footer />
                 </Container>
             </DrawerCompleto>
         </ThemeProvider>
