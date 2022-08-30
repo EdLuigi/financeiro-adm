@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -22,24 +21,7 @@ import {
     handleMouseDownPassword,
     handleErro,
 } from "../utils/CrendenciaisUtils/FuncoesGerais";
-
-// function Copyright(props) {
-//     return (
-//         <Typography
-//             variant="body2"
-//             color="text.secondary"
-//             align="center"
-//             {...props}
-//         >
-//             {"Copyright © "}
-//             <Link color="inherit" href="https://mui.com/">
-//                 Your Website
-//             </Link>{" "}
-//             {new Date().getFullYear()}
-//             {"."}
-//         </Typography>
-//     );
-// }
+import Footer from "../components/Footer";
 
 const theme = createTheme();
 
@@ -181,7 +163,7 @@ export default function SignIn() {
                         </Grid>
                     </Box>
                 </Box>
-                {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
+                <Footer />
             </Container>
         </ThemeProvider>
     );

@@ -87,9 +87,9 @@ function MostrarLancamentos({ data }) {
             </TableContainer>
             <div className="mt-4">
                 <Link
+                    style={{ cursor: "pointer" }}
                     color="primary"
                     onClick={() => navigate("/listar")}
-                    // sx={{ mt: 3 }}
                 >
                     Ver todos os lançamentos
                 </Link>
