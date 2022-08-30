@@ -6,7 +6,9 @@ Esta aplicação é um projeto pessoal feito com o objetivo de adquirir experiê
 A plataforma Financeiro ADM foi criada para administrar lançamentos financeiros. Desenvolvida com um design responsivo e agradável.
 
 
-![](uso.gif)
+![](img/Dashboard.png)
+![](img/Lancamentos.png)
+![](img/Adicionar.png)
 
 ## Instalação
 ```sh
