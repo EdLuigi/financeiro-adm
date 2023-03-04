@@ -39,10 +39,3 @@ Através da página inicial, pode-se ter um resumo da conta e a movimentação a
 O backend da aplicação foi feita com Firebase para administrar usuários e seus dados relacionados.
 
 Atualmente as minhas variáveis de configuração estão inclusas neste repositório, então a aplicação não exige que o desenvolvedor crie um projeto próprio no Firebase para executá-la. Mas no futuro pretendo mudar isso ou talvez atualizar as regras de segurança para evitar ações indesejadas.
-
-## Heroku
-A aplicação está hospedada no Heroku!*:
-
-https://financeiro-adm.herokuapp.com/entrar
-
-*temporariamente, já que vão tirar o plano gratuito.
